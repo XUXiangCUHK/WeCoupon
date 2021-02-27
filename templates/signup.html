@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/css/login_page.css">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous"> -->
     <script src="../static/js/signup.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script> -->
     <title>Document</title>
 </head>
 <body>
@@ -24,13 +26,16 @@
     
         <!-- Signup Form -->
         <form id="signup_form_id" method="POST">
+            <input type="radio" id="position1" class="checkposition" name="checkposition" value="any_value" onclick="test()" required>
+            <label for="position1">I am a student</label>
+            <input type="radio" id="position2" class="checkposition" name="checkposition" value="any_value" onclick="test()" required>
+            <label for="position2">I am an instructor</label>
             <input type="text" id="first_name" class="fadeIn second" name="signup" required="required" placeholder="First Name">
             <input type="text" id="last_name" class="fadeIn second" name="signup" required="required" placeholder="Last Name">
+            <input type="text" id="sid" class="fadeIn second" name="signup" required="required" placeholder="SID">
             <input type="text" id="email" class="fadeIn second" name="signup" required="required" placeholder="Email">
             <input type="text" id="username" class="fadeIn second" name="signup" required="required" placeholder="Username">
             <input type="password" id="password" class="fadeIn third" name="signup" required="required" placeholder="Password">
-            <input type="checkbox" id="position1" class="checkposition" name="checkposition" value="any_value" onclick="test(this)">I am a student
-            <input type="checkbox" id="position2" class="checkposition" name="checkposition" value="any_value" onclick="test(this)">I am a instructor
             <input type="submit" class="fadeIn fourth" value="Sign Up" onclick="return processsignupform();">
         </form>
 

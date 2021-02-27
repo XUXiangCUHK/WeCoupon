@@ -1,11 +1,15 @@
-function test(checkbox) {
-    var checkboxes=document.getElementsByName("checkposition");
-    checkboxes.forEach((item) => {
-        if (item !== checkbox) item.checked = false
-    })
+function test() {
+    if (document.getElementById("position1").checked){
+        document.getElementById("sid").style.display = 'inline-block';
+        document.getElementById("sid").setAttribute("required", "");
+    }else{
+        document.getElementById("sid").style.display = 'none';
+        document.getElementById("sid").removeAttribute("required");
+    }
 }
 
 function processsignupform() {
+    var sid = document.getElementById("sid");
     var firstname = document.getElementById("first_name");
     var lastname = document.getElementById("last_name");
     var username = document.getElementById("username");
@@ -14,8 +18,4 @@ function processsignupform() {
     var student = document.getElementById("position1").checked;
     var instructor = document.getElementById("position2").checked;
 
-    if(student == false && instructor == false){
-        alert("Please indicate your position as student or instructor!")
-        return false;
-    }
 }
