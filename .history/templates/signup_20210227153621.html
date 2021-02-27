@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/login_page.css">
+    <script src="../static/js/signup.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+        <!-- Tabs Titles -->
+    
+        <!-- Icon -->
+        <div class="fadeIn first">
+            <img src="../static/images/111.jpg" id="icon" alt="User Icon" />
+        </div>
+
+        <div>
+            WeCoupon
+        </div>
+    
+        <!-- Signup Form -->
+        <form id="signup_form_id" method="POST">
+            <input type="text" id="first_name" class="fadeIn second" name="signup" placeholder="First Name">
+            <input type="text" id="last_name" class="fadeIn second" name="signup" placeholder="Last Name">
+            <input type="text" id="email" class="fadeIn second" name="signup" placeholder="Email">
+            <input type="text" id="username" class="fadeIn second" name="signup" placeholder="username">
+            <input type="text" id="password" class="fadeIn third" name="signup" placeholder="password">
+            <input type="checkbox" id="position1" class="checkposition" name="checkposition" value="any_value" onclick="test(this)">I am a student
+            <input type="checkbox" id="position2" class="checkposition" name="checkposition" value="any_value" onclick="test(this)">I am a instructor
+            <input type="submit" class="fadeIn fourth" value="Sign Up" onclick="return processsignupform();">
+        </form>
+
+        <!-- Log in -->
+        <div id="formFooter">
+            <a class="underlineHover" href="login.html">Already have an account? Log in</a>
+        </div>
+    
+        </div>
+    </div>
+</body>
+</html>
