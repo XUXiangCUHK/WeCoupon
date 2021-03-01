@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+{% import "bootstrap/wtf.html" as wtf %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,28 +21,17 @@
             <img src="../static/images/111.jpg" id="icon" alt="User Icon" />
         </div>
 
+        <!-- Signup Form -->
         <div>
             WeCoupon
+            {{ wtf.quick_form(form) }}
         </div>
-    
-        <!-- Signup Form -->
-        <form id="signup_form_id" method="POST">
-            <input type="radio" id="position1" class="checkposition" name="checkposition" value="any_value" onclick="test()" required>
-            <label for="position1">I am a student</label>
-            <input type="radio" id="position2" class="checkposition" name="checkposition" value="any_value" onclick="test()" required>
-            <label for="position2">I am an instructor</label>
-            <input type="text" id="first_name" class="fadeIn second" name="signup" required="required" placeholder="First Name">
-            <input type="text" id="last_name" class="fadeIn second" name="signup" required="required" placeholder="Last Name">
-            <input type="text" id="sid" class="fadeIn second" name="signup" required="required" placeholder="SID">
-            <input type="text" id="email" class="fadeIn second" name="signup" required="required" placeholder="Email">
-            <input type="text" id="username" class="fadeIn second" name="signup" required="required" placeholder="Username">
-            <input type="password" id="password" class="fadeIn third" name="signup" required="required" placeholder="Password">
-            <input type="submit" class="fadeIn fourth" value="Sign Up" onclick="return processsignupform();">
-        </form>
+
+
 
         <!-- Log in -->
         <div id="formFooter">
-            <a class="underlineHover" href="login.html">Already have an account? Log in</a>
+            <a class="underlineHover" href="{{ url_for('login') }}">Already have an account? Log in</a>
         </div>
     
         </div>
