@@ -27,7 +27,7 @@ var reg_calss = function () {
 
     $.getJSON(`http://127.0.0.1:5000/student_get_class/${pass}`,(data)=>{
         let c = data
-        c = { 'code': 'csci3100', 'title': 'Tom', 'info': 'other' }
+//        c = { 'code': 'csci3100', 'title': 'Tom', 'info': 'other' }
         console.log(c)
         let addClass = `<tr><th><a href="http://127.0.0.1:5000/student_within_course/${c.code}">${c.code}</th> <td>${c.title}</td><td>${c.info}</td></tr>`
         let tbody = document.getElementsByTagName('tbody')[0]
