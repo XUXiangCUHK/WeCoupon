@@ -43,13 +43,13 @@ class Sql:
         statement = '''SELECT * FROM WeCoupon.course WHERE course_token='{}';'''.format(token)
         return self.db.read_from_mysql(statement)
 
-    def read_user_course(self, user_name):
+    def read_user_course(self, user_id):
         statement = '''
-                    SELECT c.course_id, course_name, course_instructor 
+                    SELECT c.course_code, course_name, course_instructor 
                     FROM WeCoupon.enrollment AS e
                     JOIN Wecoupon.course AS c ON e.course_id = c.course_id
-                    WHERE user_name = '{}'
-                    '''.format(user_name)
+                    WHERE user_id = '{}'
+                    '''.format(user_id)
         return self.db.read_from_mysql(statement)
 
 

@@ -36,9 +36,16 @@ class Manipulator:
         }
         self.sql.insert_enrollment(data)
 
-    def user_enrollment(self, user_name):
-        res = self.sql.read_user_course(user_name)
-        return res
+    def user_enrollment(self, user_id):
+        enroll_info = list()
+        res = self.sql.read_user_course(user_id)
+        for item in res:
+            enroll_info.append({
+                'code': item[0],
+                'title': item[1],
+                'info': item[2]
+            })
+        return enroll_info
 
     def user_verification(self, email, password):
         pw = self.sql.read_account_info_by_email(email, ['password'])
@@ -47,15 +54,16 @@ class Manipulator:
                 return True
         return False
 
-    def user_is_student(self, email):
-        pos = self.sql.read_account_info_by_email(email, ['is_student'])
-        return pos[0][0]
+    def fetch_user_info_by_email(self, email, cols):
+        res = self.sql.read_account_info_by_email(email, cols)
+        return res[0][0]
 
     def fetch_course_info(self, token):
         res = self.sql.read_course_info(token)
         if not res:
             return dict()
         course_info = {
+            'course_id': res[0][0],
             'code': res[0][1],
             'title': res[0][2],
             'info': res[0][3]
