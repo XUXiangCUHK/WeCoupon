@@ -34,22 +34,30 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <!-- Hyperlink needed to add here later -->
-                <!--Needs to be modified-->
-                <th scope="row"><a href="http://127.0.0.1:5000/student_within_course/CSCI3100">CSCI3100</a></th>
-                <td>Mark</td>
-                <td>Otto</td>
-              </tr>
-              <tr>
-                <th scope="row"><a href="http://127.0.0.1:5000/student_within_course/CSCI3160">CSCI3160</a></th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-              </tr>
-              <tr>
-                <th scope="row"><a href="http://127.0.0.1:5000/student_within_course/CSCI3160">CSCI3170</a></th>
-                <td colspan="2">Larry the Bird</td>
-              </tr>
+{#              <tr>#}
+{#                <!-- Hyperlink needed to add here later -->#}
+{#                <!--Needs to be modified-->#}
+{#                <th scope="row"><a href="http://127.0.0.1:5000/student_within_course/CSCI3100">CSCI3100</a></th>#}
+{#                <td>Mark</td>#}
+{#                <td>Otto</td>#}
+{#              </tr>#}
+{#              <tr>#}
+{#                <th scope="row"><a href="http://127.0.0.1:5000/student_within_course/CSCI3160">CSCI3160</a></th>#}
+{#                <td>Jacob</td>#}
+{#                <td>Thornton</td>#}
+{#              </tr>#}
+{#              <tr>#}
+{#                <th scope="row"><a href="http://127.0.0.1:5000/student_within_course/CSCI3160">CSCI3170</a></th>#}
+{#                <td colspan="2">Larry the Bird</td>#}
+{#              </tr>#}
+                {% for item in enroll_info %}
+                    <tr>
+{#                        <td>{{ item['code'] }}</td>#}
+                        <th scope="row"><a href="http://127.0.0.1:5000/student_within_course/{{ item.code }}">{{ item.code }}</a></th>
+                        <td>{{ item['title'] }}</td>
+                        <td>{{ item['info'] }}</td>
+                    </tr>
+                {% endfor %}
             </tbody>
           </table>
     </div>

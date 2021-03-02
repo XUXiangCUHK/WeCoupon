@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, abort, flash, url_for, redirect
+from flask import Flask, request, render_template, abort, flash, url_for, redirect, session
 from flask_bootstrap import Bootstrap
 from forms import LoginForm, RegistrationForm
 # from email import send_email
@@ -19,12 +19,15 @@ def login():
     if form.validate_on_submit():
         input_email = form.email.data
         input_pw = form.password.data
-        print(input_email, input_pw)
         if mani.user_verification(input_email, input_pw):
+            user_id = mani.fetch_user_info_by_email(input_email, ['user_id'])
+            is_student = mani.fetch_user_info_by_email(input_email, ['is_student'])
+            session['user_id'] = user_id
+
             next = request.args.get('next')
             if next is None or not next.startswith('/'):
-                if mani.user_is_student(input_email):
-                    next = url_for('student_main')
+                if is_student:
+                    next = url_for('student_main', messages=user_id)
                 else:
                     next = url_for('teacher_main')
             return redirect(next)
@@ -53,14 +56,19 @@ def sign_up():
     return render_template('signup.html', form=form)
 
 
-@app.route('/teacher_main', methods=['GET', 'POST'])
+@app.route('/teacher_main_page', methods=['GET', 'POST'])
 def teacher_main():
-    return render_template('teacher_main.html')
+    user_id = session['user_id']
+    print(user_id)
+    return render_template('teacher_main_page.html')
 
 
 @app.route('/student_main_page', methods=['GET', 'POST'])
 def student_main():
-    return render_template('student_main_page.html')
+    user_id = session['user_id']
+    # user_id = request.args['messages']
+    enroll_info = mani.user_enrollment(user_id)
+    return render_template('student_main_page.html', enroll_info=enroll_info)
 
 
 @app.route('/student_within_course/<classcode>', methods=['GET', 'POST'])
@@ -70,11 +78,11 @@ def atudent_within_course(classcode):
 
 @app.route('/student_get_class/<password>', methods=['GET', 'POST'])
 def student_get_class(password):
-    # param = request.get_data()
-    # print(param)
-    print('token', password)
-    classinfo = mani.fetch_course_info(password)
-    return json.dumps(classinfo)
+    user_id = session['user_id']
+    class_info = mani.fetch_course_info(password)
+    course_id = class_info['course_id']
+    mani.insert_enrollment_info(user_id, course_id)
+    return json.dumps(class_info)
 
 
 if __name__ == '__main__':
