@@ -6,3 +6,9 @@ table, th, td, tr{
     vertical-align: middle;
 }
 
+.answer-tbody{
+    display: block;
+    width: 100%;
+    max-height: 500px;
+    overflow-y: scroll;
+}
