@@ -24,7 +24,7 @@ function show_question_list() {
 	//let pass = window.prompt("pass", "please enter the class token");
     //console.log(pass)
 
-            c = {name: "Q1", type: "Next"};
+        c = {name: "Q1", type: "Next"};
         //let addClass = `<tr><th><a href="http://127.0.0.1:5000/student_within_course/${c.code}">${c.code}</th> <td>${c.title}</td><td>${c.info}</td></tr>`
         let addQuestion = `<tr>
 	                        <th scope="row">${c.name}</th>
