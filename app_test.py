@@ -73,6 +73,20 @@ def student_get_class(password):
     course_id = class_info['course_id']
     return json.dumps(class_info)
 
+@app.route('/teacher_view_answer/<question>', methods=['GET', 'POST'])
+def teacher_view_answer(question):
+    question_info = {'question_name': 'Q1', 'corresponding_course': 'CSCI3100'}
+    answer_list = [{'answer_user': 'student1', 'answer_content': 'This is sample answer0'},
+                    {'answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
+                    {'answer_user': 'student3', 'answer_content': 'This?'},]
+    per_ans = {'answered': 12, 'not_answered': 35}
+    return render_template('teacher_view_answer.html', question_info=question_info, answer_list=answer_list, per_ans=per_ans)
+
+@app.route('/add_coupon/<username>', methods=['GET', 'POST'])
+def reward_coupon(username):
+    # get the username of student who is rewarded coupon
+    print(username)
+    return username
 
 if __name__ == '__main__':
     app.run(debug=True)
