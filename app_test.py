@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, abort, flash, url_for, redirect, session
 from flask_bootstrap import Bootstrap
-from forms import LoginForm, RegistrationForm
+from forms import LoginForm, RegistrationForm, CreateClassForm
 # from email import send_email
 import json
 
@@ -44,6 +44,14 @@ def sign_up():
         return redirect(url_for('login'))
     return render_template('signup.html', form=form)
 
+@app.route('/teacher_create_course/<instructor>', methods=['GET', 'POST'])
+def create_course(instructor):
+    form = CreateClassForm()
+    if form.validate_on_submit():
+        input_token=form.course_token.data
+        print(input_token)
+        # return redirect(url_for('teacher_main_page'))
+    return render_template('teacher_create_course.html', form=form)
 
 @app.route('/teacher_main_page', methods=['GET', 'POST'])
 def teacher_main():

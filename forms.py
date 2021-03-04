@@ -38,3 +38,10 @@ class RegistrationForm(FlaskForm):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('Username already in use.')
 '''
+
+class CreateClassForm(FlaskForm):
+    course_code = StringField('Course Code', validators=[DataRequired()])
+    course_title = StringField('Course Title', validators=[DataRequired()])
+    course_instructor = StringField('Course Instructor', validators=[DataRequired()])
+    course_token = StringField('Course Token', validators=[DataRequired()])
+    submit = SubmitField('Create Course')
