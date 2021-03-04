@@ -97,10 +97,19 @@ def reward_coupon(username):
     return username
 
 @app.route('/teacher_within_course/<classcode>', methods=['GET', 'POST'])
-def teacher_view_question(classcode):
+def teacher_view(classcode):
     question_list = [{'question_id': 'question#1', 'question_type': 'MC'},
                     {'question_id': 'question#2', 'question_type': 'Type'},]
-    return render_template('teacher_within_course.html', question_list=question_list)
+    participation_list = [{'student_id': '1155095222', 'student_name': 'Bob', 'attempt': '20', 'coupon': '1'},
+                    {'student_id': '1155095222', 'student_name': 'Peter', 'attempt': '10', 'coupon': '5'}]
+    return render_template('teacher_within_course.html', question_list=question_list, participation_list=participation_list)
+
+#@app.route('/teacher_within_course/<classcode>', methods=['GET', 'POST'])
+#def teacher_view_participation(classcode):
+#    participation_list = [{'student_id': '1155095222', 'student_name': 'Bob', 'attempt': '20', 'coupon': '1'},
+#                    {'student_id': '1155095222', 'student_name': 'Peter', 'attempt': '10', 'coupon': '5'}]
+#    return render_template('teacher_within_course.html', participation_list=participation_list)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

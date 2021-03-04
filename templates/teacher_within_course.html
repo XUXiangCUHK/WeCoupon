@@ -60,65 +60,38 @@
               <button type="submit" class="btn btn-primary">Submit</button>
             </div>
             <div class="tab-pane fade" id="pills-add" role="tabpanel" aria-labelledby="pills-add-tab">
-                <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">Student ID</th>
-                        <th scope="col">Student Name</th>
-                        <th scope="col">Info</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <!-- Hyperlink needed to add here later -->
-                        <th scope="row">Jason</th>
-                        <td>1155095311</td>
-                        <td>3</td>
-                      </tr>
-                      <tr>
-                        <!-- Hyperlink needed to add here later -->
-                        <th scope="row">Jason</th>
-                        <td>1155095311</td>
-                        <td>3</td>
-                      </tr>
-                      <tr>
-                        <!-- Hyperlink needed to add here later -->
-                        <th scope="row">Jason</th>
-                        <td>1155095311</td>
-                        <td>3</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <form>
+                    <div class="form-group">
+                      <label for="InputEmail1">Question Name</label>
+                      <input type="email" class="form-control" id="InputEmail1" aria-describedby="emailHelp" placeholder="Enter Question Name">
+                    </div>
+                    <div class="form-group">
+                      <label for="InputPassword1">Question Content</label>
+                      <textarea class="form-control" style="height:200px" id="exampleFormControlTextarea1" rows="3" placeholder="Enter Question Content"></textarea>
+                    </div>
+                  </form>
                   <button type="save" class="btn btn-primary">Submit</button>
             </div>
             <div class="tab-pane fade" id="pills-participation" role="tabpanel" aria-labelledby="pills-participation-tab">
                 <table class="table">
+                <table class="table">
                     <thead>
                       <tr>
                         <th scope="col">Student ID</th>
                         <th scope="col">Student Name</th>
-                        <th scope="col">Info</th>
+                        <th scope="col">Attempt</th>
+                        <th scope="col">Coupon</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <!-- Hyperlink needed to add here later -->
-                        <th scope="row">Jason</th>
-                        <td>1155095311</td>
-                        <td>3</td>
-                      </tr>
-                      <tr>
-                        <!-- Hyperlink needed to add here later -->
-                        <th scope="row">Jason</th>
-                        <td>1155095311</td>
-                        <td>3</td>
-                      </tr>
-                      <tr>
-                        <!-- Hyperlink needed to add here later -->
-                        <th scope="row">Jason</th>
-                        <td>1155095311</td>
-                        <td>3</td>
-                      </tr>
+                        {% for item in participation_list %}
+                        <tr>
+                            <td>{{ item["student_id"] }}</td>
+                            <td>{{ item["student_name"] }}</td>
+                            <td>{{ item["attempt"] }}</td>
+                            <td>{{ item["coupon"] }}</td>
+                        </tr>
+                        {% endfor %}
                     </tbody>
                   </table>
             </div>
