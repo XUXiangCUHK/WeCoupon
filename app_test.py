@@ -96,5 +96,11 @@ def reward_coupon(username):
     print(username)
     return username
 
+@app.route('/teacher_within_course/<classcode>', methods=['GET', 'POST'])
+def teacher_view_question(classcode):
+    question_list = [{'question_id': 'question#1', 'question_type': 'MC'},
+                    {'question_id': 'question#2', 'question_type': 'Type'},]
+    return render_template('teacher_within_course.html', question_list=question_list)
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -43,13 +43,18 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <!-- Hyperlink needed to add here later -->
-                        <th scope="row">Default</th>
-                        <td>Default</td>
-                        <td><button type="button" class="btn btn-primary">View</button></td>
-                        <td><button type="button" class="btn btn-success">Start</button></td>
-                      </tr>
+
+                        {% for item in question_list %}
+                        <tr>
+                            <td>{{ item["question_id"] }}</td>
+                            <td>{{ item["question_type"] }}</td>
+                            <td><button type="button" class="btn btn-primary">View</button></td>
+                            <td><button type="button" class="btn btn-success">Start</button></td>
+
+                        </tr>
+                        {% endfor %}
+
+
                     </tbody>
                   </table>
               <button type="submit" class="btn btn-primary">Submit</button>
