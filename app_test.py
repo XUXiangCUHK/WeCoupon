@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, abort, flash, url_for, redirect, session
 from flask_bootstrap import Bootstrap
 from forms import LoginForm, RegistrationForm, CreateClassForm
-from flask_mail import Mail
+# from flask_mail import Mail
 # from email import send_email
 import json
 
@@ -114,6 +114,7 @@ def teacher_create_class(course_name):
 
 @app.route('/teacher_view_answer/<question>', methods=['GET', 'POST'])
 def teacher_view_answer(question):
+    print(question)
     question_info = {'question_name': 'Q1', 'corresponding_course': 'CSCI3100'}
     answer_list = [{'answer_user': 'student1', 'answer_content': 'This is sample answer0'},
                     {'answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
@@ -121,11 +122,17 @@ def teacher_view_answer(question):
     per_ans = {'answered': 12, 'not_answered': 35}
     return render_template('teacher_view_answer.html', question_info=question_info, answer_list=answer_list, per_ans=per_ans)
 
+
+
 @app.route('/add_coupon/<username>', methods=['GET', 'POST'])
 def reward_coupon(username):
     # get the username of student who is rewarded coupon
     print(username)
-    return username
+    current_class = 'CSCI3100'
+    # coupon_number++
+    # update db
+    # flash('Congratulations! {} got this coupon!'.format(username))
+    return redirect(url_for('teacher_view', classcode=current_class))
 
 @app.route('/teacher_within_course/<classcode>', methods=['GET', 'POST'])
 def teacher_view(classcode):
