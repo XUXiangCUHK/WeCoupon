@@ -36,7 +36,8 @@
                         <tr>
                             <td>{{ item["answer_user"] }}</td>
                             <td>{{ item["answer_content"] }}</td>
-                            <td><button type="button" class="btn btn-primary" onclick="reward(this)">Reward</button></td>
+                            <td><a href="../add_coupon/{{ item.answer_user }}" class="button btn btn-primary" onclick="{if(confirm('Are you sure to reward coupon to {{ item.answer_user }}?')){return true;}return false;}">Reward</a></td>
+                            <!---<td><button type="button" class="btn btn-primary" onclick="reward(this)">Reward</button></td>   --->
                         </tr>
                     {% endfor %}
                 </tbody>
