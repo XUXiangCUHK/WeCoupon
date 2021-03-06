@@ -1,5 +1,4 @@
-var teacher_add_calss = function () {
-    document.getElementById('all_light').style.display = 'block';
+var teacher_add_class = function () {
     document.getElementById('contes').style.display = 'block';
 
     $.getJSON(`http://127.0.0.1:5000/teacher_create_class/${course_name}${course_token}`,(data)=>{
