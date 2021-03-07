@@ -34,6 +34,24 @@ class Sql:
                     '''
         self.db.single_write_into_mysql(data, statement)
 
+    def insert_question(self, data):
+        statement = '''
+                    INSERT IGNORE INTO `WeCoupon`.`question`
+                    (`owner_id`, `course_id`, `q_title`, `q_content`, `q_answer`, `q_status`)
+                    VALUES
+                    (%(owner_id)s, %(course_id)s, %(q_title)s, %(q_content)s, %(q_answer)s, %(q_status)s);
+                    '''
+        self.db.single_write_into_mysql(data, statement)
+
+    def insert_answer(self, data):
+        statement = '''
+                    INSERT IGNORE INTO `WeCoupon`.`answer`
+                    (`q_id`, `student_id`, `a_content`, `a_status`)
+                    VALUES
+                    (%(q_id)s, %(student_id)s, %(a_content)s, %(a_status)s);
+                    '''
+        self.db.single_write_into_mysql(data, statement)
+
     def read_account_info_by_email(self, email, column_list):
         col = ', '.join(column_list)
         statement = '''SELECT {} FROM WeCoupon.account WHERE email='{}';'''.format(col, email)
@@ -50,6 +68,22 @@ class Sql:
                     JOIN Wecoupon.course AS c ON e.course_id = c.course_id
                     WHERE user_id = '{}'
                     '''.format(user_id)
+        return self.db.read_from_mysql(statement)
+
+    def read_question_info(self, q_id):
+        statement = '''
+                    SELECT course_code, q_title, q_content
+                    FROM WeCoupon.question q
+                    JOIN WeCoupon.course c ON c.course_id = q.course_id 
+                    WHERE q_id='{}';'''.format(q_id)
+        return self.db.read_from_mysql(statement)
+
+    def read_answer_list(self, q_id):
+        statement = '''
+                    SELECT user_name, a_content
+                    FROM WeCoupon.answer an
+                    JOIN WeCoupon.account ac ON ac.user_id = an.student_id 
+                    WHERE q_id='{}';'''.format(q_id)
         return self.db.read_from_mysql(statement)
 
 

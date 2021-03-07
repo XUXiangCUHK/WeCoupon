@@ -36,6 +36,26 @@ class Manipulator:
         }
         self.sql.insert_enrollment(data)
 
+    def insert_question_info(self, owner_id, course_id, q_title, q_content, q_answer, q_status):
+        data = {
+            'owner_id': owner_id,
+            'course_id': course_id,
+            'q_title': q_title,
+            'q_content': q_content,
+            'q_answer': q_answer,
+            'q_status': q_status,
+        }
+        self.sql.insert_question(data)
+
+    def insert_answer_info(self, q_id, student_id, a_content, a_status):
+        data = {
+            'q_id': q_id,
+            'student_id': student_id,
+            'a_content': a_content,
+            'a_status': a_status,
+        }
+        self.sql.insert_answer(data)
+
     def user_enrollment(self, user_id):
         enroll_info = list()
         res = self.sql.read_user_course(user_id)
@@ -70,6 +90,29 @@ class Manipulator:
         }
         return course_info
 
+    def fetch_question_info(self, q_id):
+        res = self.sql.read_question_info(q_id)
+        if not res:
+            return dict()
+        question_info = {
+            'corresponding_course': res[0][0],
+            'question_name': res[0][1],
+            'question_content': res[0][2],
+        }
+        return question_info
+
+    def fetch_answer_list(self, q_id):
+        res = self.sql.read_answer_list(q_id)
+        answer_list = list()
+        if not res:
+            return answer_list
+        for item in res:
+            answer_list.append({
+                'answer_user': item[0],
+                'answer_content': item[1],
+            })
+        return answer_list
+
 
 if __name__ == "__main__":
     m = Manipulator()
@@ -84,5 +127,9 @@ if __name__ == "__main__":
     # m.user_enrollment('StevenXU')
     # res = m.user_verification('1155107785@link.cuhk.edu.hk', 'wecoupon')
     # print('res,', res)
-    res = m.user_is_student('1155107785@link.cuhk.edu.hk')
-    print(res)
+    # res = m.user_is_student('1155107785@link.cuhk.edu.hk')
+    # m.insert_question_info(3, 1, 'Question1', 'What is the shortcoming of FSM?', 'explosive states', 'A')
+    # m.insert_answer_info(1, 1, 'hard to implement', 0)
+    # m.insert_answer_info(1, 2, 'explosive states', 0)
+    # print(m.fetch_question_info(1))
+    print(m.fetch_answer_list(1))
