@@ -21,16 +21,16 @@
             Teacher//with icon
           </div>
           <div class="col text-end">
-            <button type="button" class="btn btn-primary" onclick="teacher_add_class()">Add Class</button>
+            <button type="button" class="btn btn-primary" onclick="display()">Add Class</button>
           </div>
           <div id="contes" style="">
             <div style="width:500px;height:40px;">
             Add New Course
             <hr>
             <form style=" margin-left: 100px;">
-            course_name：<input type="text" value="" name="" ><br>
-            course_token：<input type="password" value="" name=""><br>
-            <input type="submit" value="submit">
+            course_name：<input type="text" id="name" name="" ><br>
+            course_token：<input type="password" id="token" name=""><br>
+            <input type="button" value="submit" onclick="teacher_add_class()">
             </form>
             </div>
            </div>
@@ -76,5 +76,5 @@
 
 
 </body>
-
+<script src="../static/js/teacher_main_page.js"></script>
 </html>

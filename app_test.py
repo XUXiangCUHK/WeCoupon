@@ -105,9 +105,12 @@ def student_get_class(password):
     course_id = class_info['course_id']
     return json.dumps(class_info)
 
-@app.route('/teacher_create_class/<course_name>', methods=['GET', 'POST'])
-def teacher_create_class(course_name):
+@app.route('/teacher_create_class/<course_name>&<course_token>', methods=['GET', 'POST'])
+def teacher_create_class(course_name, course_token):
     print('teacher_create_class')
+    print(course_name)
+    print()
+    print(course_token)
     class_info = {'course_id': 1, 'code': 'CSCI3100', 'title': 'Software Engineering', 'info': 'Prof. Michael R. Lyu'}
     course_id = class_info['course_id']
     return json.dumps(class_info)
