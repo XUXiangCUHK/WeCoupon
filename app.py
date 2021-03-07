@@ -60,7 +60,8 @@ def sign_up():
 def teacher_main():
     user_id = session['user_id']
     print(user_id)
-    return render_template('teacher_main_page.html')
+    enroll_info = mani.user_enrollment(user_id)
+    return render_template('teacher_main_page.html', teach_info=enroll_info)
 
 
 @app.route('/student_main_page', methods=['GET', 'POST'])
@@ -72,7 +73,7 @@ def student_main():
 
 
 @app.route('/student_within_course/<classcode>', methods=['GET', 'POST'])
-def atudent_within_course(classcode):
+def student_within_course(classcode):
     return render_template('student_within_course.html')
 
 
@@ -83,6 +84,17 @@ def student_get_class(password):
     course_id = class_info['course_id']
     mani.insert_enrollment_info(user_id, course_id)
     return json.dumps(class_info)
+
+
+@app.route('/teacher_view_answer/<question>', methods=['GET', 'POST'])
+def teacher_view_answer(question):
+    question_info = mani.fetch_question_info(question)
+    answer_list = mani.fetch_answer_list(question)
+    # answer_list = [{'answer_user': 'student1', 'answer_content': 'This is sample answer0'},
+    #                 {'answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
+    #                 {'answer_user': 'student3', 'answer_content': 'This?'},]
+    per_ans = {'answered': 12, 'not_answered': 35}
+    return render_template('teacher_view_answer.html', question_info=question_info, answer_list=answer_list, per_ans=per_ans)
 
 
 if __name__ == '__main__':
