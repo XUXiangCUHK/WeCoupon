@@ -18,7 +18,8 @@
     <div class="container p-3 my-3 bg-primary text-white">
         <h1>Answers to {{ question_info['question_name'] }}</h1>
         <p>{{ question_info['corresponding_course'] }}</p>
-        <button type="button" class="btn btn-primary" onclick="stopCollecting()">Stop collecting answers</button>
+        <button type="button" class="btn btn-primary" onclick="stopCollecting({{ question_info['corresponding_id'] }})">Stop collecting answers</button>
+        <a href="../teacher_within_course/{{ question_info['corresponding_course'] }}" type="button" class="btn btn-primary">Back to question list</a>
     </div>
 
     <div class="container" style="margin-top:30px">
@@ -36,8 +37,8 @@
                         <tr>
                             <td>{{ item["answer_user"] }}</td>
                             <td>{{ item["answer_content"] }}</td>
-                            <td><a href="../add_coupon/{{ item.answer_user }}" class="button btn btn-primary" onclick="{if(confirm('Are you sure to reward coupon to {{ item.answer_user }}?')){return true;}return false;}">Reward</a></td>
-                            <!---<td><button type="button" class="btn btn-primary" onclick="reward(this)">Reward</button></td>   --->
+                            <!-- <td><a href="../add_coupon/{{ item.answer_userid }}" class="button btn btn-primary" onclick="{if(confirm('Are you sure to reward coupon to {{ item.answer_user }}?')){return true;}return false;}">Reward</a></td> -->
+                            <td><input type="button" class="btn btn-primary" value="Reward" onclick="reward(this)"></input></td>   -
                         </tr>
                     {% endfor %}
                 </tbody>

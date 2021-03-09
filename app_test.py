@@ -115,17 +115,24 @@ def teacher_create_class(course_name, course_token):
     course_id = class_info['course_id']
     return json.dumps(class_info)
 
-@app.route('/teacher_view_answer/<question>', methods=['GET', 'POST'])
-def teacher_view_answer(question):
-    print(question)
-    question_info = {'question_name': 'Q1', 'corresponding_course': 'CSCI3100'}
+@app.route('/teacher_view_answer/<question_id>', methods=['GET', 'POST'])
+def teacher_view_answer(question_id):
+    print(question_id)
+    question_info = {'question_id': '1', 'question_name': 'Q1', 'corresponding_course': 'CSCI3100'}
     answer_list = [{'answer_user': 'student1', 'answer_content': 'This is sample answer0'},
                     {'answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
                     {'answer_user': 'student3', 'answer_content': 'This?'},]
     per_ans = {'answered': 12, 'not_answered': 35}
     return render_template('teacher_view_answer.html', question_info=question_info, answer_list=answer_list, per_ans=per_ans)
 
-
+@app.route('/stopcollection', methods=['GET', 'POST'])
+def stopCollection():
+    print("stop collection")
+    question_id=request.form.get("id")
+    print(question_id)
+    current_class = 'CSCI3100'
+    return redirect(url_for('teacher_view', classcode=current_class)) 
+    # can we end this function without redictect or rendertemplate? just stay at original page
 
 @app.route('/add_coupon/<username>', methods=['GET', 'POST'])
 def reward_coupon(username):
