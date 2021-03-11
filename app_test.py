@@ -73,9 +73,8 @@ def create_course(instructor):
 def teacher_main():
     user_id = session['user_id']
     print('teacher_main')
-    teach_info = [{'code': 'CSCI3100', 'title': 'Software Engineering', 'info': 'Monday'},
-                   {'code': 'IERG3310', 'title': 'Computer Networking', 'info': 'Tuesday'},
-                   {'code': 'FTEC3001', 'title': 'Financial Innovation & Structured Products', 'info': 'Thursday'}]
+    teach_info = [{'course_id': 4, 'code': 'ESTR4999', 'title': 'Graduation Thesis', 'info': 'Prof. Michael R. Lyu'},
+                  {'course_id': 5, 'code': 'ESTR4998', 'title': 'Graduation Thesis', 'info': 'Prof. Michael R. Lyu'}]
     return render_template('teacher_main_page.html', teach_info=teach_info)
 
 
@@ -85,9 +84,8 @@ def student_main():
     user_msg = request.args['messages']
     print('student_main')
     print(user_msg)
-    enroll_info = [{'code': 'CSCI3100', 'title': 'Software Engineering', 'info': 'Prof. Michael R. Lyu'},
-                   {'code': 'IERG3310', 'title': 'Computer Networking', 'info': 'Prof. Xing Guoliang'},
-                   {'code': 'FTEC3001', 'title': 'Financial Innovation & Structured Products', 'info': 'Prof. Chen Nan'}]
+    enroll_info = [{'course_id': 1, 'code': 'CSCI3100', 'title': 'Software Engineering', 'info': 'Prof. Michael R. Lyu'},
+                   {'course_id': 3, 'code': 'IERG3310', 'title': 'Computer Networking', 'info': 'Prof. Xing Guoliang'}]
     return render_template('student_main_page.html', enroll_info=enroll_info)
 
 
@@ -101,17 +99,14 @@ def student_within_course(classcode):
 def student_get_class(password):
     user_id = session['user_id']
     print('student_get_class')
-    class_info = {'course_id': 1, 'code': 'CSCI3100', 'title': 'Software Engineering', 'info': 'Prof. Michael R. Lyu'}
+    class_info = {'course_id': 7, 'course_code': 'CSCI2001', 'course_name': 'Data Structure', 'course_instructor': 'Prof. Michael R. Lyu'}
     course_id = class_info['course_id']
     return json.dumps(class_info)
 
 @app.route('/teacher_create_class/<course_name>&<course_token>', methods=['GET', 'POST'])
 def teacher_create_class(course_name, course_token):
     print('teacher_create_class')
-    print(course_name)
-    print()
-    print(course_token)
-    class_info = {'course_id': 1, 'code': 'CSCI3100', 'title': 'Software Engineering', 'info': 'Prof. Michael R. Lyu'}
+    class_info = {'course_id': 7, 'course_code': 'CSCI2001', 'course_name': 'Data Structure', 'course_instructor': 'Prof. Michael R. Lyu'}
     course_id = class_info['course_id']
     return json.dumps(class_info)
 
