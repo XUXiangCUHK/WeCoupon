@@ -64,9 +64,9 @@
                 {% for item in enroll_info %}
                     <tr>
 {#                        <td>{{ item['code'] }}</td>#}
-                        <th scope="row"><a href="http://127.0.0.1:5000/student_within_course/{{ item.code }}">{{ item.code }}</a></th>
-                        <td>{{ item['title'] }}</td>
-                        <td>{{ item['info'] }}</td>
+                        <th scope="row"><a href="http://127.0.0.1:5000/student_within_course/{{ item.course_id }}">{{ item.code }}</a></th>
+                        <td>{{ item.title }}</td>
+                        <td>{{ item.info }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

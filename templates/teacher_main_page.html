@@ -67,9 +67,9 @@
 {#              </tr>#}
                 {% for item in teach_info %}
                     <tr>
-                        <th scope="row"><a href="../teacher_within_course/{{ item.code }}">{{ item.code }}</a></th>
-                        <td>{{ item['title'] }}</td>
-                        <td>{{ item['info'] }}</td>
+                        <th scope="row"><a href="../teacher_within_course/{{ item.course_id }}">{{ item.code }}</a></th>
+                        <td>{{ item.title }}</td>
+                        <td>{{ item.info }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

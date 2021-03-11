@@ -61,9 +61,10 @@ class Manipulator:
         res = self.sql.read_user_course(user_id)
         for item in res:
             enroll_info.append({
-                'code': item[0],
-                'title': item[1],
-                'info': item[2]
+                'course_id': item[0],
+                'code': item[1],
+                'title': item[2],
+                'info': item[3]
             })
         return enroll_info
 
@@ -101,6 +102,28 @@ class Manipulator:
         }
         return question_info
 
+    def fetch_question_info_by_account(self, user_id, course_id):
+        res = self.sql.read_question_info_by_account(user_id, course_id)
+        new_question_list = list()
+        old_question_list = list()
+        if not res:
+            return new_question_list, old_question_list
+        for item in res:
+            q = {
+                'q_id': item[0],
+                'course_code': item[1],
+                'q_title': item[2],
+                'q_content': item[3],
+                'q_answer': item[4],
+                'question_id': item[2],
+                'question_type': item[4]
+            }
+            if item[5] == 'A':
+                new_question_list.append(q)
+            elif item[5] == 'N':
+                old_question_list.append(q)
+        return new_question_list, old_question_list
+
     def fetch_answer_list(self, q_id):
         res = self.sql.read_answer_list(q_id)
         answer_list = list()
@@ -122,14 +145,14 @@ if __name__ == "__main__":
     # m.insert_course_info('FTEC3001', 'Financial Innovation & Structured Products', 'Prof. Chen Nan', 'FinTech0')
     # m.insert_enrollment_info('StevenXU', 'CSCI3100')
     # m.insert_enrollment_info('StevenXU', 'IERG3310')
-    # m.insert_enrollment_info('StevenXU', 'FTEC3001')
+    # m.insert_enrollment_info('3', '1')
 
     # m.user_enrollment('StevenXU')
     # res = m.user_verification('1155107785@link.cuhk.edu.hk', 'wecoupon')
     # print('res,', res)
     # res = m.user_is_student('1155107785@link.cuhk.edu.hk')
-    # m.insert_question_info(3, 1, 'Question1', 'What is the shortcoming of FSM?', 'explosive states', 'A')
+    m.insert_question_info(3, 1, 'Question5', 'What are s/w principles?', 'explosive states', 'N')
     # m.insert_answer_info(1, 1, 'hard to implement', 0)
     # m.insert_answer_info(1, 2, 'explosive states', 0)
     # print(m.fetch_question_info(1))
-    print(m.fetch_answer_list(1))
+    # print(m.fetch_answer_list(1))

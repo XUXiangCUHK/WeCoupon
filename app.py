@@ -61,6 +61,7 @@ def sign_up():
 def teacher_main():
     user_id = session['user_id']
     enroll_info = mani.user_enrollment(user_id)
+    print(enroll_info)
     return render_template('teacher_main_page.html', teach_info=enroll_info)
 
 
@@ -69,12 +70,8 @@ def student_main():
     user_id = session['user_id']
     # user_id = request.args['messages']
     enroll_info = mani.user_enrollment(user_id)
+    print(enroll_info)
     return render_template('student_main_page.html', enroll_info=enroll_info)
-
-
-@app.route('/student_within_course/<classcode>', methods=['GET', 'POST'])
-def student_within_course(classcode):
-    return render_template('student_within_course.html')
 
 
 @app.route('/teacher_create_class/<course_code>&<course_name>&<course_instructor>&<course_token>', methods=['GET', 'POST'])
@@ -84,6 +81,7 @@ def teacher_create_class(course_code, course_name, course_instructor, course_tok
     class_info = mani.fetch_course_info(course_token)
     course_id = class_info['course_id']
     mani.insert_enrollment_info(user_id, course_id)
+    print(class_info)
     return json.dumps(class_info)
 
 
@@ -97,15 +95,27 @@ def student_get_class(course_token):
     return json.dumps(class_info)
 
 
+@app.route('/teacher_within_course/<course_id>', methods=['GET', 'POST'])
+def teacher_view(course_id):
+    user_id = session['user_id']
+    new_question_list, old_question_list = mani.fetch_question_info_by_account(user_id, course_id)
+    participation_list = [{'student_id': '1155095222', 'student_name': 'Bob', 'attempt': '20', 'coupon': '1'},
+                    {'student_id': '1155095222', 'student_name': 'Peter', 'attempt': '10', 'coupon': '5'}]
+    return render_template('teacher_within_course.html', course_code=course_id, new_question_list=new_question_list, old_question_list=old_question_list, participation_list=participation_list)
+
+
 @app.route('/teacher_view_answer/<question>', methods=['GET', 'POST'])
 def teacher_view_answer(question):
+    print(question)
     question_info = mani.fetch_question_info(question)
     answer_list = mani.fetch_answer_list(question)
-    # answer_list = [{'answer_user': 'student1', 'answer_content': 'This is sample answer0'},
-    #                 {'answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
-    #                 {'answer_user': 'student3', 'answer_content': 'This?'},]
     per_ans = {'answered': 12, 'not_answered': 35}
     return render_template('teacher_view_answer.html', question_info=question_info, answer_list=answer_list, per_ans=per_ans)
+
+
+@app.route('/student_within_course/<classcode>', methods=['GET', 'POST'])
+def student_within_course(classcode):
+    return render_template('student_within_course.html')
 
 
 if __name__ == '__main__':

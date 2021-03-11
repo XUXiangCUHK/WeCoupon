@@ -63,7 +63,7 @@ class Sql:
 
     def read_user_course(self, user_id):
         statement = '''
-                    SELECT c.course_code, course_name, course_instructor 
+                    SELECT c.course_id, c.course_code, course_name, course_instructor 
                     FROM WeCoupon.enrollment AS e
                     JOIN Wecoupon.course AS c ON e.course_id = c.course_id
                     WHERE user_id = '{}'
@@ -76,6 +76,14 @@ class Sql:
                     FROM WeCoupon.question q
                     JOIN WeCoupon.course c ON c.course_id = q.course_id 
                     WHERE q_id='{}';'''.format(q_id)
+        return self.db.read_from_mysql(statement)
+
+    def read_question_info_by_account(self, user_id, course_id):
+        statement = '''
+                    SELECT q_id, course_code, q_title, q_content, q_answer, q_status
+                    FROM WeCoupon.question q
+                    JOIN WeCoupon.course c ON c.course_id = q.course_id 
+                    WHERE owner_id='{}' AND c.course_id='{}';'''.format(user_id, course_id)
         return self.db.read_from_mysql(statement)
 
     def read_answer_list(self, q_id):
