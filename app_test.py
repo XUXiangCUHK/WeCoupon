@@ -142,11 +142,11 @@ def reward_coupon(username):
 @app.route('/teacher_within_course/<classcode>', methods=['GET', 'POST'])
 def teacher_view(classcode):
     print(classcode)
-    new_question_list = [{'question_id': 'question#4', 'question_type': 'MC'},
-                    {'question_id': 'question#5', 'question_type': 'Type'},]
-    old_question_list = [{'question_id': 'question#1', 'question_type': 'MC'},
-                    {'question_id': 'question#2', 'question_type': 'Type'},
-                    {'question_id': 'question#3', 'question_type': 'Type'}]
+    new_question_list = [{'q_id': 1, 'question_id': 'question#4', 'question_type': 'MC'},
+                    {'q_id': 2, 'question_id': 'question#5', 'question_type': 'Type'},]
+    old_question_list = [{'q_id': 3, 'question_id': 'question#1', 'question_type': 'MC'},
+                    {'q_id': 4, 'question_id': 'question#2', 'question_type': 'Type'},
+                    {'q_id': 5, 'question_id': 'question#3', 'question_type': 'Type'}]
     participation_list = [{'student_id': '1155095222', 'student_name': 'Bob', 'attempt': '20', 'coupon': '1'},
                     {'student_id': '1155095222', 'student_name': 'Peter', 'attempt': '10', 'coupon': '5'}]
     return render_template('teacher_within_course.html', course_code=classcode, new_question_list=new_question_list, old_question_list=old_question_list, participation_list=participation_list)

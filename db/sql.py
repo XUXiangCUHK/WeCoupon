@@ -46,9 +46,18 @@ class Sql:
     def insert_answer(self, data):
         statement = '''
                     INSERT IGNORE INTO `WeCoupon`.`answer`
-                    (`q_id`, `student_id`, `a_content`, `a_status`)
+                    (`q_id`, `student_id`, `a_content`, `a_status`, `a_time`)
                     VALUES
-                    (%(q_id)s, %(student_id)s, %(a_content)s, %(a_status)s);
+                    (%(q_id)s, %(student_id)s, %(a_content)s, %(a_status)s, %(a_time)s);
+                    '''
+        self.db.single_write_into_mysql(data, statement)
+
+    def insert_coupon(self, data):
+        statement = '''
+                    INSERT IGNORE INTO `WeCoupon`.`coupon`
+                    (`student_id`, `coupon_num`, `insert_time`, `note`)
+                    VALUES
+                    (%(student_id)s, %(coupon_num)s, %(insert_time)s, %(note)s);
                     '''
         self.db.single_write_into_mysql(data, statement)
 
@@ -88,12 +97,32 @@ class Sql:
 
     def read_answer_list(self, q_id):
         statement = '''
-                    SELECT user_name, a_content
+                    SELECT user_id, user_name, a_content
                     FROM WeCoupon.answer an
                     JOIN WeCoupon.account ac ON ac.user_id = an.student_id 
                     WHERE q_id='{}';'''.format(q_id)
         return self.db.read_from_mysql(statement)
 
+    def read_participation_info(self, course_id):
+        statement = '''
+                    SELECT user_id, SID, first_name, last_name, count(*)
+                    FROM WeCoupon.account AS ac
+                    JOIN WeCoupon.answer AS an ON ac.user_id = an.student_id
+                    WHERE an.q_id IN (SELECT q.q_id FROM WeCoupon.question AS q WHERE q.course_id='{}') AND is_student=1
+                    GROUP BY ac.user_id;
+                    '''.format(course_id)
+        return self.db.read_from_mysql(statement)
+
+    def read_coupon_info(self, user_id):
+        statement = '''
+                    SELECT coupon_num
+                    FROM WeCoupon.coupon
+                    WHERE student_id='{}'
+                    ORDER BY insert_time DESC
+                    LIMIT 1;'''.format(user_id)
+        return self.db.read_from_mysql(statement)
+
 
 if __name__ == "__main__":
-    pass
+    s = Sql()
+    print(s.read_coupon_info(1))

@@ -99,18 +99,31 @@ def student_get_class(course_token):
 def teacher_view(course_id):
     user_id = session['user_id']
     new_question_list, old_question_list = mani.fetch_question_info_by_account(user_id, course_id)
-    participation_list = [{'student_id': '1155095222', 'student_name': 'Bob', 'attempt': '20', 'coupon': '1'},
-                    {'student_id': '1155095222', 'student_name': 'Peter', 'attempt': '10', 'coupon': '5'}]
-    return render_template('teacher_within_course.html', course_code=course_id, new_question_list=new_question_list, old_question_list=old_question_list, participation_list=participation_list)
+    course_code = new_question_list[0]['course_code']
+    participation_list = mani.fetch_participation(course_id)
+    return render_template('teacher_within_course.html',
+                           course_code=course_code,
+                           new_question_list=new_question_list,
+                           old_question_list=old_question_list,
+                           participation_list=participation_list)
 
 
-@app.route('/teacher_view_answer/<question>', methods=['GET', 'POST'])
-def teacher_view_answer(question):
-    print(question)
-    question_info = mani.fetch_question_info(question)
-    answer_list = mani.fetch_answer_list(question)
+@app.route('/teacher_view_answer/<question_id>', methods=['GET', 'POST'])
+def teacher_view_answer(question_id):
+    print(question_id)
+    question_info = mani.fetch_question_info(question_id)
+    answer_list = mani.fetch_answer_list(question_id)
     per_ans = {'answered': 12, 'not_answered': 35}
     return render_template('teacher_view_answer.html', question_info=question_info, answer_list=answer_list, per_ans=per_ans)
+
+
+# @app.route('/add_coupon/<username>', methods=['GET', 'POST'])
+# def reward_coupon(username):
+#     # get the username of student who is rewarded coupon
+#     print(username)
+#     current_class = 'CSCI3100'
+#     # flash('Congratulations! {} got this coupon!'.format(username))
+#     return redirect(url_for('teacher_view', classcode=current_class))
 
 
 @app.route('/student_within_course/<classcode>', methods=['GET', 'POST'])

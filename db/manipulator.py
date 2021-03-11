@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import datetime
 from db.sql import Sql
 
 
@@ -53,8 +54,18 @@ class Manipulator:
             'student_id': student_id,
             'a_content': a_content,
             'a_status': a_status,
+            'a_time': int(datetime.datetime.now().timestamp())
         }
         self.sql.insert_answer(data)
+
+    def insert_coupon_info(self, student_id, coupon_num, note):
+        data = {
+            'student_id': student_id,
+            'coupon_num': coupon_num,
+            'insert_time': int(datetime.datetime.now().timestamp()),
+            'note': note
+        }
+        self.sql.insert_coupon(data)
 
     def user_enrollment(self, user_id):
         enroll_info = list()
@@ -131,10 +142,34 @@ class Manipulator:
             return answer_list
         for item in res:
             answer_list.append({
-                'answer_user': item[0],
-                'answer_content': item[1],
+                'answer_userid': item[0],
+                'answer_user': item[1],
+                'answer_content': item[2],
             })
         return answer_list
+
+    def fetch_participation(self, course_id):
+        res = self.sql.read_participation_info(course_id)
+        participation_list = list()
+        if not res:
+            return participation_list
+        for item in res:
+            user_id = item[0]
+            coupon_num = self.sql.read_coupon_info(user_id)[0][0]
+            participation_list.append({
+                'user_id': item[0],
+                'student_id': item[1],
+                'student_name': '{} {}'.format(item[3], item[2]),
+                'attempt': item[4],
+                'coupon': coupon_num,
+            })
+        return participation_list
+
+    def fetch_coupon_num(self, user_id):
+        res = self.sql.read_coupon_info(user_id)
+        if not res:
+            return 0
+        return res[0][0]
 
 
 if __name__ == "__main__":
@@ -151,8 +186,11 @@ if __name__ == "__main__":
     # res = m.user_verification('1155107785@link.cuhk.edu.hk', 'wecoupon')
     # print('res,', res)
     # res = m.user_is_student('1155107785@link.cuhk.edu.hk')
-    m.insert_question_info(3, 1, 'Question5', 'What are s/w principles?', 'explosive states', 'N')
-    # m.insert_answer_info(1, 1, 'hard to implement', 0)
+    # m.insert_question_info(3, 1, 'Question5', 'What are s/w principles?', 'explosive states', 'N')
+    # m.insert_answer_info(4, 1, 'hard to implement', 1)
     # m.insert_answer_info(1, 2, 'explosive states', 0)
     # print(m.fetch_question_info(1))
     # print(m.fetch_answer_list(1))
+    # m.fetch_participation(1, 0, 'initial')
+    # print(m.fetch_participation(1))
+    print(m.fetch_coupon_num(1))
