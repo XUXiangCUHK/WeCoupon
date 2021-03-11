@@ -84,9 +84,9 @@ class Manipulator:
             return dict()
         course_info = {
             'course_id': res[0][0],
-            'code': res[0][1],
-            'title': res[0][2],
-            'info': res[0][3]
+            'course_code': res[0][1],
+            'course_name': res[0][2],
+            'course_instructor': res[0][3]
         }
         return course_info
 

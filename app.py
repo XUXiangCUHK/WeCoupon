@@ -27,6 +27,7 @@ def login():
             next = request.args.get('next')
             if next is None or not next.startswith('/'):
                 if is_student:
+                    # will add message=user_id to the link
                     next = url_for('student_main', messages=user_id)
                 else:
                     next = url_for('teacher_main')
@@ -59,7 +60,6 @@ def sign_up():
 @app.route('/teacher_main_page', methods=['GET', 'POST'])
 def teacher_main():
     user_id = session['user_id']
-    print(user_id)
     enroll_info = mani.user_enrollment(user_id)
     return render_template('teacher_main_page.html', teach_info=enroll_info)
 
@@ -77,12 +77,23 @@ def student_within_course(classcode):
     return render_template('student_within_course.html')
 
 
-@app.route('/student_get_class/<password>', methods=['GET', 'POST'])
-def student_get_class(password):
+@app.route('/teacher_create_class/<course_code>&<course_name>&<course_instructor>&<course_token>', methods=['GET', 'POST'])
+def teacher_create_class(course_code, course_name, course_instructor, course_token):
     user_id = session['user_id']
-    class_info = mani.fetch_course_info(password)
+    mani.insert_course_info(course_code, course_name, course_instructor, course_token)
+    class_info = mani.fetch_course_info(course_token)
     course_id = class_info['course_id']
     mani.insert_enrollment_info(user_id, course_id)
+    return json.dumps(class_info)
+
+
+@app.route('/student_get_class/<course_token>', methods=['GET', 'POST'])
+def student_get_class(course_token):
+    user_id = session['user_id']
+    class_info = mani.fetch_course_info(course_token)
+    course_id = class_info['course_id']
+    mani.insert_enrollment_info(user_id, course_id)
+    print(class_info)
     return json.dumps(class_info)
 
 

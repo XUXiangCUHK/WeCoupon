@@ -1,33 +1,14 @@
-// var reg_calss = function () {
-//     let pass = window.prompt("pass", "please enter the class token");
-//     console.log(pass)
+function display() {
+    document.getElementById('contes').style.display = 'block';
+}
 
-//     let c = { 'code': 'csci3100', 'title': 'Tom', 'info': 'other' }
-//     let xml = new XMLHttpRequest()
-//     console.log(xml.readyState)
-//     xml.onreadystatechange = function () {
-//       if (xml.readyState == 4) {
-//         console.log(xml.readyState)
-//         console.log(xml.responseText)
-//         let c = JSON.parse(xml.responseText)
-//         console.log(c)
-//         let addClass = `<tr><th><a href="http://127.0.0.1:5000/student_within_course?${c.code}">${c.code}</th> <td>${c.title}</td><td>${c.info}</td></tr>`
-//         let tbody = document.getElementsByTagName('tbody')[0]
-//         tboy.innerHTML = tbody.innerHTML + addClass
-//       }
-//     }
-//     xml.open('GET', `http://127.0.0.1:5000/student_get_class?password=${pass}`)
-//     xml.send()
-//   }
+function reg_class() {
+    document.getElementById('contes').style.display = 'none';
+    var course_token = document.getElementById('token').value;
 
-
-var reg_calss = function () {
-    let pass = window.prompt("pass", "please enter the class token");
-    console.log(pass)
-
-    $.getJSON(`http://127.0.0.1:5000/student_get_class/${pass}`,(data)=>{
+    $.getJSON(`http://127.0.0.1:5000/student_get_class/${course_token}`,(data)=>{
         let c = data
-        let addClass = `<tr><th><a href="http://127.0.0.1:5000/student_within_course/${c.code}">${c.code}</th> <td>${c.title}</td><td>${c.info}</td></tr>`
+        let addClass = `<tr><th><a href="http://127.0.0.1:5000/student_within_course/${c.course_code}">${c.course_code}</th> <td>${c.course_name}</td><td>${c.course_instructor}</td></tr>`
         let tbody = document.getElementsByTagName('tbody')[0]
         tbody.innerHTML = tbody.innerHTML + addClass
     })
