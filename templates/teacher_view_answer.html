@@ -29,24 +29,27 @@
         <div class="row">
             <div class="col-sm-6" >
                 <h3 class="boxtitle" style="background-color:lavender;">Students' Answers</h3>
+
                 <table class="table">
-                    <tbody class="answer-tbody">
-                    <tr>
-                        <th style="display:none">User ID</th>
-                        <th>Student</th>
-                        <th>Answer</th>
-                        <th>Coupon <br> Rewarding</th>
-                    </tr>
+                    <thead>
+                        <tr>
+                        <th style="width:15%">Student</th>
+                        <th style="width:60%">Answer</th>
+                        <th style="width:25%">Coupon <br> Rewarding</th>
+                        </tr>
+                    </thead>
+                
+                    
+                    <tbody>
                     {% for item in answer_list %}
                         <tr>
-                            <td style="display:none">{{ item["answer_userid"] }}</td>
                             <td style="width:15%">{{ item["answer_user"] }}</td>
                             <td style="width:60%">{{ item["answer_content"] }}</td>
                             <!-- <td><a href="../add_coupon/{{ item.answer_userid }}" class="button btn btn-primary" onclick="{if(confirm('Are you sure to reward coupon to {{ item.answer_user }}?')){return true;}return false;}">Reward</a></td> -->
-                            <td style="width:25%"><input type="button" class="btn btn-primary" value="Reward" onclick="reward(this)"></input></td>   
+                            <td style="width:25%"><input type="button" class="btn btn-primary" value="Reward" onclick="reward(this, '{{ item['answer_userid'] }}', '{{ item['answer_user'] }}')"></input></td>   
                         </tr>
                     {% endfor %}
-                </tbody>
+                    </tbody>
                 </table>
 
             </div>

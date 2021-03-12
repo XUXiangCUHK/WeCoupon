@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS only -->
+    <link rel="stylesheet" href="../static/css/teacher_within_course.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
@@ -15,7 +16,9 @@
     <div class="container">
       <div class="row">
         <div class="col text-start">
-          Course {{ course_code }}
+          Course {{ classcode }}
+          <!-- ! cannot jump to teacher_main_page as it requires user_id for session -->
+          <a href="../teacher_main_page" class="button btn btn-primary" style="width:45%">Back</a>
         </div>
       </div>
 
@@ -25,52 +28,64 @@
               <button class="nav-link active" id="pills-question-tab" data-bs-toggle="pill" data-bs-target="#pills-question" type="button" role="tab" aria-controls="pills-question" aria-selected="true">Question</button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-add-tab" data-bs-toggle="pill" data-bs-target="#pills-add" type="button" role="tab" aria-controls="pills-add" aria-selected="false">Add Question</button>
-            </li>
-            <li class="nav-item" role="presentation">
               <button class="nav-link" id="pills-participation-tab" data-bs-toggle="pill" data-bs-target="#pills-participation" type="button" role="tab" aria-controls="pills-participation" aria-selected="false">Participation</button>
             </li>
           </ul>
+
           <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-question" role="tabpanel" aria-labelledby="pills-question-tab">
                 <div class="container">
+
                   <div class="row">
-                  <div class="col-6">
+                  <div class="col-sm-6">
+                    <h3 class="boxtitle" style="background-color:lavender;">Question Bank</h3>
+
+                      <!-- TODO: edit the href 
+                      ? how can we use href to jump to a page that has user session info ? -->
+                      <div>
+                        <a href="../teacher_add_question/{{course_id}}" class="button btn btn-primary" style="width:45%">Start a default question</a>
+                        <a href="../teacher_add_question/{{course_id}}" class="button btn btn-primary" style="width:45%">Add a question</a>                        
+                      </div>
+
                     <table class="table" id="qlist">
                         <thead>
                           <tr>
-                            <th scope="col">Question Name</th>
-                            <th scope="col">Question Type</th>
-                            <th scope="col"></th>
+                            <th scope="col" style="width:40%">Question Name</th>
+                            <th scope="col" style="width:30%">Question Type</th>
+                            <th scope="col" style="width:30%">View</th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody >
+                          {% for item in new_question_list %}
                           <tr>
-                            <td>Default Question</td>
-                            <td>Textbox</td>
-                            <td><button type="button" class="btn btn-success">Start</button></td>
-
+                              <td style="width:40%">{{ item["question_id"] }}</td>
+                              <td style="width:30%">{{ item["question_type"] }}</td>
+                              <td style="width:30%"><button type="button" class="btn btn-success">Start</button></td>
                           </tr>
-                            {% for item in new_question_list %}
-                            <tr>
-                                <td>{{ item["question_id"] }}</td>
-                                <td>{{ item["question_type"] }}</td>
-                                <td><button type="button" class="btn btn-success">Start</button></td>
+                          <tr>
+                            <td style="width:40%">{{ item["question_id"] }}</td>
+                            <td style="width:30%">{{ item["question_type"] }}</td>
+                            <td style="width:30%"><button type="button" class="btn btn-success">Start</button></td>
+                        </tr>
+                        <tr>
+                          <td style="width:40%">{{ item["question_id"] }}</td>
+                          <td style="width:30%">{{ item["question_type"] }}</td>
+                          <td style="width:30%"><button type="button" class="btn btn-success">Start</button></td>
+                      </tr>
 
-                            </tr>
-                            {% endfor %}
-
-
+                          {% endfor %}
                         </tbody>
                       </table>
+
                   </div>
-                  <div class="col-6">
+                  <div class="col-sm-6">
+                    <h3 class="boxtitle" style="background-color:lavenderblush;">Posted Questions</h3>
                     <table class="table" id="qlist2">
                         <thead>
                           <tr>
-                            <th scope="col">Question Name</th>
-                            <th scope="col">Question Type</th>
-                            <th scope="col"></th>
+                            <th scope="col" style="width:40%">Question Name</th>
+                            <th scope="col" style="width:30%">Question Type</th>
+                            <th scope="col" style="width:30%">View</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -78,9 +93,9 @@
                             
                             {% for item in old_question_list %}
                             <tr>
-                                <td>{{ item["question_id"] }}</td>
-                                <td>{{ item["question_type"] }}</td>
-                                <td><a href="../teacher_view_answer/{{ item.q_id }}" class="button btn btn-primary">View</a></td>
+                                <td style="width:40%">{{ item["question_id"] }}</td>
+                                <td style="width:30%">{{ item["question_type"] }}</td>
+                                <td style="width:30%"><a href="../teacher_view_answer/{{ item.q_id }}" class="button btn btn-primary">View</a></td>
 
                             </tr>
                             {% endfor %}
@@ -93,37 +108,28 @@
                 </div>
 
             </div>
-            <div class="tab-pane fade" id="pills-add" role="tabpanel" aria-labelledby="pills-add-tab">
-                  <form>
-                    <div class="form-group">
-                      <label for="InputEmail1">Question Name</label>
-                      <input type="email" class="form-control" id="InputEmail1" aria-describedby="emailHelp" placeholder="Enter Question Name">
-                    </div>
-                    <div class="form-group">
-                      <label for="InputPassword1">Question Content</label>
-                      <textarea class="form-control" style="height:200px" id="exampleFormControlTextarea1" rows="3" placeholder="Enter Question Content"></textarea>
-                    </div>
-                  </form>
-                  <button type="save" class="btn btn-primary">Submit</button>
-            </div>
+            
             <div class="tab-pane fade" id="pills-participation" role="tabpanel" aria-labelledby="pills-participation-tab">
-                <table class="table">
                 <table class="table">
                     <thead>
                       <tr>
-                        <th scope="col">Student ID</th>
-                        <th scope="col">Student Name</th>
-                        <th scope="col">Attempt</th>
-                        <th scope="col">Coupon</th>
+                        <th scope="col" style="width:30%">Student ID</th>
+                        <th scope="col" style="width:30%">Student Name</th>
+                        <th scope="col" style="width:10%">Attempt</th>
+                        <th scope="col" style="width:10%">Coupon Rewarded</th>
+                        <th scope="col" style="width:10%">Coupon Used</th>
+                        <th scope="col" style="width:10%">Use Coupon</th>
                       </tr>
                     </thead>
                     <tbody>
                         {% for item in participation_list %}
                         <tr>
-                            <td>{{ item["student_id"] }}</td>
-                            <td>{{ item["student_name"] }}</td>
-                            <td>{{ item["attempt"] }}</td>
-                            <td>{{ item["coupon"] }}</td>
+                            <td style="width:30%">{{ item["student_id"] }}</td>
+                            <td style="width:30%">{{ item["student_name"] }}</td>
+                            <td style="width:10%">{{ item["attempt"] }}</td>
+                            <td style="width:10%">{{ item["coupon_rewarded"] }}</td>
+                            <td style="width:10%">{{ item["coupon_used"] }}</td>
+                            <td ><button type="button" class="btn btn-success">Use</button></td>
                         </tr>
                         {% endfor %}
                     </tbody>

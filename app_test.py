@@ -114,8 +114,19 @@ def teacher_create_class(course_name, course_token):
 def teacher_view_answer(question_id):
     print(question_id)
     question_info = {'question_id': '1', 'question_name': 'Q1', 'corresponding_course': 'CSCI3100', 'question_status': '1'}
-    answer_list = [{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This is sample answer0'},
-                    {'answer_userid': '234','answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
+    answer_list = [{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This '},
+                    # {'answer_userid': '234','answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
                     {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},]
     per_ans = {'answered': 12, 'not_answered': 35}
     return render_template('teacher_view_answer.html', question_info=question_info, answer_list=answer_list, per_ans=per_ans)
@@ -125,9 +136,9 @@ def stopCollection():
     print("stop collection")
     question_id=request.form.get('qid')
     print(question_id)
-    # change the question status to not collecting 
+    # TODO: change the question status to not collecting 
     return redirect(url_for('teacher_view_answer'), question_id=question_id) 
-    # bug here
+    # ? error: Could not build url for endpoint 'teacher_view_answer'. Did you forget to specify values ['question_id']?
 
 @app.route('/add_coupon/<userid>', methods=['GET', 'POST'])
 def reward_coupon(userid):
@@ -142,14 +153,19 @@ def reward_coupon(userid):
 @app.route('/teacher_within_course/<classcode>', methods=['GET', 'POST'])
 def teacher_view(classcode):
     print(classcode)
+    course_id = 100
     new_question_list = [{'q_id': 1, 'question_id': 'question#4', 'question_type': 'MC'},
                     {'q_id': 2, 'question_id': 'question#5', 'question_type': 'Type'},]
     old_question_list = [{'q_id': 3, 'question_id': 'question#1', 'question_type': 'MC'},
                     {'q_id': 4, 'question_id': 'question#2', 'question_type': 'Type'},
                     {'q_id': 5, 'question_id': 'question#3', 'question_type': 'Type'}]
-    participation_list = [{'student_id': '1155095222', 'student_name': 'Bob', 'attempt': '20', 'coupon': '1'},
-                    {'student_id': '1155095222', 'student_name': 'Peter', 'attempt': '10', 'coupon': '5'}]
-    return render_template('teacher_within_course.html', course_code=classcode, new_question_list=new_question_list, old_question_list=old_question_list, participation_list=participation_list)
+    participation_list = [{'student_id': '1155095222', 'student_name': 'Bob', 'attempt': '20', 'coupon_rewarded': '1', 'coupon_used': '0'},
+                    {'student_id': '1155095222', 'student_name': 'Peter', 'attempt': '10', 'coupon_rewarded': '5', 'coupon_used': '2'}]
+    return render_template('teacher_within_course.html', classcode=classcode, course_id=course_id, new_question_list=new_question_list, old_question_list=old_question_list, participation_list=participation_list)
+
+@app.route('/teacher_add_question/<courseid>', methods=['GET', 'POST'])
+def teacher_add_question(courseid):
+    return render_template('teacher_add_question.html', course_id=courseid)
 
 #@app.route('/teacher_within_course/<classcode>', methods=['GET', 'POST'])
 #def teacher_view_participation(classcode):
