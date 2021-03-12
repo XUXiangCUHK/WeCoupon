@@ -1,21 +1,67 @@
 from flask import Flask, request, render_template, abort, flash, url_for, redirect, session
 from flask_bootstrap import Bootstrap
 from forms import LoginForm, RegistrationForm, CreateClassForm
-# from flask_mail import Mail
-# from email import send_email
+from flask_login import login_required, current_user, LoginManager
 import json
+import random
+from models import User
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 
 app.config['SECRET_KEY'] = 'hard to guess string'
 
-# app = Mail(app)
-# app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
-# app.config['MAIL_PORT'] = 587
-# app.config['MAIL_USE_TLS'] = True
-# app.config['MAIL_USERNAME'] = ''
-# app.config['MAIL_PASSWORD'] = ''
+
+from threading import Thread
+from flask_mail import Mail, Message
+
+app.config['MAIL_SERVER'] = 'smtp.163.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = 'wecoupon2021@163.com'
+app.config['MAIL_PASSWORD'] = 'YRWOKOXTQLUDZVFV'
+app.config['FLASKY_MAIL_SUBJECT_PREFIX'] = 'WeCoupon'
+
+mail = Mail(app)
+
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+
+@login_manager.user_loader
+def load_user(user_id):
+    if user_id == '1':
+        input_email = 'teacher@gmail.com'
+        user = User(input_email)
+    elif user_id == '2':
+        input_email = 'student@gmail.com'
+        user = User(input_email)
+    return user     # query all info of the user from db
+
+
+def send_async_email(app, msg):
+    with app.app_context():
+        mail.send(msg)
+
+
+def send_email(to, subject, template, **kwargs):
+    msg = Message(app.config['FLASKY_MAIL_SUBJECT_PREFIX'] + ': ' + subject,
+                  sender=app.config['MAIL_USERNAME'], recipients=[to])
+    msg.body = render_template(template + '.txt', **kwargs)
+    msg.html = render_template(template + '.html', **kwargs)
+    thr = Thread(target=send_async_email, args=[app, msg])
+    thr.start()
+    return thr
+
+
+@app.route('/unconfirmed')
+def unconfirmed():
+    if current_user.activated == '1':
+        if current_user.is_student == '1':
+            next = url_for('student_main')
+        else:
+            next = url_for('teacher_main')
+        return redirect(next)
+    return render_template('unconfirmed.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -24,17 +70,15 @@ def login():
     if form.validate_on_submit():
         input_email = form.email.data
         input_pw = form.password.data
-        if True:
-            user_id = 1
-            is_student = 1
-            session['user_id'] = user_id
-            if input_pw == '0':
-                is_student = 0
-
-            next = request.args.get('next')
+        user = User(input_email)
+        if user is not None and input_pw == user.password:
+            session['user_id'] = user.user_id
+            print(user.user_id)
+            if user.activated == '0':
+                next = url_for('unconfirmed')
             if next is None or not next.startswith('/'):
-                if is_student:
-                    next = url_for('student_main', messages=user_id)
+                if user.is_student == '1':
+                    next = url_for('student_main')
                 else:
                     next = url_for('teacher_main')
             return redirect(next)
@@ -46,19 +90,41 @@ def login():
 def sign_up():
     form = RegistrationForm()
     if form.validate_on_submit():
-        is_student = 1
-        activated = 0
+        user_email = form.email.data
+        user = User(user_email)
+        # is_student = 1
+        # activated = 0
         if form.isInstructor.data:
-            is_student = 0
+            user.is_student = 0
         # insert into db
         # email verification
-        # token =
-        # user_email = form.email.data
-        # send_email(user_email, 'Confirm Your Account',
-        #       'email/confirm', user=user, token=token)
-
+        token = user.generate_random_token()
+        # token insert into db
+        send_email(user_email, 'Confirm Your Account',
+              'email/confirm', user=form.username.data, token=token)
         return redirect(url_for('login'))
     return render_template('signup.html', form=form)
+
+
+@app.route('/confirm/<token>')
+@login_required
+def confirm(token):
+    print(token)
+    if current_user.activated == '1':
+        if current_user.is_student == '1':
+            next = url_for('student_main')
+        else:
+            next = url_for('teacher_main')
+        return redirect(next)
+    else:
+        if current_user.activate(token):
+            if current_user.is_student == '1':
+                next = url_for('student_main')
+            else:
+                next = url_for('teacher_main')
+            return redirect(next)
+    return redirect(url_for('login'))
+
 
 @app.route('/teacher_create_course/<instructor>', methods=['GET', 'POST'])
 def create_course(instructor):
@@ -69,10 +135,13 @@ def create_course(instructor):
         # return redirect(url_for('teacher_main_page'))
     return render_template('teacher_create_course.html', form=form)
 
+
 @app.route('/teacher_main_page', methods=['GET', 'POST'])
 def teacher_main():
     user_id = session['user_id']
+    print('user_id: ', user_id)
     print('teacher_main')
+    print(current_user.username)
     teach_info = [{'course_id': 4, 'code': 'ESTR4999', 'title': 'Graduation Thesis', 'info': 'Prof. Michael R. Lyu'},
                   {'course_id': 5, 'code': 'ESTR4998', 'title': 'Graduation Thesis', 'info': 'Prof. Michael R. Lyu'}]
     return render_template('teacher_main_page.html', teach_info=teach_info)
@@ -81,9 +150,11 @@ def teacher_main():
 @app.route('/student_main_page', methods=['GET', 'POST'])
 def student_main():
     user_id = session['user_id']
-    user_msg = request.args['messages']
+    print('user_id: ', user_id)
+    # user_msg = request.args['messages']
+    print(current_user.username)
     print('student_main')
-    print(user_msg)
+    # print(user_msg)
     enroll_info = [{'course_id': 1, 'code': 'CSCI3100', 'title': 'Software Engineering', 'info': 'Prof. Michael R. Lyu'},
                    {'course_id': 3, 'code': 'IERG3310', 'title': 'Computer Networking', 'info': 'Prof. Xing Guoliang'}]
     return render_template('student_main_page.html', enroll_info=enroll_info)
