@@ -45,7 +45,12 @@
                           </tr>
                         </thead>
                         <tbody>
+                          <tr>
+                            <td>Default Question</td>
+                            <td>Textbox</td>
+                            <td><button type="button" class="btn btn-success">Start</button></td>
 
+                          </tr>
                             {% for item in new_question_list %}
                             <tr>
                                 <td>{{ item["question_id"] }}</td>
@@ -70,6 +75,7 @@
                         </thead>
                         <tbody>
 
+                            
                             {% for item in old_question_list %}
                             <tr>
                                 <td>{{ item["question_id"] }}</td>

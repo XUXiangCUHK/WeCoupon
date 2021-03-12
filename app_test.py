@@ -113,31 +113,31 @@ def teacher_create_class(course_name, course_token):
 @app.route('/teacher_view_answer/<question_id>', methods=['GET', 'POST'])
 def teacher_view_answer(question_id):
     print(question_id)
-    question_info = {'question_id': '1', 'question_name': 'Q1', 'corresponding_course': 'CSCI3100'}
-    answer_list = [{'answer_user': 'student1', 'answer_content': 'This is sample answer0'},
-                    {'answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
-                    {'answer_user': 'student3', 'answer_content': 'This?'},]
+    question_info = {'question_id': '1', 'question_name': 'Q1', 'corresponding_course': 'CSCI3100', 'question_status': '1'}
+    answer_list = [{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This is sample answer0'},
+                    {'answer_userid': '234','answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},]
     per_ans = {'answered': 12, 'not_answered': 35}
     return render_template('teacher_view_answer.html', question_info=question_info, answer_list=answer_list, per_ans=per_ans)
 
 @app.route('/stopcollection', methods=['GET', 'POST'])
 def stopCollection():
     print("stop collection")
-    question_id=request.form.get("id")
+    question_id=request.form.get('qid')
     print(question_id)
-    current_class = 'CSCI3100'
-    return redirect(url_for('teacher_view', classcode=current_class)) 
-    # can we end this function without redictect or rendertemplate? just stay at original page
+    # change the question status to not collecting 
+    return redirect(url_for('teacher_view_answer'), question_id=question_id) 
+    # bug here
 
-@app.route('/add_coupon/<username>', methods=['GET', 'POST'])
-def reward_coupon(username):
+@app.route('/add_coupon/<userid>', methods=['GET', 'POST'])
+def reward_coupon(userid):
     # get the username of student who is rewarded coupon
-    print(username)
+    print(userid)
     current_class = 'CSCI3100'
     # coupon_number++
     # update db
     # flash('Congratulations! {} got this coupon!'.format(username))
-    return redirect(url_for('teacher_view', classcode=current_class))
+    return current_class
 
 @app.route('/teacher_within_course/<classcode>', methods=['GET', 'POST'])
 def teacher_view(classcode):

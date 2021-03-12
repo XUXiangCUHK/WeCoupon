@@ -18,7 +18,10 @@
     <div class="container p-3 my-3 bg-primary text-white">
         <h1>Answers to {{ question_info['question_name'] }}</h1>
         <p>{{ question_info['corresponding_course'] }}</p>
-        <button type="button" class="btn btn-primary" onclick="stopCollecting({{ question_info['corresponding_id'] }})">Stop collecting answers</button>
+        {% if question_info['question_status'] == '1' %}
+        <button type="button" class="btn btn-primary" onclick="stopCollecting({{ question_info['question_id'] }})">Stop collecting answers</button>
+        {% endif %}
+
         <a href="../teacher_within_course/{{ question_info['corresponding_course'] }}" type="button" class="btn btn-primary">Back to question list</a>
     </div>
 
@@ -29,16 +32,18 @@
                 <table class="table">
                     <tbody class="answer-tbody">
                     <tr>
+                        <th style="display:none">User ID</th>
                         <th>Student</th>
                         <th>Answer</th>
-                        <th>Coupon <br> Rewarding</td>
+                        <th>Coupon <br> Rewarding</th>
                     </tr>
                     {% for item in answer_list %}
                         <tr>
-                            <td>{{ item["answer_user"] }}</td>
-                            <td>{{ item["answer_content"] }}</td>
+                            <td style="display:none">{{ item["answer_userid"] }}</td>
+                            <td style="width:15%">{{ item["answer_user"] }}</td>
+                            <td style="width:60%">{{ item["answer_content"] }}</td>
                             <!-- <td><a href="../add_coupon/{{ item.answer_userid }}" class="button btn btn-primary" onclick="{if(confirm('Are you sure to reward coupon to {{ item.answer_user }}?')){return true;}return false;}">Reward</a></td> -->
-                            <td><input type="button" class="btn btn-primary" value="Reward" onclick="reward(this)"></input></td>   -
+                            <td style="width:25%"><input type="button" class="btn btn-primary" value="Reward" onclick="reward(this)"></input></td>   
                         </tr>
                     {% endfor %}
                 </tbody>
