@@ -31,6 +31,21 @@
                     <p>Professor</p>
                 </div>                
             </div>
+            <div class="col">
+                <button type="button" onclick="display_edit_profile()" class="btn btn-info">Edit Profile</button>
+            </div>
+            <div id="edit_profile" style="">
+                <div style="width:500px;height:40px;">
+                Edit Profile
+                <hr>
+                <form style=" margin-left: 100px;">
+                Name：<input type="text" id="token" name=""><br>
+                Department：<input type="text" id="token" name=""><br>
+                Title：<input type="text" id="token" name=""><br>
+                <input type="button" value="Save" onclick="edit_profile()">
+                </form>
+                </div>
+            </div>
         </div>
     </div>
     <div class="container">
