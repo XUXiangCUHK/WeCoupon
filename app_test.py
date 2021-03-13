@@ -144,7 +144,8 @@ def teacher_main():
     print(current_user.username)
     teach_info = [{'course_id': 4, 'code': 'ESTR4999', 'title': 'Graduation Thesis', 'info': 'Prof. Michael R. Lyu'},
                   {'course_id': 5, 'code': 'ESTR4998', 'title': 'Graduation Thesis', 'info': 'Prof. Michael R. Lyu'}]
-    return render_template('teacher_main_page.html', teach_info=teach_info)
+    teach_profile = [{'name': 'Michael R. Lyu', 'department': 'Computer Science and Engineering department', 'title': 'Professor'}]
+    return render_template('teacher_main_page.html', teach_info=teach_info, teach_profile=teach_profile)
 
 
 @app.route('/student_main_page', methods=['GET', 'POST'])

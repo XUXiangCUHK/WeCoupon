@@ -19,18 +19,20 @@
         <div class="row">
             <div class="col-2 text-start">
                 <img src="../static/images/lyu.jpg" class="rounded-circle" alt="100x100">
-            </div>
+            </div>                                       
+            {% for item in teach_profile %}                
             <div class="col-4">
                 <div class="row">
-                    <p>Michael R. Lyu</p>
+                    <p id="name_display">{{ item["name"] }}</p>
                 </div>
                 <div class="row">
-                    <p>Computer Science and Engineering department</p>
+                    <p id="department_display">{{ item["department"] }}</p>
                 </div>
                 <div class="row">
-                    <p>Professor</p>
+                    <p id="title_display">{{ item["title"] }}</p>
                 </div>                
             </div>
+            {% endfor %}
             <div class="col">
                 <button type="button" onclick="display_edit_profile()" class="btn btn-info">Edit Profile</button>
             </div>
@@ -39,7 +41,7 @@
                 Edit Profile
                 <hr>
                 <form style=" margin-left: 100px;">
-                Name：<input type="text" id="token" name=""><br>
+                Name：<input id="name" type="text" value="" name=""><br>
                 Department：<input type="text" id="token" name=""><br>
                 Title：<input type="text" id="token" name=""><br>
                 <input type="button" value="Save" onclick="edit_profile()">
