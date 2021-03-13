@@ -20,30 +20,31 @@
             <div class="col-2 text-start">
                 <img src="../static/images/lyu.jpg" class="rounded-circle" alt="100x100">
             </div>                                       
-            {% for item in teach_profile %}                
             <div class="col-4">
                 <div class="row">
-                    <p id="name_display">{{ item["name"] }}</p>
+                    <p id="name_display">{{ teach_profile[0]["name"] }}</p>
                 </div>
                 <div class="row">
-                    <p id="department_display">{{ item["department"] }}</p>
+                    <p id="department_display">{{ teach_profile[0]["department"] }}</p>
                 </div>
                 <div class="row">
-                    <p id="title_display">{{ item["title"] }}</p>
+                    <p id="title_display">{{ teach_profile[0]["title"] }}</p>
                 </div>                
             </div>
-            {% endfor %}
             <div class="col">
                 <button type="button" onclick="display_edit_profile()" class="btn btn-info">Edit Profile</button>
             </div>
             <div id="edit_profile" style="">
-                <div style="width:500px;height:40px;">
+                <div style="width:500px;height:40px;">s
                 Edit Profile
                 <hr>
                 <form style=" margin-left: 100px;">
-                Name：<input id="name" type="text" value="" name=""><br>
-                Department：<input type="text" id="token" name=""><br>
-                Title：<input type="text" id="token" name=""><br>
+                <script>
+                    var teacher_name = [teach_profile[0]["name"]];
+                </script>
+                Name：<input id="name" type="text" name=""><br>
+                Department：<input type="text" id="token" value="10" name=""><br>
+                Title：<input type="text" id="token" value="1\1" name=""><br>
                 <input type="button" value="Save" onclick="edit_profile()">
                 </form>
                 </div>
@@ -60,7 +61,7 @@
             Add New Course
             <hr>
             <form style=" margin-left: 100px;">
-            course code：<input type="text" id="code" name="" ><br>
+            course code：<input type="text" id="code" value="" name="" ><br>
             course name：<input type="text" id="name" name="" ><br>
             course instructor：<input type="text" id="instructor" name="" ><br>
             course token：<input type="text" id="token" name=""><br>
