@@ -172,7 +172,7 @@ def teacher_main():
 @app.route('/student_main_page', methods=['GET', 'POST'])
 @login_required
 def student_main():
-    user_id = session['user_id']
+    # user_id = session['user_id']
     # print('user_id: ', user_id)
     # user_msg = request.args['messages']
     print('student_main')
