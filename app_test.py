@@ -4,7 +4,7 @@ from forms import LoginForm, RegistrationForm, CreateClassForm
 from flask_login import login_required, current_user, LoginManager
 import json
 import random
-from models import User
+from models_test import User
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
@@ -28,7 +28,9 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
 @login_manager.user_loader
-def load_user(user_id):
+def load_user():
+    user_id = 1
+    print("user loaded!")
     if user_id == '1':
         input_email = 'teacher@gmail.com'
         user = User(input_email)
@@ -71,12 +73,13 @@ def login():
         input_email = form.email.data
         input_pw = form.password.data
         user = User(input_email)
+
         if user is not None and input_pw == user.password:
             session['user_id'] = user.user_id
-            print(user.user_id)
+            print('user_id in login', user.user_id)
             if user.activated == '0':
                 next = url_for('unconfirmed')
-            if next is None or not next.startswith('/'):
+            else:
                 if user.is_student == '1':
                     next = url_for('student_main')
                 else:
