@@ -7,8 +7,8 @@ import random
 mani = Manipulator()
 
 
-class User():
-    def __init__(self,input_email):
+class User(UserMixin):
+    def __init__(self, input_email):
         if input_email == 'teacher@gmail.com':
             self.username = 'Michael'
             self.user_id = '1'
@@ -40,6 +40,9 @@ class User():
     # is_student = mani.fetch_user_info_by_email(input_email, ['is_student'])
     # token = mani.fetch_user_info_by_email(input_email, ['token'])
     # activated = mani.fetch_user_info_by_email(input_email, ['activated'])
+
+    def get_id(self):
+        return self.user_id
 
     def generate_random_token(self):
         token = ''.join(str(random.choice(range(10))) for _ in range(6))
