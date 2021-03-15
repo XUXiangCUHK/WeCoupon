@@ -138,10 +138,10 @@ def create_course(instructor):
 
 @app.route('/teacher_main_page', methods=['GET', 'POST'])
 def teacher_main():
-    user_id = session['user_id']
-    print('user_id: ', user_id)
-    print('teacher_main')
-    print(current_user.username)
+    # user_id = session['user_id']
+    # print('user_id: ', user_id)
+    # print('teacher_main')
+    # print(current_user.username)
     teach_info = [{'course_id': 4, 'code': 'ESTR4999', 'title': 'Graduation Thesis', 'info': 'Prof. Michael R. Lyu'},
                   {'course_id': 5, 'code': 'ESTR4998', 'title': 'Graduation Thesis', 'info': 'Prof. Michael R. Lyu'}]
     teach_profile = [{'name': 'Michael R. Lyu', 'department': 'Computer Science and Engineering department', 'title': 'Professor'}]
@@ -209,7 +209,7 @@ def stopCollection():
     question_id=request.form.get('qid')
     print(question_id)
     # TODO: change the question status to not collecting 
-    return redirect(url_for('teacher_view_answer'), question_id=question_id) 
+    return redirect(url_for('teacher_view_answer' , question_id=question_id)) 
     # ? error: Could not build url for endpoint 'teacher_view_answer'. Did you forget to specify values ['question_id']?
 
 @app.route('/add_coupon/<userid>', methods=['GET', 'POST'])
