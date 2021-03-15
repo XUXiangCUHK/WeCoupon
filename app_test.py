@@ -159,8 +159,6 @@ def create_course(instructor):
 @app.route('/teacher_main_page', methods=['GET', 'POST'])
 @login_required
 def teacher_main():
-    # user_id = session['user_id']
-    # print('user_id: ', user_id)
     print('teacher_main')
     print(current_user.username)
     teach_info = [{'course_id': 4, 'code': 'ESTR4999', 'title': 'Graduation Thesis', 'info': 'Prof. Michael R. Lyu'},
@@ -172,15 +170,13 @@ def teacher_main():
 @app.route('/student_main_page', methods=['GET', 'POST'])
 @login_required
 def student_main():
-    # user_id = session['user_id']
-    # print('user_id: ', user_id)
     # user_msg = request.args['messages']
     print('student_main')
     print(current_user.username)
     # print(user_msg)
     enroll_info = [{'course_id': 1, 'code': 'CSCI3100', 'title': 'Software Engineering', 'info': 'Prof. Michael R. Lyu'},
                    {'course_id': 3, 'code': 'IERG3310', 'title': 'Computer Networking', 'info': 'Prof. Xing Guoliang'}]
-    return render_template('student_main_page.html', enroll_info=enroll_info)
+    return render_template('student_main_page.html')
 
 
 @app.route('/student_within_course/<classcode>', methods=['GET', 'POST'])
@@ -193,7 +189,6 @@ def student_within_course(classcode):
 @app.route('/student_get_class/<password>', methods=['GET', 'POST'])
 @login_required
 def student_get_class(password):
-    user_id = session['user_id']
     print('student_get_class')
     class_info = {'course_id': 7, 'course_code': 'CSCI2001', 'course_name': 'Data Structure', 'course_instructor': 'Prof. Michael R. Lyu'}
     course_id = class_info['course_id']
