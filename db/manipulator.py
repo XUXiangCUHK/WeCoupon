@@ -8,7 +8,7 @@ class Manipulator:
     def __init__(self):
         self.sql = Sql()
 
-    def insert_account_info(self, user_name, first_name, last_name, email, SID, password, is_student, activated):
+    def insert_account_info(self, user_name, first_name, last_name, email, SID, password, is_student, activated, token):
         data = {
             'user_name': user_name,
             'first_name': first_name,
@@ -17,7 +17,8 @@ class Manipulator:
             'SID': SID,
             'password': password,
             'is_student': is_student,
-            'activated': activated
+            'activated': activated,
+            'token': token
         }
         self.sql.insert_account(data)
     
@@ -88,7 +89,17 @@ class Manipulator:
 
     def fetch_user_info_by_email(self, email, cols):
         res = self.sql.read_account_info_by_email(email, cols)
-        return res[0][0]
+        if res:
+            return res[0][0]
+        else:
+            return str()
+
+    def fetch_user_info_by_token(self, token, cols):
+        res = self.sql.read_account_info_by_token(token, cols)
+        if res:
+            return res[0][0]
+        else:
+            return str()
 
     def fetch_course_info(self, token):
         res = self.sql.read_course_info(token)
@@ -107,9 +118,10 @@ class Manipulator:
         if not res:
             return dict()
         question_info = {
-            'corresponding_course': res[0][0],
-            'question_name': res[0][1],
-            'question_content': res[0][2],
+            'course_id': res[0][0],
+            'corresponding_course': res[0][1],
+            'question_name': res[0][2],
+            'question_content': res[0][3],
         }
         return question_info
 

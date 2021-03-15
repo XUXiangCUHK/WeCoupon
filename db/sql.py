@@ -10,11 +10,19 @@ class Sql:
     def insert_account(self, data):
         statement = '''
                     INSERT IGNORE INTO `WeCoupon`.`account`
-                    (`user_name`, `first_name`, `last_name`, `email`, `SID`, `password`, `is_student`, `activated`)
+                    (`user_name`, `first_name`, `last_name`, `email`, `SID`, `password`, `is_student`, `activated`, `token`)
                     VALUES
-                    (%(user_name)s, %(first_name)s, %(last_name)s, %(email)s, %(SID)s, %(password)s, %(is_student)s, %(activated)s);
+                    (%(user_name)s, %(first_name)s, %(last_name)s, %(email)s, %(SID)s, %(password)s, %(is_student)s, %(activated)s, %(token)s);
                     '''
         self.db.single_write_into_mysql(data, statement)
+
+    def update_account_activated(self, user_id):
+        statement = '''
+                    UPDATE `WeCoupon`.`account`
+                    SET activated = 1
+                    WHERE user_id = {};
+                    '''.format(user_id)
+        self.db.execute_mysql(statement)
 
     def insert_course(self, data):
         statement = '''
@@ -66,6 +74,11 @@ class Sql:
         statement = '''SELECT {} FROM WeCoupon.account WHERE email='{}';'''.format(col, email)
         return self.db.read_from_mysql(statement)
 
+    def read_account_info_by_token(self, token, column_list):
+        col = ', '.join(column_list)
+        statement = '''SELECT {} FROM WeCoupon.account WHERE token='{}';'''.format(col, token)
+        return self.db.read_from_mysql(statement)
+
     def read_course_info(self, token):
         statement = '''SELECT * FROM WeCoupon.course WHERE course_token='{}';'''.format(token)
         return self.db.read_from_mysql(statement)
@@ -81,7 +94,7 @@ class Sql:
 
     def read_question_info(self, q_id):
         statement = '''
-                    SELECT course_code, q_title, q_content
+                    SELECT c.course_id, course_code, q_title, q_content
                     FROM WeCoupon.question q
                     JOIN WeCoupon.course c ON c.course_id = q.course_id 
                     WHERE q_id='{}';'''.format(q_id)

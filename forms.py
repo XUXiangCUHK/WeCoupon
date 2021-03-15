@@ -32,9 +32,9 @@ class RegistrationForm(FlaskForm):
     isInstructor = BooleanField('I am an instructor')
     submit = SubmitField('Sign Up')
 
-    def validate_email(self, field):
-        if mani.fetch_user_info_by_email(field.email, ['user_id']):
-            raise ValidationError('Email already registered.')
+    # def validate_email(self, field):
+    #     if mani.fetch_user_info_by_email(field.email, ['user_id']):
+    #         raise ValidationError('Email already registered.')
 
 
 class CreateClassForm(FlaskForm):
