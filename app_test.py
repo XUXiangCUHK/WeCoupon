@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, abort, flash, url_for, redirect, session
 from flask_bootstrap import Bootstrap
 from forms import LoginForm, RegistrationForm, CreateClassForm
-from flask_login import login_required, current_user, LoginManager
+from flask_login import login_required, current_user, LoginManager, login_user, logout_user
 import json
 import random
 from models_test import User
@@ -27,9 +27,9 @@ mail = Mail(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
+
 @login_manager.user_loader
-def load_user():
-    user_id = 1
+def load_user(user_id):
     print("user loaded!")
     if user_id == '1':
         input_email = 'teacher@gmail.com'
@@ -55,6 +55,11 @@ def send_email(to, subject, template, **kwargs):
     return thr
 
 
+@app.route('/email_check')
+def email_check():
+    return render_template('email_check.html')
+
+
 @app.route('/unconfirmed')
 def unconfirmed():
     if current_user.activated == '1':
@@ -75,8 +80,10 @@ def login():
         user = User(input_email)
 
         if user is not None and input_pw == user.password:
-            session['user_id'] = user.user_id
-            print('user_id in login', user.user_id)
+            login_user(user)
+            # session['user_id'] = user.user_id
+            print('user_id in login', user.user_id, user.username)
+            print('current_user in login: ', current_user.username, current_user.email, current_user.token)
             if user.activated == '0':
                 next = url_for('unconfirmed')
             else:
@@ -89,6 +96,13 @@ def login():
     return render_template('login.html', form=form)
 
 
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+
 @app.route('/signup', methods=['GET', 'POST'])
 def sign_up():
     form = RegistrationForm()
@@ -98,21 +112,23 @@ def sign_up():
         # is_student = 1
         # activated = 0
         if form.isInstructor.data:
-            user.is_student = 0
+            user.is_student = '0'
         # insert into db
         # email verification
         token = user.generate_random_token()
         # token insert into db
         send_email(user_email, 'Confirm Your Account',
               'email/confirm', user=form.username.data, token=token)
-        return redirect(url_for('login'))
+        print("In signup: is_student ", user.is_student, form.isInstructor.data)
+        login_user(user)
+        return redirect(url_for('email_check'))
     return render_template('signup.html', form=form)
 
 
 @app.route('/confirm/<token>')
 @login_required
 def confirm(token):
-    print(token)
+    print('token: ', current_user.token, token)
     if current_user.activated == '1':
         if current_user.is_student == '1':
             next = url_for('student_main')
@@ -130,6 +146,7 @@ def confirm(token):
 
 
 @app.route('/teacher_create_course/<instructor>', methods=['GET', 'POST'])
+@login_required
 def create_course(instructor):
     form = CreateClassForm()
     if form.validate_on_submit():
@@ -140,11 +157,12 @@ def create_course(instructor):
 
 
 @app.route('/teacher_main_page', methods=['GET', 'POST'])
+@login_required
 def teacher_main():
     # user_id = session['user_id']
     # print('user_id: ', user_id)
-    # print('teacher_main')
-    # print(current_user.username)
+    print('teacher_main')
+    print(current_user.username)
     teach_info = [{'course_id': 4, 'code': 'ESTR4999', 'title': 'Graduation Thesis', 'info': 'Prof. Michael R. Lyu'},
                   {'course_id': 5, 'code': 'ESTR4998', 'title': 'Graduation Thesis', 'info': 'Prof. Michael R. Lyu'}]
     teach_profile = [{'name': 'Michael R. Lyu', 'department': 'Computer Science and Engineering department', 'title': 'Professor'}]
@@ -152,12 +170,13 @@ def teacher_main():
 
 
 @app.route('/student_main_page', methods=['GET', 'POST'])
+@login_required
 def student_main():
     user_id = session['user_id']
-    print('user_id: ', user_id)
+    # print('user_id: ', user_id)
     # user_msg = request.args['messages']
-    print(current_user.username)
     print('student_main')
+    print(current_user.username)
     # print(user_msg)
     enroll_info = [{'course_id': 1, 'code': 'CSCI3100', 'title': 'Software Engineering', 'info': 'Prof. Michael R. Lyu'},
                    {'course_id': 3, 'code': 'IERG3310', 'title': 'Computer Networking', 'info': 'Prof. Xing Guoliang'}]
@@ -165,12 +184,14 @@ def student_main():
 
 
 @app.route('/student_within_course/<classcode>', methods=['GET', 'POST'])
+@login_required
 def student_within_course(classcode):
     print("student_within_course")
     return render_template('student_within_course.html',course_code=classcode)
 
 
 @app.route('/student_get_class/<password>', methods=['GET', 'POST'])
+@login_required
 def student_get_class(password):
     user_id = session['user_id']
     print('student_get_class')
@@ -179,6 +200,7 @@ def student_get_class(password):
     return json.dumps(class_info)
 
 @app.route('/teacher_create_class/<course_name>&<course_token>', methods=['GET', 'POST'])
+@login_required
 def teacher_create_class(course_name, course_token):
     print('teacher_create_class')
     class_info = {'course_id': 7, 'course_code': 'CSCI2001', 'course_name': 'Data Structure', 'course_instructor': 'Prof. Michael R. Lyu'}
@@ -186,6 +208,7 @@ def teacher_create_class(course_name, course_token):
     return json.dumps(class_info)
 
 @app.route('/teacher_view_answer/<question_id>', methods=['GET', 'POST'])
+@login_required
 def teacher_view_answer(question_id):
     print(question_id)
     question_info = {'question_id': '1', 'question_name': 'Q1', 'corresponding_course': 'CSCI3100', 'question_status': '1'}
@@ -207,15 +230,17 @@ def teacher_view_answer(question_id):
     return render_template('teacher_view_answer.html', question_info=question_info, answer_list=answer_list, per_ans=per_ans)
 
 @app.route('/stopcollection', methods=['GET', 'POST'])
+@login_required
 def stopCollection():
     print("stop collection")
     question_id=request.form.get('qid')
     print(question_id)
     # TODO: change the question status to not collecting 
-    return redirect(url_for('teacher_view_answer' , question_id=question_id)) 
+    return redirect(url_for('teacher_view_answer', question_id=question_id))
     # ? error: Could not build url for endpoint 'teacher_view_answer'. Did you forget to specify values ['question_id']?
 
 @app.route('/add_coupon/<userid>', methods=['GET', 'POST'])
+@login_required
 def reward_coupon(userid):
     # get the username of student who is rewarded coupon
     print(userid)
@@ -226,6 +251,7 @@ def reward_coupon(userid):
     return current_class
 
 @app.route('/teacher_within_course/<classcode>', methods=['GET', 'POST'])
+@login_required
 def teacher_view(classcode):
     print(classcode)
     course_id = 100
@@ -239,6 +265,7 @@ def teacher_view(classcode):
     return render_template('teacher_within_course.html', classcode=classcode, course_id=course_id, new_question_list=new_question_list, old_question_list=old_question_list, participation_list=participation_list)
 
 @app.route('/teacher_add_question/<courseid>', methods=['GET', 'POST'])
+@login_required
 def teacher_add_question(courseid):
     return render_template('teacher_add_question.html', course_id=courseid)
 
