@@ -19,9 +19,8 @@
         <h1>Answers to {{ question_info['question_name'] }}</h1>
         <p>{{ question_info['corresponding_course'] }}</p>
         {% if question_info['question_status'] == '1' %}
-        <button type="button" class="btn btn-primary" onclick="stopCollecting({{ question_info['question_id'] }})">Stop collecting answers</button>
+        <a href="../teacher_view_stopped_question/{{ question_info['question_id'] }}" type="button" class="btn btn-primary">Stop collecting</a>
         {% endif %}
-
         <a href="../teacher_within_course/{{ question_info['course_id'] }}" type="button" class="btn btn-primary">Back to question list</a>
     </div>
 

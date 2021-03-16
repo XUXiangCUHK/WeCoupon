@@ -16,9 +16,3 @@ function reward(obj, userid, username) {
         return false;
     }
 }
-
-function stopCollecting(question_id){
-    // set the status of answer into stop collecting
-    console.log(question_id)
-    $.get(`http://127.0.0.1:5000/stopcollection`, {'qid':question_id})
-}
