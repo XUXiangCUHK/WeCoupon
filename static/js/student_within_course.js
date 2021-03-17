@@ -23,7 +23,7 @@ function show() {
 
 function change(el) {
     var bro = el.parentNode.children
-    var i = 0
+    // var i = 0
     var t = bro[2]
     var tt = bro[1];
     // 从后端拿
@@ -36,5 +36,11 @@ function change(el) {
         tt.innerHTML = text.substring(0, 20);
         t.innerHTML = "...open"
     }
+}
+function submit_ans(ans){
+    var sibling = ans.parentNode.children;
+    var form = sibling[0].children;
+    var ans = form[1].innerHTML;
+    // return answer 给db存着
 }
 show();
