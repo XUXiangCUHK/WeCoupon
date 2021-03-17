@@ -18,17 +18,6 @@ function teacher_add_class() {
 
 }
 
-function display_edit_profile() {
-    //console.log(document.getElementById("name"))
-
-    var b = document.querySelector("#name");
-    b.setAttribute("value", document.getElementById("name_display").value);
-    console.log(document.getElementById("name_display").value)
-
-    document.getElementById("name").innerHTML = "New text!";
-    document.getElementById('edit_profile').style.display = 'block';
-}
-
 function edit_profile() {
     document.getElementById('edit_profile').style.display = 'none';
     var course_token = document.getElementById('token').value;
