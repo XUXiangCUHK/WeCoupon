@@ -32,3 +32,42 @@ class User(UserMixin):
             return True
         else:
             return False
+
+
+class Course:
+    def __init__(self):
+        self.course_id = 0
+        self.course_code = str()
+        self.course_name = str()
+        self.course_instructor = str()
+        self.course_token = str()
+
+
+class Question:
+    def __init__(self):
+        self.q_id = 0
+        self.owner_id = 0
+        self.course_id = 0
+        self.q_title = str()
+        self.q_content = str()
+        self.q_answer = str()
+        self.q_status = str()
+
+
+class Answer:
+    def __init__(self):
+        self.a_id = 0
+        self.q_id = 0
+        self.student_id = 0
+        self.a_content = str()
+        self.a_status = 0
+        self.a_time = 0
+
+
+class Coupon:
+    def __init__(self):
+        self.id = 0
+        self.student_id = 0
+        self.coupon_num = 0
+        self.insert_time = 0
+        self.note = str()
