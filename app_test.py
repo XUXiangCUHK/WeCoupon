@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, abort, flash, url_for, redirect, session
 from flask_bootstrap import Bootstrap
-from forms import LoginForm, RegistrationForm, CreateClassForm
+from forms import LoginForm, RegistrationForm, CreateClassForm, AddQuestionForm
 from flask_login import login_required, current_user, LoginManager, login_user, logout_user
 import json
 import random
@@ -282,7 +282,8 @@ def teacher_view(classcode):
 @app.route('/teacher_add_question/<course_id>', methods=['GET', 'POST'])
 @login_required
 def teacher_add_question(course_id):
-    return render_template('teacher_add_question.html', course_id=course_id)
+    form = AddQuestionForm()
+    return render_template('teacher_add_question.html', course_id=course_id, form=form)
 
 #@app.route('/teacher_within_course/<classcode>', methods=['GET', 'POST'])
 #def teacher_view_participation(classcode):

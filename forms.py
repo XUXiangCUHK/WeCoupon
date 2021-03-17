@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, ValidationError
 from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
 from db.manipulator import Manipulator
+from flask_pagedown.fields import PageDownField
 
 mani = Manipulator()
 
@@ -43,3 +44,9 @@ class CreateClassForm(FlaskForm):
     course_instructor = StringField('Course Instructor', validators=[DataRequired()])
     course_token = StringField('Course Token', validators=[DataRequired()])
     submit = SubmitField('Create Course')
+
+
+class AddQuestionForm(FlaskForm):
+    question_title = StringField('Question Title', validators=[DataRequired()])
+    question_content = PageDownField('Questoin Content', validators=[DataRequired()])
+    submit = SubmitField('Create Question')
