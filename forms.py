@@ -50,3 +50,8 @@ class AddQuestionForm(FlaskForm):
     question_title = StringField('Question Title', validators=[DataRequired()])
     question_content = PageDownField('Questoin Content', validators=[DataRequired()])
     submit = SubmitField('Create Question')
+
+class EditQuestionForm(FlaskForm):
+    question_title = StringField('Question Title', validators=[DataRequired()])
+    question_content = PageDownField('Questoin Content', validators=[DataRequired()])
+    submit = SubmitField('Save Changes')

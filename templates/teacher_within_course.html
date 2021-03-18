@@ -17,7 +17,6 @@
       <div class="row">
         <div class="col text-start">
           Course {{ classcode }}
-          <!-- ! cannot jump to teacher_main_page as it requires user_id for session -->
           <a href="../teacher_main_page" class="button btn btn-primary" style="width:45%">Back</a>
         </div>
       </div>
@@ -40,37 +39,29 @@
                   <div class="col-sm-6">
                     <h3 class="boxtitle" style="background-color:lavender;">Question Bank</h3>
 
-                      <!-- TODO: edit the href -->
                       <div>
-                        <a href="../teacher_add_question/{{course_id}}" class="button btn btn-primary" style="width:45%">Start a default question</a>
+                        <a href="../teacher_collect_answer/default" class="button btn btn-primary" style="width:45%">Start a default question</a>
                         <a href="../teacher_add_question/{{ course_id }}" class="button btn btn-primary" style="width:45%">Add a question</a>                        
                       </div>
 
                     <table class="table" id="qlist">
                         <thead>
                           <tr>
-                            <th scope="col" style="width:40%">Question Name</th>
+                            <th scope="col" style="width:30%">Question Name</th>
                             <th scope="col" style="width:30%">Question Type</th>
-                            <th scope="col" style="width:30%">View</th>
+                            <th scope="col" style="width:20%">View</th>
+                            <th scope="col" style="width:20%">Start</th>
                           </tr>
                         </thead>
                         <tbody >
                           {% for item in new_question_list %}
                           <tr>
-                              <td style="width:40%">{{ item["question_id"] }}</td>
+                              <td style="width:30%">{{ item["question_title"] }}</td>
                               <td style="width:30%">{{ item["question_type"] }}</td>
-                              <td style="width:30%"><button type="button" class="btn btn-success">Start</button></td>
+                              <td style="width:20%"><a href="../teacher_view_question/{{ item.question_id }}" class="button btn btn-primary">View</a></td>
+                              <td style="width:20%"><a href="../teacher_collect_answer/{{ item.question_id }}" class="button btn btn-primary">Start</a></td>
                           </tr>
-                          <tr>
-                            <td style="width:40%">{{ item["question_id"] }}</td>
-                            <td style="width:30%">{{ item["question_type"] }}</td>
-                            <td style="width:30%"><button type="button" class="btn btn-success">Start</button></td>
-                        </tr>
-                        <tr>
-                          <td style="width:40%">{{ item["question_id"] }}</td>
-                          <td style="width:30%">{{ item["question_type"] }}</td>
-                          <td style="width:30%"><button type="button" class="btn btn-success">Start</button></td>
-                      </tr>
+                        
 
                           {% endfor %}
                         </tbody>
@@ -92,9 +83,9 @@
                             
                             {% for item in old_question_list %}
                             <tr>
-                                <td style="width:40%">{{ item["question_id"] }}</td>
+                                <td style="width:40%">{{ item["question_title"] }}</td>
                                 <td style="width:30%">{{ item["question_type"] }}</td>
-                                <td style="width:30%"><a href="../teacher_view_answer/{{ item.q_id }}" class="button btn btn-primary">View</a></td>
+                                <td style="width:30%"><a href="../teacher_view_answer/{{ item.question_id }}" class="button btn btn-primary">View</a></td>
 
                             </tr>
                             {% endfor %}
@@ -128,7 +119,7 @@
                             <td style="width:10%">{{ item["attempt"] }}</td>
                             <td style="width:10%">{{ item["coupon_rewarded"] }}</td>
                             <td style="width:10%">{{ item["coupon_used"] }}</td>
-                            <td ><button type="button" class="btn btn-success">Use</button></td>
+                            <td ><button type="button" class="btn btn-success" onclick="useCoupon('{{ item["student_id"] }}', '{{ item["student_name"] }}' )">Use</button></td>
                         </tr>
                         {% endfor %}
                     </tbody>
