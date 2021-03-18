@@ -8,6 +8,21 @@ triggerTabList.forEach(function (triggerEl) {
   })
 })
 
+function useCoupon(sid, sname){
+  console.log(sid, sname)
+  var flag = confirm(`Are you sure to deduct 1 coupon from ${username}'s account?`);
+  if(flag==true){
+    $.getJSON(`http://127.0.0.1:5000/use_coupon/${sid}`)
+    .always(function(){
+        console.log("success");
+    })
+    return true;
+}else {
+    return false;
+}
+}
+
+
 var reg_calss = function () {
     let pass = window.prompt("pass", "please enter the class token");
     console.log(pass)

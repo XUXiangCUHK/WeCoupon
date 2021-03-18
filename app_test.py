@@ -5,9 +5,18 @@ from flask_login import login_required, current_user, LoginManager, login_user, 
 import json
 import random
 from models_test import User
+from flask_socketio import SocketIO, emit
+from threading import Lock
+
+async_mode = None
+
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
+socketio = SocketIO(app)
+
+thread = None
+thread_lock = Lock()
 
 app.config['SECRET_KEY'] = 'hard to guess string'
 
@@ -322,5 +331,23 @@ def teacher_view_question(question_id):
 #    return render_template('teacher_within_course.html', participation_list=participation_list)
 
 
+# update value from backend without refreshing page
+@socketio.on('connect', namespace='/teacher_collect_answer')
+def test_connect():
+    global thread
+    with thread_lock:
+        if thread is None:
+            thread = socketio.start_background_task(target=background_thread)
+
+def background_thread():
+    while True: 
+        print("in text_connet")
+        socketio.sleep(5)
+        t = random.randint(1,100)
+        a = random.randint(100,1000)
+        print(t)
+        socketio.emit('server_response', {'data1': t, 'data2': a}, namespace='/teacher_collect_answer')
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    # app.run(debug=True)
+    socketio.run(app, debug=True)

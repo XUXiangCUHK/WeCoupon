@@ -11,6 +11,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.0.2/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+    <script src="../static/js/teacher_view_answer.js"></script>
     <title>Teacher collect answers</title>
 </head>
 <body>
@@ -86,6 +88,24 @@
                 </script>
             </div>
         </div>
+    </div>
+
+    <!-- Update without refreashing page -->
+    <div>
+
+        <h2 id="t"></h2>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                namespace = '/teacher_collect_answer';
+                var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+                socket.on('server_response', function(res) {
+                    var t = res.data2;
+                    $("#t").text(t);
+                    console.log(t)
+                });
+            });
+        </script>
     </div>
     
     
