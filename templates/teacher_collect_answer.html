@@ -44,10 +44,10 @@
                     </thead>
                 
                     
-                    <tbody>
+                    <tbody id="answerList">
                     {% for item in answer_list %}
                         <tr>
-                            <td id="" style="width:15%">{{ item["answer_user"] }}</td>
+                            <td style="width:15%">{{ item["answer_user"] }}</td>
                             <td style="width:60%">{{ item["answer_content"] }}</td>
                             <!-- <td><a href="../add_coupon/{{ item.answer_userid }}" class="button btn btn-primary" onclick="{if(confirm('Are you sure to reward coupon to {{ item.answer_user }}?')){return true;}return false;}">Reward</a></td> -->
                             <td style="width:25%"><input type="button" class="btn btn-primary" value="Reward" onclick="reward(this, '{{ item['answer_userid'] }}', '{{ item['answer_user'] }}')"></input></td>   
@@ -90,7 +90,7 @@
         </div>
     </div>
 
-    <!-- Update without refreashing page -->
+    <!-- Update without refreashing page
     <div>
 
         <h2 id="t"></h2>
@@ -106,7 +106,7 @@
                 });
             });
         </script>
-    </div>
+    </div> -->
     
     
 </body>

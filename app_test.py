@@ -5,18 +5,18 @@ from flask_login import login_required, current_user, LoginManager, login_user, 
 import json
 import random
 from models_test import User
-from flask_socketio import SocketIO, emit
-from threading import Lock
+# from flask_socketio import SocketIO, emit
+# from threading import Lock
 
-async_mode = None
+# async_mode = None
 
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
-socketio = SocketIO(app)
+# socketio = SocketIO(app)
 
-thread = None
-thread_lock = Lock()
+# thread = None
+# thread_lock = Lock()
 
 app.config['SECRET_KEY'] = 'hard to guess string'
 
@@ -324,6 +324,15 @@ def teacher_view_question(question_id):
     course_info = {'course_id': '123', 'course_code': 'CSCI3100'}
     return render_template('teacher_view_question.html', course_info=course_info, form=form)
 
+@app.route('/update_answer', methods=["GET"])
+@login_required
+def update_answer():
+    answer_list = {"1":{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This '},
+                    "2":{'answer_userid': '234','answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
+                    "3":{'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'}}
+    return json.dumps(answer_list)  
+
+
 #@app.route('/teacher_within_course/<classcode>', methods=['GET', 'POST'])
 #def teacher_view_participation(classcode):
 #    participation_list = [{'student_id': '1155095222', 'student_name': 'Bob', 'attempt': '20', 'coupon': '1'},
@@ -332,22 +341,22 @@ def teacher_view_question(question_id):
 
 
 # update value from backend without refreshing page
-@socketio.on('connect', namespace='/teacher_collect_answer')
-def test_connect():
-    global thread
-    with thread_lock:
-        if thread is None:
-            thread = socketio.start_background_task(target=background_thread)
+# @socketio.on('connect', namespace='/teacher_collect_answer')
+# def test_connect():
+#     global thread
+#     with thread_lock:
+#         if thread is None:
+#             thread = socketio.start_background_task(target=background_thread)
 
-def background_thread():
-    while True: 
-        print("in text_connet")
-        socketio.sleep(5)
-        t = random.randint(1,100)
-        a = random.randint(100,1000)
-        print(t)
-        socketio.emit('server_response', {'data1': t, 'data2': a}, namespace='/teacher_collect_answer')
+# def background_thread():
+#     while True: 
+#         print("in text_connet")
+#         socketio.sleep(5)
+#         t = random.randint(1,100)
+#         a = random.randint(100,1000)
+#         print(t)
+#         socketio.emit('server_response', {'data1': t, 'data2': a}, namespace='/teacher_collect_answer')
 
 if __name__ == '__main__':
-    # app.run(debug=True)
-    socketio.run(app, debug=True)
+    app.run(debug=True)
+    # socketio.run(app, debug=True)
