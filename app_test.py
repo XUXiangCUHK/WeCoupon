@@ -185,7 +185,7 @@ def student_main():
     # print(user_msg)
     enroll_info = [{'course_id': 1, 'code': 'CSCI3100', 'title': 'Software Engineering', 'info': 'Prof. Michael R. Lyu'},
                    {'course_id': 3, 'code': 'IERG3310', 'title': 'Computer Networking', 'info': 'Prof. Xing Guoliang'}]
-    return render_template('student_main_page.html')
+    return render_template('student_main_page.html', enroll_info=enroll_info)
 
 
 @app.route('/student_within_course/<classcode>', methods=['GET', 'POST'])

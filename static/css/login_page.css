@@ -1,8 +1,9 @@
 
+/* #D7FFF1 #8CD790 #77AF9C #285943 #008037 */
 /* BASIC */
 
 html {
-  background-color: #56baed;
+  background-color: #77AF9C;
 }
 
 body {
@@ -11,13 +12,13 @@ body {
 }
 
 a {
-  color: #92badd;
+  color: #8CD790;
   display:inline-block;
   text-decoration: none;
   font-weight: 400;
 }
 
-h2 {
+/* h2 {
   text-align: center;
   font-size: 16px;
   font-weight: 600;
@@ -25,7 +26,7 @@ h2 {
   display:inline-block;
   margin: 40px 8px 10px 8px; 
   color: #cccccc;
-}
+} */
 
 
 
@@ -64,25 +65,54 @@ h2 {
   border-radius: 0 0 10px 10px;
 }
 
+/* Simple CSS3 Fade-in Animation */
+.underlineHover:after {
+  display: block;
+  left: 0;
+  bottom: -10px;
+  width: 0;
+  height: 2px;
+  background-color: #8CD790;
+  content: "";
+  transition: width 0.2s;
+}
+
+.underlineHover:hover {
+  color: #0d0d0d;
+}
+
+.underlineHover:hover:after{
+  width: 100%;
+}
+
+/* OTHERS */
+
+/* *:focus {
+    outline: none;
+}  */
+
+#icon {
+  width:60%;
+}
 
 
 /* TABS */
 
-h2.inactive {
+/* h2.inactive {
   color: #cccccc;
 }
 
 h2.active {
   color: #0d0d0d;
   border-bottom: 2px solid #5fbae9;
-}
+} */
 
 
 
 /* FORM TYPOGRAPHY*/
 
 input[type=button], input[type=submit], input[type=reset] {
-  background-color: #56baed;
+  background-color: #77AF9C;
   border: none;
   color: white;
   padding: 15px 80px;
@@ -91,29 +121,29 @@ input[type=button], input[type=submit], input[type=reset] {
   display: inline-block;
   text-transform: uppercase;
   font-size: 13px;
-  -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-  box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+  /* -webkit-box-shadow: 0 10px 30px 0 rgba(95, 233, 176, 0.4); */
+  box-shadow: 0 10px 30px 0 rgba(95, 233, 153, 0.5);
   -webkit-border-radius: 5px 5px 5px 5px;
   border-radius: 5px 5px 5px 5px;
   margin: 5px 20px 40px 20px;
-  -webkit-transition: all 0.3s ease-in-out;
-  -moz-transition: all 0.3s ease-in-out;
-  -ms-transition: all 0.3s ease-in-out;
-  -o-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
+  /* -webkit-transition: all 0.3s ease-in-out; */
+  /* -moz-transition: all 0.3s ease-in-out; */
+  /* -ms-transition: all 0.3s ease-in-out; */
+  /* -o-transition: all 0.3s ease-in-out; */
+  /* transition: all 0.3s ease-in-out; */
 }
 
 input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover, input[type=radio]:hover  {
-  background-color: #39ace7;
+  background-color: #77AF9C;
 }
 
-input[type=button]:active, input[type=submit]:active, input[type=reset]:active, input[type=radio]:active  {
+/* input[type=button]:active, input[type=submit]:active, input[type=reset]:active, input[type=radio]:active  {
   -moz-transform: scale(0.95);
   -webkit-transform: scale(0.95);
   -o-transform: scale(0.95);
   -ms-transform: scale(0.95);
   transform: scale(0.95);
-}
+} */
 
 input[type=text], input[type=password] {
   background-color: #f6f6f6;
@@ -134,12 +164,12 @@ input[type=text], input[type=password] {
   transition: all 0.5s ease-in-out;
   -webkit-border-radius: 5px 5px 5px 5px;
   border-radius: 5px 5px 5px 5px;
-}
+} 
 
-input[type=text]:focus, , input[type=password]:focus {
+/* input[type=text]:focus, , input[type=password]:focus {
   background-color: #fff;
   border-bottom: 2px solid #5fbae9;
-}
+} */
 
 input[type=text]:placeholder, input[type=password]:placeholder {
   color: #cccccc;
@@ -150,7 +180,7 @@ label {
   font-size: 16px;
   margin: 5px;
   line-height: 50px;
-}
+} 
 
 /* ANIMATIONS */
 
@@ -234,35 +264,5 @@ label {
   animation-delay: 1s;
 }  */
 
-/* Simple CSS3 Fade-in Animation */
-.underlineHover:after {
-  display: block;
-  left: 0;
-  bottom: -10px;
-  width: 0;
-  height: 2px;
-  background-color: #56baed;
-  content: "";
-  transition: width 0.2s;
-}
 
-.underlineHover:hover {
-  color: #0d0d0d;
-}
-
-.underlineHover:hover:after{
-  width: 100%;
-}
-
-
-
-/* OTHERS */
-
-*:focus {
-    outline: none;
-} 
-
-#icon {
-  width:60%;
-}
 

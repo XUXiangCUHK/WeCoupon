@@ -1,3 +1,6 @@
+@import url(font-awesome.min.css);
+@import "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600";
+
 img {
     margin-left: auto;
     margin-right: auto;
@@ -19,3 +22,324 @@ img {
     input{
     margin-bottom: 10px;
     }
+
+/* banner */
+
+#banner {
+    padding: 5em 0 5em 0;
+    background-image: url(../images/banner.jpg);
+    background-size: cover;
+    background-position: bottom;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    text-align: center;
+    position: relative;
+}
+
+#banner:before {
+    content: '';
+    background: rgba(95, 117, 92, 0.85);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+#banner .inner {
+    /* border-top: 2px solid rgba(255, 255, 255, 0.2); */
+    position: relative;
+    /* z-index: 10005; */
+    /* padding-top: 5em; */
+}
+
+#banner h1 {
+    font-size: 3.5em;
+    font-weight: 400;
+    color: #fff;
+    line-height: 1em;
+    margin-bottom: .5em;
+    padding: 0;
+}
+
+#banner h3 {
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.849);
+    line-height: 3em;
+    margin-bottom: .5em;
+    font-size: 1.5em;
+}
+
+#banner button{
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    -moz-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    -webkit-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    -ms-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    background-color: transparent;
+    box-shadow: inset 0 0 0 3px #6cc091;
+    color: #6cc091 !important;
+    border-radius: 30px;
+    border: 0;
+    cursor: pointer;
+    display: inline-block;
+    font-size: .75em;
+    font-weight: 400;
+    height: 3.75em;
+    line-height: 3.85em;
+    letter-spacing: 2px;
+    padding: 0 4em;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+#banner button:hover {
+    background-color: rgba(108, 192, 145, 0.15);
+}
+
+/* footer */
+#icon {
+    width: 12%;
+    text-align: center;
+}
+
+#footer {
+    padding: .5em 0;
+    background: #77AF9C;
+    color: #fff;
+    text-align: center;
+}
+
+#footer h3 {
+    font-size: .5em;
+    color: rgba(255, 255, 255, 0.863);
+    margin-bottom: .5em !important;
+}
+
+
+/* table */
+a:link {
+    color: #77AF9C;
+    text-decoration: none;
+}
+
+.table-wrapper {
+    /* -webkit-overflow-scrolling: touch; */
+    overflow-x: auto;
+}
+
+table {
+    margin: 2em auto 2em auto;
+    width: 80%;
+}
+
+table tbody tr {
+    border: solid 1px #dbdbdb;
+    border-left: 0;
+    border-right: 0;
+}
+
+table tbody tr:nth-child(2n + 1) {
+    background-color: rgba(115, 158, 125, 0.075);
+}
+
+table th {
+    color: #555;
+    font-size: 1em;
+    font-weight: 600;
+    padding: 1em 0.75em 0.75em 0.75em;
+    text-align: center;
+}
+
+table td {
+    text-align: center;
+    padding: 0.75em 0.75em;
+}
+
+table thead {
+    border-bottom: solid 2px #dbdbdb;
+}
+
+    /* table tfoot {
+        border-top: solid 2px #dbdbdb;
+    } */
+
+    /* table.alt {
+        border-collapse: separate;
+    }
+
+        table.alt tbody tr td {
+            border: solid 1px #dbdbdb;
+            border-left-width: 0;
+            border-top-width: 0;
+        }
+
+            table.alt tbody tr td:first-child {
+                border-left-width: 1px;
+            }
+
+        table.alt tbody tr:first-child td {
+            border-top-width: 1px;
+        }
+
+        table.alt thead {
+            border-bottom: 0;
+        }
+
+        table.alt tfoot {
+            border-top: 0;
+        } */
+
+
+/* #banner .icon {
+    color: #6cc091;
+    font-size: 2em;
+} */
+/* 
+#banner p {
+    font-size: 1em;
+    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 1.75em;
+} */
+
+    /* #banner .flex {
+    -ms-flex-pack: center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    -ms-justify-content: center;
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto 4em auto;
+} */
+/* 
+    #banner .flex div {
+        border-right: 2px solid rgba(255, 255, 255, 0.2);
+        padding: 0 8em;
+    }
+
+        #banner .flex div:last-child {
+            border: none;
+            padding-right: 0;
+        }
+
+        #banner .flex div:first-child {
+            padding-left: 0;
+        }
+
+        #banner .flex div p {
+            margin: 0;
+        }
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+
+    #banner {
+        background-attachment: scroll;
+    }
+
+}
+
+@media screen and (max-width: 1680px) {
+
+    #banner .flex div {
+        padding: 0 6em;
+    }
+
+}
+
+@media screen and (max-width: 1280px) {
+
+    #banner {
+        padding: 7em 0 6em 0;
+    }
+
+        #banner .inner {
+            padding-top: 6em;
+        }
+
+        #banner h1 {
+            font-size: 3em;
+        }
+
+        #banner h3 {
+            font-size: 1.25em;
+        }
+
+        #banner .flex div {
+            padding: 0 3em;
+        }
+
+}
+
+@media screen and (max-width: 980px) {
+
+    #banner {
+        background-attachment: scroll;
+        padding: 5em 0 4em 0;
+    }
+
+        #banner .inner {
+            padding-top: 4em;
+        }
+
+        #banner h1 {
+            font-size: 2.5em;
+        }
+
+        #banner h3 {
+            font-size: 1.25em;
+        }
+
+        #banner .flex div {
+            font-size: .85em;
+            padding: 0 1.5em;
+        }
+
+}
+
+@media screen and (max-width: 736px) {
+
+    #banner {
+        padding: 4em 0 3em 0;
+    }
+
+        #banner .inner {
+            padding-top: 3em;
+        }
+
+        #banner h1 {
+            font-size: 2em;
+        }
+
+        #banner h3 {
+            font-size: 1.25em;
+        }
+
+        #banner .flex {
+            -moz-flex-direction: column;
+            -webkit-flex-direction: column;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            margin: 0 auto 2em auto;
+        }
+
+            #banner .flex div {
+                font-size: .85em;
+                padding: 0;
+                border: none;
+                margin-bottom: 1em;
+            }
+
+}
+
+@media screen and (max-width: 480px) {
+
+    #banner h1 {
+        font-size: 1.5em;
+    }
+
+}  */
