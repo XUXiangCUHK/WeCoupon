@@ -101,6 +101,13 @@ class Manipulator:
         else:
             return str()
 
+    def fetch_course_info_by_id(self, course_id, cols):
+        res = self.sql.read_course_info_by_id(course_id, cols)
+        if res:
+            return res[0][0]
+        else:
+            return str()
+
     def fetch_course_info(self, token):
         res = self.sql.read_course_info(token)
         if not res:
@@ -112,6 +119,13 @@ class Manipulator:
             'course_instructor': res[0][3]
         }
         return course_info
+
+    def fetch_question_info_by_id(self, q_id, cols):
+        res = self.sql.read_question_info_by_id(q_id, cols)
+        if res:
+            return res[0][0]
+        else:
+            return str()
 
     def fetch_question_info(self, q_id):
         res = self.sql.read_question_info(q_id)
@@ -146,6 +160,13 @@ class Manipulator:
             elif item[5] == 'N':
                 old_question_list.append(q)
         return new_question_list, old_question_list
+
+    def fetch_open_question(self, course_id):
+        res = self.sql.read_open_question(course_id)
+        if res:
+            return res[0][0]
+        else:
+            return 0
 
     def fetch_answer_list(self, q_id):
         res = self.sql.read_answer_list(q_id)

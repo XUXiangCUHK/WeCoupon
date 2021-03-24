@@ -79,6 +79,11 @@ class Sql:
         statement = '''SELECT {} FROM WeCoupon.account WHERE token='{}';'''.format(col, token)
         return self.db.read_from_mysql(statement)
 
+    def read_course_info_by_id(self, course_id, column_list):
+        col = ', '.join(column_list)
+        statement = '''SELECT {} FROM WeCoupon.course WHERE course_id='{}';'''.format(col, course_id)
+        return self.db.read_from_mysql(statement)
+
     def read_course_info(self, token):
         statement = '''SELECT * FROM WeCoupon.course WHERE course_token='{}';'''.format(token)
         return self.db.read_from_mysql(statement)
@@ -90,6 +95,11 @@ class Sql:
                     JOIN Wecoupon.course AS c ON e.course_id = c.course_id
                     WHERE user_id = '{}'
                     '''.format(user_id)
+        return self.db.read_from_mysql(statement)
+
+    def read_question_info_by_id(self, q_id, column_list):
+        col = ', '.join(column_list)
+        statement = '''SELECT {} FROM WeCoupon.question WHERE q_id='{}';'''.format(col, q_id)
         return self.db.read_from_mysql(statement)
 
     def read_question_info(self, q_id):
@@ -106,6 +116,13 @@ class Sql:
                     FROM WeCoupon.question q
                     JOIN WeCoupon.course c ON c.course_id = q.course_id 
                     WHERE owner_id='{}' AND c.course_id='{}';'''.format(user_id, course_id)
+        return self.db.read_from_mysql(statement)
+
+    def read_open_question(self, course_id):
+        statement = '''
+                    SELECT q_id FROM WeCoupon.question q
+                    WHERE q.course_id = {} and q_status = 'O';
+        '''.format(course_id)
         return self.db.read_from_mysql(statement)
 
     def read_answer_list(self, q_id):

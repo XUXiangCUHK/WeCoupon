@@ -160,10 +160,14 @@ def sign_up():
 @app.route('/teacher_main_page', methods=['GET', 'POST'])
 @login_required
 def teacher_main():
-    user_id = session['user_id']
-    enroll_info = mani.user_enrollment(user_id)
+    # user_id = session['user_id']
+    enroll_info = mani.user_enrollment(current_user.user_id)
     print(enroll_info)
-    return render_template('teacher_main_page.html', teach_info=enroll_info)
+    teach_profile = [
+        {'name': 'Michael R. Lyu',
+         'department': 'Computer Science and Engineering department',
+         'title': 'Professor'}]
+    return render_template('teacher_main_page.html', teach_info=enroll_info, teach_profile=teach_profile)
 
 
 @app.route('/student_main_page', methods=['GET', 'POST'])
@@ -203,10 +207,11 @@ def student_get_class(course_token):
 @app.route('/teacher_within_course/<course_id>', methods=['GET', 'POST'])
 @login_required
 def teacher_view(course_id):
-    user_id = session['user_id']
-    new_question_list, old_question_list = mani.fetch_question_info_by_account(user_id, course_id)
+    # user_id = session['user_id']
+    new_question_list, old_question_list = mani.fetch_question_info_by_account(current_user.user_id, course_id)
     course_code = new_question_list[0]['course_code']
-    participation_list = mani.fetch_participation(course_id)
+    participation_list = list()
+    # participation_list = mani.fetch_participation(course_id)
     return render_template('teacher_within_course.html',
                            course_code=course_code,
                            new_question_list=new_question_list,
@@ -222,6 +227,41 @@ def teacher_view_answer(question_id):
     answer_list = mani.fetch_answer_list(question_id)
     per_ans = {'answered': 12, 'not_answered': 35}
     return render_template('teacher_view_answer.html', question_info=question_info, answer_list=answer_list, per_ans=per_ans)
+
+
+@app.route('/teacher_collect_answer/<question_id>', methods=['GET', 'POST'])
+@login_required
+def teacher_collect_answer(question_id):
+    if question_id == 'default':
+        print("default empty question created!")
+        # create a default question in database first
+    # change the question status to open_to_student if not, start to receive answers from students and display
+    print("here is question id:", question_id)
+    question_info = {'question_id': '1', 'question_name': 'Q1', 'corresponding_course': 'CSCI3100', 'question_status': '1', 'course_id': '1', 'question_content': 'content'}
+    answer_list = mani.fetch_answer_list(1)
+    # answer_list = [{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This '},
+    #                 # {'answer_userid': '234','answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
+    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},]
+    per_ans = {'answered': 12, 'not_answered': 35}
+    return render_template('teacher_collect_answer.html', question_info=question_info, answer_list=answer_list, per_ans=per_ans)
+
+
+@app.route('/student_submit_answer/<a_content>', methods=['GET', 'POST'])
+@login_required
+def student_submit_answer(a_content):
+    pass
+    # mani.insert_answer_info(q_id, student_id, a_content, a_status)
 
 
 @app.route('/add_coupon/<userid>', methods=['GET', 'POST'])
@@ -241,9 +281,21 @@ def teacher_add_question(courseid):
     return render_template('teacher_add_question.html', course_id=courseid)
 
 
-@app.route('/student_within_course/<classcode>', methods=['GET', 'POST'])
+@app.route('/student_within_course/<course_id>', methods=['GET', 'POST'])
 @login_required
-def student_within_course(classcode):
+def student_within_course(course_id):
+    current_user.current_course_id = course_id
+    print("current course", current_user.current_course_id)
+    current_user.fill_course_info()
+    print("here is course: ", current_user.current_course.course_name)
+
+    open_q_id = mani.fetch_open_question(course_id)
+    if open_q_id:
+        current_user.current_q_id = open_q_id
+        current_user.fill_question_info()
+        print("here is question: ", current_user.current_q.q_content)
+    else:
+        print("there is no current open question")
     return render_template('student_within_course.html')
 
 

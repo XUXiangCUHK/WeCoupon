@@ -15,6 +15,11 @@ class User(UserMixin):
         self.is_student = mani.fetch_user_info_by_email(input_email, ['is_student'])
         self.activated = mani.fetch_user_info_by_email(input_email, ['activated'])
 
+        self.current_course_id = 0
+        self.current_course = dict()
+        self.current_q_id = 0
+        self.current_q = dict()
+
         self.token = str()
 
     def get_id(self):
@@ -33,25 +38,31 @@ class User(UserMixin):
         else:
             return False
 
+    def fill_course_info(self):
+        self.current_course = Course(self.current_course_id)
+
+    def fill_question_info(self):
+        self.current_q = Question(self.current_q_id)
+
 
 class Course:
-    def __init__(self):
-        self.course_id = 0
-        self.course_code = str()
-        self.course_name = str()
-        self.course_instructor = str()
-        self.course_token = str()
+    def __init__(self, course_id):
+        self.course_id = course_id
+        self.course_code = mani.fetch_course_info_by_id(course_id, ['course_code'])
+        self.course_name = mani.fetch_course_info_by_id(course_id, ['course_name'])
+        self.course_instructor = mani.fetch_course_info_by_id(course_id, ['course_instructor'])
+        self.course_token = mani.fetch_course_info_by_id(course_id, ['course_token'])
 
 
 class Question:
-    def __init__(self):
-        self.q_id = 0
-        self.owner_id = 0
-        self.course_id = 0
-        self.q_title = str()
-        self.q_content = str()
-        self.q_answer = str()
-        self.q_status = str()
+    def __init__(self, q_id):
+        self.q_id = q_id
+        self.owner_id = mani.fetch_question_info_by_id(q_id, ['owner_id'])
+        self.course_id = mani.fetch_question_info_by_id(q_id, ['course_id'])
+        self.q_title = mani.fetch_question_info_by_id(q_id, ['q_title'])
+        self.q_content = mani.fetch_question_info_by_id(q_id, ['q_content'])
+        self.q_answer = mani.fetch_question_info_by_id(q_id, ['q_answer'])
+        self.q_status = mani.fetch_question_info_by_id(q_id, ['q_status'])
 
 
 class Answer:
