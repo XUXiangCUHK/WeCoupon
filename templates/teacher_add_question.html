@@ -14,21 +14,34 @@
     <title>Teacher Add Question</title>
 </head>
 <body>
-  <div class="container p-3 my-3 bg-primary text-white">
-    <div class="row">
-        <div class="col-8">
+    <section id="banner">
+      <div class="container">
+        <div class="row inner">
             <div class="row">
-                <p>Add question to {{ course_id }}</p>
-                <a href="../teacher_within_course/{{ course_id }}" type="button" class="btn btn-primary">Back</a>
+                <h2>Add question to {{ course_id }}</h2>
             </div>
-        
+            <div class="row col-3">
+                <a href="../teacher_within_course/{{ course_id }}" type="button" class="button default">Back</a>
+            </div>
         </div>
-    </div>
-  </div>
+      </div>        
+    </section>
+
 
   <div class="container">
-    {{ wtf.quick_form(form) }}
+    <form>
+      {{ wtf.quick_form(form) }}
     <!-- TODO: finish submit and add edit function -->
+    </form>
   </div>
+
+    <footer id="footer">
+        <div class="inner">
+            <div class="row">
+                <img src="../static/images/logo-no-background.png" id="icon" alt="WECOUPON LOGO"/>
+            </div>
+            <h3>Should you have any question? Please contact us</h3>
+        </div>
+    </footer>
     
 </body>
