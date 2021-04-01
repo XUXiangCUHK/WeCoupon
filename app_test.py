@@ -4,7 +4,7 @@ from forms import LoginForm, RegistrationForm, CreateClassForm, AddQuestionForm,
 from flask_login import login_required, current_user, LoginManager, login_user, logout_user
 import json
 import random
-from models_test import User
+from models_test import User, Question, Coupon, Course, Answer
 # from flask_socketio import SocketIO, emit
 # from threading import Lock
 
@@ -191,8 +191,17 @@ def student_main():
 @app.route('/student_within_course/<classcode>', methods=['GET', 'POST'])
 @login_required
 def student_within_course(classcode):
-    print("student_within_course")
-    return render_template('student_within_course.html',course_code=classcode)
+    current_user.current_classcode = classcode
+    print("current_user.current_classcode: ", current_user.current_classcode)
+    current_user.fill_course_info()
+    print("here is course: ", current_user.current_course.course_name)
+    open_question_list = [
+        {'question_id': 2, 'course_id': 1, 'question_title': 'question#5', 'q_content': 'test2',
+         'question_type': 'Type', 'q_status': '1'},
+        {'question_id': 6, 'course_id': 7, 'question_title': 'question#6', 'q_content': 'test6',
+         'question_type': 'Short', 'q_status': '1'}]
+
+    return render_template('student_within_course.html', course_code=classcode)
 
 
 @app.route('/student_get_class/<password>', methods=['GET', 'POST'])
@@ -219,6 +228,8 @@ def teacher_collect_answer(question_id):
         # create a default question in database first
     # change the question status to open_to_student if not, start to receive answers from students and display
     print(question_id)
+    current_user.current_q_id = question_id
+    current_user.fill_question_info()
     question_info = {'question_id': '1', 'question_name': 'Q1', 'corresponding_course': 'CSCI3100', 'question_status': '1', 'course_id': '1', 'question_content': 'content'}
     answer_list = [{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This '},
                     # {'answer_userid': '234','answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
@@ -235,14 +246,15 @@ def teacher_collect_answer(question_id):
                     {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
                     {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},]
     per_ans = {'answered': 12, 'not_answered': 35}
-    return render_template('teacher_collect_answer.html', question_info=question_info, answer_list=answer_list, per_ans=per_ans)
+    return render_template('teacher_collect_answer.html', question_info=current_user.current_q, answer_list=answer_list, per_ans=per_ans)
 
 @app.route('/teacher_view_answer/<question_id>', methods=['GET', 'POST'])
 @login_required
 def teacher_view_answer(question_id):
     # change the question status to stop_collecting if not, display results 
     print(question_id)
-    question_info = {'question_id': '1', 'question_name': 'Q1', 'corresponding_course': 'CSCI3100', 'question_status': '1', 'course_id': '1', 'question_content': 'content'}
+    current_user.current_q_id = question_id
+    current_user.fill_question_info()
     answer_list = [{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This '},
                     # {'answer_userid': '234','answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
                     {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
@@ -258,7 +270,7 @@ def teacher_view_answer(question_id):
                     {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
                     {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},]
     per_ans = {'answered': 12, 'not_answered': 35}
-    return render_template('teacher_view_answer.html', question_info=question_info, answer_list=answer_list, per_ans=per_ans)
+    return render_template('teacher_view_answer.html', question_info=current_user.current_q, answer_list=answer_list, per_ans=per_ans)
 
 @app.route('/add_coupon/<userid>', methods=['GET', 'POST'])
 @login_required
@@ -274,8 +286,10 @@ def reward_coupon(userid):
 @app.route('/teacher_within_course/<course_id>', methods=['GET', 'POST'])
 @login_required
 def teacher_view(course_id):
-    print(course_id)
-    course_id = 100
+    current_user.current_classcode = course_id
+    print("current_user.current_classcode: ", current_user.current_classcode)
+    current_user.fill_course_info()
+    print("here is course: ", current_user.current_course.course_name)
     new_question_list = [{'question_id': 1, 'question_title': 'question#4', 'question_type': 'MC'},
                     {'question_id': 2, 'question_title': 'question#5', 'question_type': 'Type'},]
     old_question_list = [{'question_id': 3, 'question_title': 'question#1', 'question_type': 'MC'},
@@ -283,7 +297,8 @@ def teacher_view(course_id):
                     {'question_id': 5, 'question_title': 'question#3', 'question_type': 'Type'}]
     participation_list = [{'student_id': '1155095222', 'student_name': 'Bob', 'attempt': '20', 'coupon_rewarded': '1', 'coupon_used': '0'},
                     {'student_id': '1155095222', 'student_name': 'Peter', 'attempt': '10', 'coupon_rewarded': '5', 'coupon_used': '2'}]
-    return render_template('teacher_within_course.html', classcode='CSCI3100', course_id=course_id, new_question_list=new_question_list, old_question_list=old_question_list, participation_list=participation_list)
+    return render_template('teacher_within_course.html', classcode='CSCI3100', course_id=course_id, new_question_list=new_question_list,
+                           old_question_list=old_question_list, participation_list=participation_list)
 
 @app.route('/use_coupon/<student_id>', methods=['GET', 'POST'])
 @login_required
