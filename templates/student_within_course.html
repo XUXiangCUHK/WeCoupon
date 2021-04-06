@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  {% import "bootstrap/wtf.html" as wtf %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,7 +31,7 @@
           </ul>
           <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-answer" role="tabpanel" aria-labelledby="pills-answer-tab">
-              <form>
+              <!-- <form>
                 <div class="form-group">
                   <label for="exampleFormControlInput1">Question</label>
                   <p class="form-control" id="questiontextbox">waiting...</p>
@@ -39,9 +40,10 @@
                   <label for="exampleFormControlTextarea1">Example textarea</label>
                   <textarea class="form-control" id="answertextbox" rows="4" placeholder="Give Your Answer"></textarea>
                 </div>
-              </form>
-              <br>
-              <button type="submit" class="btn-primary" onclick="submit_ans(this)">Submit</button>
+              </form> -->
+              {{ wtf.quick_form(form) }}
+              <!-- <br>
+              <button type="submit" class="btn-primary" onclick="submit_ans(this)">Submit</button> -->
             </div>
             <div class="tab-pane fade" id="pills-participation" role="tabpanel" aria-labelledby="pills-participation-tab">
               <ul class="list-group">

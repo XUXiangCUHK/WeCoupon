@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, ValidationError
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, ValidationError,TextAreaField
 from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
 from db.manipulator import Manipulator
 from flask_pagedown.fields import PageDownField
@@ -55,3 +55,8 @@ class EditQuestionForm(FlaskForm):
     question_title = StringField('Question Title', validators=[DataRequired()])
     question_content = PageDownField('Questoin Content', validators=[DataRequired()])
     submit = SubmitField('Save Changes')
+
+class AddAnswer(FlaskForm):
+    question = StringField('Question', validators=[DataRequired()])
+    Answer = TextAreaField('Answer', validators=[DataRequired()])
+    submit = SubmitField('Submit')

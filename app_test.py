@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, abort, flash, url_for, redirect, session
 from flask_bootstrap import Bootstrap
-from forms import LoginForm, RegistrationForm, CreateClassForm, AddQuestionForm, EditQuestionForm
+from forms import LoginForm, RegistrationForm, CreateClassForm, AddQuestionForm, EditQuestionForm,AddAnswer
 from flask_login import login_required, current_user, LoginManager, login_user, logout_user
 import json
 import random
@@ -9,6 +9,8 @@ from models_test import User, Question, Coupon, Course, Answer
 # from threading import Lock
 
 # async_mode = None
+
+
 
 
 app = Flask(__name__)
@@ -191,17 +193,23 @@ def student_main():
 @app.route('/student_within_course/<classcode>', methods=['GET', 'POST'])
 @login_required
 def student_within_course(classcode):
+    form = AddAnswer()
+    if form.validate_on_submit():
+        print(form.question)
+        pass
+    else:
+        pass       
     current_user.current_classcode = classcode
     print("current_user.current_classcode: ", current_user.current_classcode)
     current_user.fill_course_info()
     print("here is course: ", current_user.current_course.course_name)
     open_question_list = [
-        {'question_id': 2, 'course_id': 1, 'question_title': 'question#5', 'q_content': 'test2',
-         'question_type': 'Type', 'q_status': '1'},
-        {'question_id': 6, 'course_id': 7, 'question_title': 'question#6', 'q_content': 'test6',
-         'question_type': 'Short', 'q_status': '1'}]
+            {'question_id': 2, 'course_id': 1, 'question_title': 'question#5', 'q_content': 'test2',
+            'question_type': 'Type', 'q_status': '1'},
+            {'question_id': 6, 'course_id': 7, 'question_title': 'question#6', 'q_content': 'test6',
+            'question_type': 'Short', 'q_status': '1'}]
 
-    return render_template('student_within_course.html', course_code=classcode)
+    return render_template('student_within_course.html', course_code=classcode,form = form)
 
 
 @app.route('/student_get_class/<password>', methods=['GET', 'POST'])
