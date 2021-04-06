@@ -11,7 +11,7 @@ function teacher_add_class() {
 
     $.getJSON(`../teacher_create_class/${course_code}&${course_name}&${course_instructor}&${course_token}`,(data)=>{
         let c = data
-        let addClass = `<tr><th><a href="http://127.0.0.1:5000/teacher_within_course/${c.course_id}">${c.course_code}</th> <td>${c.course_name}</td><td>${c.course_instructor}</td></tr>`
+        let addClass = `<tr><td><a href="http://127.0.0.1:5000/teacher_within_course/${c.course_id}">${c.course_code}</td> <td>${c.course_name}</td><td>${c.course_instructor}</td></tr>`
         let tbody = document.getElementsByTagName('tbody')[0]
         tbody.innerHTML = tbody.innerHTML + addClass
     })

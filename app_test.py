@@ -203,13 +203,10 @@ def student_within_course(classcode):
     print("current_user.current_classcode: ", current_user.current_classcode)
     current_user.fill_course_info()
     print("here is course: ", current_user.current_course.course_name)
-    open_question_list = [
-            {'question_id': 2, 'course_id': 1, 'question_title': 'question#5', 'q_content': 'test2',
-            'question_type': 'Type', 'q_status': '1'},
-            {'question_id': 6, 'course_id': 7, 'question_title': 'question#6', 'q_content': 'test6',
-            'question_type': 'Short', 'q_status': '1'}]
+    answer_list = [{'question_title': 'hard question', 'question_content': 'what is fsm?', 'question_answer': 'fsm is abc.', 'correct_answer': 'bcd', 'get_coupon_or_not': 1},
+    {'question_title': 'easy question1', 'question_content': 'what is abc?', 'question_answer': 'fsm is abc.', 'correct_answer': 'bcde', 'get_coupon_or_not': 1}]
 
-    return render_template('student_within_course.html', course_code=classcode,form = form)
+    return render_template('student_within_course.html', course_code=classcode, form = form, answer_list=answer_list)
 
 
 @app.route('/student_get_class/<password>', methods=['GET', 'POST'])
