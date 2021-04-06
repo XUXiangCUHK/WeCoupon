@@ -1,10 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, ValidationError,TextAreaField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
-from db.manipulator import Manipulator
 from flask_pagedown.fields import PageDownField
-
-mani = Manipulator()
 
 
 class LoginForm(FlaskForm):
@@ -16,26 +13,20 @@ class LoginForm(FlaskForm):
 
 
 class RegistrationForm(FlaskForm):
-    first_name = StringField('First Name',validators=[DataRequired()])
-    last_name = StringField('Last Name',validators=[DataRequired()])
+    first_name = StringField('First Name', validators=[DataRequired()])
+    last_name = StringField('Last Name', validators=[DataRequired()])
     SID = StringField('SID', validators=[Length(10),
                                          Regexp('^[0-9]*$', 0, 'SIDs must have 10 numbers')])
     email = StringField('Email', validators=[DataRequired(), Length(1, 64),
                                              Email()])
-    username = StringField('Username', validators=[
-        DataRequired(), Length(1, 64),
-        Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
-               'Usernames must have only letters, numbers, dots or '
-               'underscores')])
-    password = PasswordField('Password', validators=[
-        DataRequired(), EqualTo('password2', message='Passwords must match.')])
+    username = StringField('Username', validators=[DataRequired(), Length(1, 64),
+                                                   Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
+                                                   'Usernames must have only letters, numbers, dots or underscores')])
+    password = PasswordField('Password', validators=[DataRequired(),
+                                                     EqualTo('password2', message='Passwords must match.')])
     password2 = PasswordField('Confirm password', validators=[DataRequired()])
     isInstructor = BooleanField('I am an instructor')
     submit = SubmitField('Sign Up')
-
-    # def validate_email(self, field):
-    #     if mani.fetch_user_info_by_email(field.email, ['user_id']):
-    #         raise ValidationError('Email already registered.')
 
 
 class CreateClassForm(FlaskForm):
@@ -48,13 +39,17 @@ class CreateClassForm(FlaskForm):
 
 class AddQuestionForm(FlaskForm):
     question_title = StringField('Question Title', validators=[DataRequired()])
-    question_content = PageDownField('Questoin Content', validators=[DataRequired()])
+    question_content = PageDownField('Question Content', validators=[DataRequired()])
+    question_answer = PageDownField('Suggested Answer', validators=[DataRequired()])
     submit = SubmitField('Create Question')
+
 
 class EditQuestionForm(FlaskForm):
     question_title = StringField('Question Title', validators=[DataRequired()])
-    question_content = PageDownField('Questoin Content', validators=[DataRequired()])
+    question_content = PageDownField('Question Content', validators=[DataRequired()])
+    question_answer = PageDownField('Suggested Answer', validators=[DataRequired()])
     submit = SubmitField('Save Changes')
+
 
 class AddAnswer(FlaskForm):
     question = StringField('Question', validators=[DataRequired()])

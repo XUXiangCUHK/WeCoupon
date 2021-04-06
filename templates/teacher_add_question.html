@@ -34,8 +34,9 @@
 
 
   <div class="container">
-    <form>
-      {{ wtf.quick_form(form) }}
+    <form method=post>
+        {{ form.csrf_token }}
+        {{ wtf.quick_form(form) }}
     <!-- TODO: finish submit and add edit function -->
     </form>
   </div>
