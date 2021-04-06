@@ -6,7 +6,7 @@ from flask import Flask, request, render_template
 from flask import flash, url_for, redirect, session
 from flask_mail import Mail, Message
 from flask_bootstrap import Bootstrap
-from forms import LoginForm, RegistrationForm
+from forms import LoginForm, RegistrationForm, AddQuestionForm, EditQuestionForm
 from flask_login import login_user, logout_user
 from flask_login import login_required, current_user, LoginManager
 
@@ -39,6 +39,11 @@ mani = Manipulator()
 def load_user(user_email):
     print('load user')
     return User.get(user_email)
+
+
+########################################################################################################################
+# This part is for email configuration, including send_email function, confirm and unconfirmed status.
+########################################################################################################################
 
 
 def send_async_email(app, msg):
@@ -93,6 +98,11 @@ def unconfirmed():
             next = url_for('teacher_main')
         return redirect(next)
     return render_template('unconfirmed.html')
+
+
+########################################################################################################################
+# This part is for user management, including login, logout, signup functions.
+########################################################################################################################
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -157,17 +167,158 @@ def sign_up():
     return render_template('signup.html', form=form)
 
 
+########################################################################################################################
+# This part is for teacher administration, including main page, question page and answer page.
+########################################################################################################################
+
+
 @app.route('/teacher_main_page', methods=['GET', 'POST'])
 @login_required
 def teacher_main():
-    # user_id = session['user_id']
+    print("Inside teacher_main_page")
     enroll_info = mani.user_enrollment(current_user.user_id)
-    print(enroll_info)
-    teach_profile = [
-        {'name': 'Michael R. Lyu',
-         'department': 'Computer Science and Engineering department',
-         'title': 'Professor'}]
-    return render_template('teacher_main_page.html', teach_info=enroll_info, teach_profile=teach_profile)
+    first_name = mani.fetch_user_info_by_id(current_user.user_id, ['first_name'])
+    last_name = mani.fetch_user_info_by_id(current_user.user_id, ['last_name'])
+    pos = mani.fetch_user_info_by_id(current_user.user_id, ['is_student'])
+    greeting = "Welcome, {} {}".format(last_name, first_name)
+    university = "The Chinese University of Hong Kong"
+    if not pos:
+        title = "Professor"
+    else:
+        title = "Student"
+    teach_profile = [{'name': greeting, 'department': university, 'title': title}]
+    return render_template('teacher_main_page.html',
+                           teach_info=enroll_info,
+                           teach_profile=teach_profile)
+
+
+@app.route('/teacher_create_class/<course_code>&<course_name>&<course_instructor>&<course_token>',
+           methods=['GET', 'POST'])
+@login_required
+def teacher_create_class(course_code, course_name, course_instructor, course_token):
+    print("Inside teacher_create_class")
+    user_id = current_user.user_id
+    mani.insert_course_info(course_code, course_name, course_instructor, course_token)
+    class_info = mani.fetch_course_info(course_token)
+    mani.insert_enrollment_info(user_id, class_info['course_id'])
+    return json.dumps(class_info)
+
+
+@app.route('/teacher_within_course/<course_id>', methods=['GET', 'POST'])
+@login_required
+def teacher_view(course_id):
+    print("Inside teacher_within_course")
+    new_question_list, old_question_list = mani.fetch_question_info_by_account(current_user.user_id, course_id)
+    current_user.current_course_id = course_id
+    current_user.fill_course_info()
+    participation_list = mani.fetch_participation(course_id)
+    return render_template('teacher_within_course.html',
+                           course_code=current_user.current_course.course_code,
+                           new_question_list=new_question_list,
+                           old_question_list=old_question_list,
+                           participation_list=participation_list)
+
+
+@app.route('/teacher_view_answer/<question_id>', methods=['GET', 'POST'])
+@login_required
+def teacher_view_answer(question_id):
+    print("Inside teacher_view_answer")
+    current_user.current_q_id = question_id
+    current_user.fill_question_info()
+    # question_info = mani.fetch_question_info(question_id)
+    answer_list = mani.fetch_answer_list(question_id)
+    per_ans = mani.fetch_per_ans(current_user.current_course_id, question_id)
+    return render_template('teacher_view_answer.html',
+                           question_info=current_user.current_q,
+                           answer_list=answer_list,
+                           per_ans=per_ans)
+
+
+@app.route('/teacher_collect_answer/<question_id>', methods=['GET', 'POST'])
+@login_required
+def teacher_collect_answer(question_id):
+    print("Inside teacher_collect_answer")
+    session['question_id'] = question_id
+    if question_id == 'default':
+        print("default empty question created!")
+        # create a default question in database first
+    # change the question status to open_to_student if not, start to receive answers from students and display
+    current_user.current_q_id = question_id
+    current_user.fill_question_info()
+    answer_list = mani.fetch_answer_list(question_id)
+    per_ans = mani.fetch_per_ans(current_user.current_course_id, question_id)
+    return render_template('teacher_collect_answer.html',
+                           question_info=current_user.current_q,
+                           answer_list=answer_list,
+                           per_ans=per_ans)
+
+
+@app.route('/add_coupon/<userid>', methods=['GET', 'POST'])
+@login_required
+def reward_coupon(userid):
+    print("Inside add_coupon")
+    coupon_num = mani.fetch_coupon_num(userid)
+    mani.insert_coupon_info(userid, current_user.current_course_id, coupon_num+1, "reward")
+    return True
+
+
+@app.route('/teacher_add_question/<course_id>', methods=['GET', 'POST'])
+@login_required
+def teacher_add_question(course_id):
+    print("Inside teacher_add_question")
+    form = AddQuestionForm()
+    current_user.current_course_id = course_id
+    current_user.fill_course_info()
+    if form.validate_on_submit():
+        input_title = form.question_title.data
+        input_content = form.question_content.data
+        input_answer = form.question_answer.data
+        status = 'A'
+        mani.insert_question_info(current_user.user_id, current_user.current_course_id,
+                                  input_title, input_content, input_answer, status)
+        return redirect(url_for('teacher_view', course_id=current_user.current_course_id))
+    return render_template('teacher_add_question.html', course_id=course_id, form=form)
+
+
+@app.route('/teacher_view_question/<question_id>', methods=['GET', 'POST'])
+@login_required
+def teacher_view_question(question_id):
+    print("Inside teacher_view_question")
+    course_id = mani.fetch_question_info_by_id(question_id, ['course_id'])
+    current_user.current_course_id = course_id
+    current_user.fill_course_info()
+    current_user.current_q_id = question_id
+    current_user.fill_question_info()
+    form = EditQuestionForm(question_title=current_user.current_q.q_title,
+                            question_content=current_user.current_q.q_content,
+                            question_answer=current_user.current_q.q_answer)
+    if form.validate_on_submit():
+        input_title = form.question_title.data
+        input_content = form.question_content.data
+        input_answer = form.question_answer.data
+        if input_title != current_user.current_q.q_title:
+            sql.update_question(question_id, 'q_title', input_title)
+        if input_content != current_user.current_q.q_content:
+            sql.update_question(question_id, 'q_content', input_content)
+        if input_answer != current_user.current_q.q_answer:
+            sql.update_question(question_id, 'q_answer', input_answer)
+        return redirect(url_for('teacher_view', course_id=current_user.current_course_id))
+    return render_template('teacher_view_question.html', course_info=current_user.current_course, form=form)
+
+
+@app.route('/update_answer', methods=["GET"])
+@login_required
+def update_answer():
+    print('Inside update_answer')
+    question_id = session['question_id']
+    course_id = mani.fetch_question_info_by_id(question_id, ['course_id'])
+    answer_list = mani.fetch_answer_list(course_id)
+    return json.dumps(answer_list)
+
+
+########################################################################################################################
+# This part is for student administration, including main page, competing page and participation page.
+########################################################################################################################
 
 
 @app.route('/student_main_page', methods=['GET', 'POST'])
@@ -181,18 +332,6 @@ def student_main():
     return render_template('student_main_page.html', enroll_info=enroll_info)
 
 
-@app.route('/teacher_create_class/<course_code>&<course_name>&<course_instructor>&<course_token>', methods=['GET', 'POST'])
-@login_required
-def teacher_create_class(course_code, course_name, course_instructor, course_token):
-    user_id = session['user_id']
-    mani.insert_course_info(course_code, course_name, course_instructor, course_token)
-    class_info = mani.fetch_course_info(course_token)
-    course_id = class_info['course_id']
-    mani.insert_enrollment_info(user_id, course_id)
-    print(class_info)
-    return json.dumps(class_info)
-
-
 @app.route('/student_get_class/<course_token>', methods=['GET', 'POST'])
 @login_required
 def student_get_class(course_token):
@@ -202,83 +341,6 @@ def student_get_class(course_token):
     mani.insert_enrollment_info(user_id, course_id)
     print(class_info)
     return json.dumps(class_info)
-
-
-@app.route('/teacher_within_course/<course_id>', methods=['GET', 'POST'])
-@login_required
-def teacher_view(course_id):
-    # user_id = session['user_id']
-    new_question_list, old_question_list = mani.fetch_question_info_by_account(current_user.user_id, course_id)
-    course_code = new_question_list[0]['course_code']
-    participation_list = list()
-    # participation_list = mani.fetch_participation(course_id)
-    return render_template('teacher_within_course.html',
-                           course_code=course_code,
-                           new_question_list=new_question_list,
-                           old_question_list=old_question_list,
-                           participation_list=participation_list)
-
-
-@app.route('/teacher_view_answer/<question_id>', methods=['GET', 'POST'])
-@login_required
-def teacher_view_answer(question_id):
-    print(question_id)
-    question_info = mani.fetch_question_info(question_id)
-    answer_list = mani.fetch_answer_list(question_id)
-    per_ans = {'answered': 12, 'not_answered': 35}
-    return render_template('teacher_view_answer.html', question_info=question_info, answer_list=answer_list, per_ans=per_ans)
-
-
-@app.route('/teacher_collect_answer/<question_id>', methods=['GET', 'POST'])
-@login_required
-def teacher_collect_answer(question_id):
-    if question_id == 'default':
-        print("default empty question created!")
-        # create a default question in database first
-    # change the question status to open_to_student if not, start to receive answers from students and display
-    print("here is question id:", question_id)
-    question_info = {'question_id': '1', 'question_name': 'Q1', 'corresponding_course': 'CSCI3100', 'question_status': '1', 'course_id': '1', 'question_content': 'content'}
-    answer_list = mani.fetch_answer_list(1)
-    # answer_list = [{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This '},
-    #                 # {'answer_userid': '234','answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
-    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-    #                 {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},]
-    per_ans = {'answered': 12, 'not_answered': 35}
-    return render_template('teacher_collect_answer.html', question_info=question_info, answer_list=answer_list, per_ans=per_ans)
-
-
-@app.route('/student_submit_answer/<a_content>', methods=['GET', 'POST'])
-@login_required
-def student_submit_answer(a_content):
-    pass
-    # mani.insert_answer_info(q_id, student_id, a_content, a_status)
-
-
-@app.route('/add_coupon/<userid>', methods=['GET', 'POST'])
-@login_required
-def reward_coupon(userid):
-    print(userid)
-    coupon_num = mani.fetch_coupon_num(userid)
-    mani.insert_coupon_info(userid, coupon_num+1, "reward")
-    return True
-    # current_class = 'CSCI3100'
-    # return current_class
-
-
-@app.route('/teacher_add_question/<courseid>', methods=['GET', 'POST'])
-@login_required
-def teacher_add_question(courseid):
-    return render_template('teacher_add_question.html', course_id=courseid)
 
 
 @app.route('/student_within_course/<course_id>', methods=['GET', 'POST'])
@@ -297,6 +359,13 @@ def student_within_course(course_id):
     else:
         print("there is no current open question")
     return render_template('student_within_course.html')
+
+
+@app.route('/student_submit_answer/<a_content>', methods=['GET', 'POST'])
+@login_required
+def student_submit_answer(a_content):
+    pass
+    # mani.insert_answer_info(q_id, student_id, a_content, a_status)
 
 
 if __name__ == '__main__':

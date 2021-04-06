@@ -59,9 +59,10 @@ class Manipulator:
         }
         self.sql.insert_answer(data)
 
-    def insert_coupon_info(self, student_id, coupon_num, note):
+    def insert_coupon_info(self, student_id, course_id, coupon_num, note):
         data = {
             'student_id': student_id,
+            'course_id': course_id,
             'coupon_num': coupon_num,
             'insert_time': int(datetime.datetime.now().timestamp()),
             'note': note
@@ -96,6 +97,13 @@ class Manipulator:
 
     def fetch_user_info_by_token(self, token, cols):
         res = self.sql.read_account_info_by_token(token, cols)
+        if res:
+            return res[0][0]
+        else:
+            return str()
+
+    def fetch_user_info_by_id(self, user_id, cols):
+        res = self.sql.read_account_info_by_id(user_id, cols)
         if res:
             return res[0][0]
         else:
@@ -152,8 +160,8 @@ class Manipulator:
                 'q_title': item[2],
                 'q_content': item[3],
                 'q_answer': item[4],
-                'question_id': item[2],
-                'question_type': item[4]
+                'question_id': item[0],
+                'question_type': item[3]
             }
             if item[5] == 'A':
                 new_question_list.append(q)
@@ -182,19 +190,22 @@ class Manipulator:
         return answer_list
 
     def fetch_participation(self, course_id):
-        res = self.sql.read_participation_info(course_id)
         participation_list = list()
-        if not res:
-            return participation_list
+        res = self.sql.read_course_enrolled_users(course_id)
         for item in res:
             user_id = item[0]
-            coupon_num = self.sql.read_coupon_info(user_id)[0][0]
+            student_id = self.fetch_user_info_by_id(user_id, ['SID'])
+            first_name = self.fetch_user_info_by_id(user_id, ['first_name'])
+            last_name = self.fetch_user_info_by_id(user_id, ['last_name'])
+            attempt = self.fetch_attempt_num(course_id, user_id)
+            coupon_num = self.fetch_coupon_num(user_id)
             participation_list.append({
-                'user_id': item[0],
-                'student_id': item[1],
-                'student_name': '{} {}'.format(item[3], item[2]),
-                'attempt': item[4],
-                'coupon': coupon_num,
+                'user_id': user_id,
+                'student_id': student_id,
+                'student_name': '{} {}'.format(first_name, last_name),
+                'attempt': attempt,
+                'coupon_rewarded': coupon_num,
+                'coupon_used': coupon_num,
             })
         return participation_list
 
@@ -203,6 +214,30 @@ class Manipulator:
         if not res:
             return 0
         return res[0][0]
+
+    def fetch_attempt_num(self, course_id, user_id):
+        res = self.sql.read_attempt_count(course_id, user_id)
+        if not res:
+            return 0
+        return res[0][0]
+
+    def fetch_per_ans(self, course_id, q_id):
+        answered = 0
+        per_ans = dict()
+        res = self.sql.read_ans_num(q_id)
+        if res:
+            answered = res[0][0]
+
+        users = self.sql.read_course_enrolled_users(course_id)
+        total_num = len(users)
+        if total_num > answered:
+            not_answered = total_num - answered
+        else:
+            not_answered = 0
+
+        per_ans['answered'] = answered
+        per_ans['not_answered'] = not_answered
+        return per_ans
 
 
 if __name__ == "__main__":
@@ -220,10 +255,11 @@ if __name__ == "__main__":
     # print('res,', res)
     # res = m.user_is_student('1155107785@link.cuhk.edu.hk')
     # m.insert_question_info(3, 1, 'Question5', 'What are s/w principles?', 'explosive states', 'N')
-    # m.insert_answer_info(4, 1, 'hard to implement', 1)
+    m.insert_answer_info(1, 3, 'hard to do', 0)
     # m.insert_answer_info(1, 2, 'explosive states', 0)
     # print(m.fetch_question_info(1))
     # print(m.fetch_answer_list(1))
     # m.fetch_participation(1, 0, 'initial')
     # print(m.fetch_participation(1))
-    print(m.fetch_coupon_num(1))
+    # print(m.fetch_coupon_num(1))
+    # print(m.fetch_participation(1))

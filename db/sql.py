@@ -51,6 +51,15 @@ class Sql:
                     '''
         self.db.single_write_into_mysql(data, statement)
 
+    def update_question(self, q_id, col, data):
+        statement = '''
+                    UPDATE `WeCoupon`.`question`
+                    SET {} = '{}'
+                    WHERE q_id = {};
+                    '''.format(col, data, q_id)
+        print(statement)
+        self.db.execute_mysql(statement)
+
     def insert_answer(self, data):
         statement = '''
                     INSERT IGNORE INTO `WeCoupon`.`answer`
@@ -63,9 +72,9 @@ class Sql:
     def insert_coupon(self, data):
         statement = '''
                     INSERT IGNORE INTO `WeCoupon`.`coupon`
-                    (`student_id`, `coupon_num`, `insert_time`, `note`)
+                    (`student_id`, `course_id`, `coupon_num`, `insert_time`, `note`)
                     VALUES
-                    (%(student_id)s, %(coupon_num)s, %(insert_time)s, %(note)s);
+                    (%(student_id)s, %(course_id)s, %(coupon_num)s, %(insert_time)s, %(note)s);
                     '''
         self.db.single_write_into_mysql(data, statement)
 
@@ -77,6 +86,11 @@ class Sql:
     def read_account_info_by_token(self, token, column_list):
         col = ', '.join(column_list)
         statement = '''SELECT {} FROM WeCoupon.account WHERE token='{}';'''.format(col, token)
+        return self.db.read_from_mysql(statement)
+
+    def read_account_info_by_id(self, user_id, column_list):
+        col = ', '.join(column_list)
+        statement = '''SELECT {} FROM WeCoupon.account WHERE user_id='{}';'''.format(col, user_id)
         return self.db.read_from_mysql(statement)
 
     def read_course_info_by_id(self, course_id, column_list):
@@ -133,14 +147,23 @@ class Sql:
                     WHERE q_id='{}';'''.format(q_id)
         return self.db.read_from_mysql(statement)
 
-    def read_participation_info(self, course_id):
+    def read_course_enrolled_users(self, course_id):
         statement = '''
-                    SELECT user_id, SID, first_name, last_name, count(*)
-                    FROM WeCoupon.account AS ac
-                    JOIN WeCoupon.answer AS an ON ac.user_id = an.student_id
-                    WHERE an.q_id IN (SELECT q.q_id FROM WeCoupon.question AS q WHERE q.course_id='{}') AND is_student=1
-                    GROUP BY ac.user_id;
+                    SELECT DISTINCT e.user_id
+                    FROM WeCoupon.enrollment AS e
+                    JOIN WeCoupon.account AS a ON e.user_id = a.user_id
+                    WHERE e.course_id = '{}' AND is_student = 1;
                     '''.format(course_id)
+        return self.db.read_from_mysql(statement)
+
+    def read_attempt_count(self, course_id, user_id):
+        statement = '''
+                    SELECT count(*)
+                    FROM WeCoupon.answer AS an
+                    JOIN WeCoupon.question AS q ON q.q_id = an.q_id
+                    WHERE an.q_id IN (SELECT q.q_id FROM WeCoupon.question WHERE course_id='{}') 
+                    AND an.student_id = '{}';
+                    '''.format(course_id, user_id)
         return self.db.read_from_mysql(statement)
 
     def read_coupon_info(self, user_id):
@@ -150,6 +173,14 @@ class Sql:
                     WHERE student_id='{}'
                     ORDER BY insert_time DESC
                     LIMIT 1;'''.format(user_id)
+        return self.db.read_from_mysql(statement)
+
+    def read_ans_num(self, q_id):
+        statement = '''
+                    SELECT count(*)
+                    FROM WeCoupon.answer
+                    WHERE q_id = '{}'
+                    '''.format(q_id)
         return self.db.read_from_mysql(statement)
 
 
