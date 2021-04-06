@@ -223,6 +223,7 @@ def teacher_view(course_id):
 @login_required
 def teacher_view_answer(question_id):
     print("Inside teacher_view_answer")
+    sql.update_question_status(question_id)
     course_id = mani.fetch_question_info_by_id(question_id, ['course_id'])
     current_user.current_course_id = course_id
     current_user.fill_course_info()
@@ -241,16 +242,20 @@ def teacher_view_answer(question_id):
 @login_required
 def teacher_collect_answer(question_id):
     print("Inside teacher_collect_answer")
-    session['question_id'] = question_id
     if question_id == 'default':
         print("default empty question created!")
-        # create a default question in database first
-    # change the question status to open_to_student if not, start to receive answers from students and display
+        mani.insert_question_info(current_user.user_id, 1, 'Random Coupon',
+                                  'This is a random coupon. Please follow the instruction from professor.', '', 'A')
+        question_id = sql.read_max_question_id()[0][0]
+        return redirect(url_for('teacher_collect_answer', question_id=question_id))
+
+    session['question_id'] = question_id
     course_id = mani.fetch_question_info_by_id(question_id, ['course_id'])
     current_user.current_course_id = course_id
     current_user.fill_course_info()
     current_user.current_q_id = question_id
     current_user.fill_question_info()
+    print("here is", question_id)
     answer_list = mani.fetch_answer_list(question_id)
     per_ans = mani.fetch_per_ans(current_user.current_course_id, question_id)
     return render_template('teacher_collect_answer.html',
