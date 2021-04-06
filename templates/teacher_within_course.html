@@ -48,8 +48,8 @@
                         <thead>
                           <tr>
                             <th scope="col" style="width:30%">Question Name</th>
-                            <th scope="col" style="width:30%">Question Type</th>
-                            <th scope="col" style="width:20%">View</th>
+                            <th scope="col" style="width:30%">Question Content</th>
+                            <th scope="col" style="width:20%">Edit</th>
                             <th scope="col" style="width:20%">Start</th>
                           </tr>
                         </thead>
@@ -58,7 +58,7 @@
                           <tr>
                               <td style="width:30%">{{ item["question_title"] }}</td>
                               <td style="width:30%">{{ item["question_type"] }}</td>
-                              <td style="width:20%"><a href="../teacher_view_question/{{ item.question_id }}" class="button btn btn-primary">View</a></td>
+                              <td style="width:20%"><a href="../teacher_view_question/{{ item.question_id }}" class="button btn btn-primary">Edit</a></td>
                               <td style="width:20%"><a href="../teacher_collect_answer/{{ item.question_id }}" class="button btn btn-primary">Start</a></td>
                           </tr>
                         

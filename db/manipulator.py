@@ -161,6 +161,7 @@ class Manipulator:
                 'q_content': item[3],
                 'q_answer': item[4],
                 'question_id': item[0],
+                'question_title': item[2],
                 'question_type': item[3]
             }
             if item[5] == 'A':

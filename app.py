@@ -223,6 +223,9 @@ def teacher_view(course_id):
 @login_required
 def teacher_view_answer(question_id):
     print("Inside teacher_view_answer")
+    course_id = mani.fetch_question_info_by_id(question_id, ['course_id'])
+    current_user.current_course_id = course_id
+    current_user.fill_course_info()
     current_user.current_q_id = question_id
     current_user.fill_question_info()
     # question_info = mani.fetch_question_info(question_id)
@@ -243,6 +246,9 @@ def teacher_collect_answer(question_id):
         print("default empty question created!")
         # create a default question in database first
     # change the question status to open_to_student if not, start to receive answers from students and display
+    course_id = mani.fetch_question_info_by_id(question_id, ['course_id'])
+    current_user.current_course_id = course_id
+    current_user.fill_course_info()
     current_user.current_q_id = question_id
     current_user.fill_question_info()
     answer_list = mani.fetch_answer_list(question_id)
