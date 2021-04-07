@@ -190,6 +190,7 @@ def student_main():
     # print(user_msg)
     enroll_info = [{'course_id': 1, 'code': 'CSCI3100', 'title': 'Software Engineering', 'info': 'Prof. Michael R. Lyu'},
                    {'course_id': 3, 'code': 'IERG3310', 'title': 'Computer Networking', 'info': 'Prof. Xing Guoliang'}]
+                   student_profile = [{'name': greeting, 'department': university, 'title': title}]
     return render_template('student_main_page.html', enroll_info=enroll_info)
 
 
@@ -207,13 +208,10 @@ def student_within_course(classcode):
     print("current_user.current_classcode: ", current_user.current_classcode)
     current_user.fill_course_info()
     print("here is course: ", current_user.current_course.course_name)
-    open_question_list = [
-            {'question_id': 2, 'course_id': 1, 'question_title': 'question#5', 'q_content': 'test2',
-            'question_type': 'Type', 'q_status': '1'},
-            {'question_id': 6, 'course_id': 7, 'question_title': 'question#6', 'q_content': 'test6',
-            'question_type': 'Short', 'q_status': '1'}]
+    answer_list = [{'question_title': "hard question", 'question_content': "what is fsm?", 'question_answer': "fsm is abc.", 'correct_answer': 'fsm is cde.', 'get_coupon_or_not': 1}, 
+        {'question_title': "hard question2", 'question_content': "what is fsm?2", 'question_answer': "fsm is abc.2", 'correct_answer': 'fsm is cde.2', 'get_coupon_or_not' : 0}]
 
-    return render_template('student_within_course.html', course_code=classcode,form = form)
+    return render_template('student_within_course.html', course_code=classcode,form = form, answer_list=answer_list)
 
 
 @app.route('/student_get_class/<password>', methods=['GET', 'POST'])
