@@ -35,19 +35,22 @@ app.config['FLASKY_MAIL_SUBJECT_PREFIX'] = 'WeCoupon'
 
 mail = Mail(app)
 
-login_manager = LoginManager(app)
+login_manager = LoginManager()
 login_manager.login_view = 'login'
+login_manager.init_app(app)
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    print("user loaded!")
-    if user_id == '1':
-        input_email = 'teacher@gmail.com'
-        user = User(input_email)
-    elif user_id == '2':
-        input_email = 'student@gmail.com'
-        user = User(input_email)
+    if user_id:
+        print("user loaded!: ", user_id)
+        if user_id == '1':
+            input_email = 'teacher@gmail.com'
+            user = User(input_email)
+        elif user_id == '2':
+            input_email = 'student@gmail.com'
+            user = User(input_email)
+        print("user loaded???")
     return user     # query all info of the user from db
 
 
@@ -203,10 +206,13 @@ def student_within_course(classcode):
     print("current_user.current_classcode: ", current_user.current_classcode)
     current_user.fill_course_info()
     print("here is course: ", current_user.current_course.course_name)
-    answer_list = [{'question_title': 'hard question', 'question_content': 'what is fsm?', 'question_answer': 'fsm is abc.', 'correct_answer': 'bcd', 'get_coupon_or_not': 1},
-    {'question_title': 'easy question1', 'question_content': 'what is abc?', 'question_answer': 'fsm is abc.', 'correct_answer': 'bcde', 'get_coupon_or_not': 1}]
+    open_question_list = [
+            {'question_id': 2, 'course_id': 1, 'question_title': 'question#5', 'q_content': 'test2',
+            'question_type': 'Type', 'q_status': '1'},
+            {'question_id': 6, 'course_id': 7, 'question_title': 'question#6', 'q_content': 'test6',
+            'question_type': 'Short', 'q_status': '1'}]
 
-    return render_template('student_within_course.html', course_code=classcode, form = form, answer_list=answer_list)
+    return render_template('student_within_course.html', course_code=classcode,form = form)
 
 
 @app.route('/student_get_class/<password>', methods=['GET', 'POST'])
@@ -235,7 +241,10 @@ def teacher_collect_answer(question_id):
     print(question_id)
     current_user.current_q_id = question_id
     current_user.fill_question_info()
-    question_info = {'question_id': '1', 'question_name': 'Q1', 'corresponding_course': 'CSCI3100', 'question_status': '1', 'course_id': '1', 'question_content': 'content'}
+    current_user.current_q.q_status = '1'
+    current_user.current_classcode = current_user.current_q.course_id
+    current_user.fill_course_info()
+    print("teacher_collect_answer: ", current_user.current_q.q_status)
     answer_list = [{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This '},
                     # {'answer_userid': '234','answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
                     {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
@@ -256,37 +265,44 @@ def teacher_collect_answer(question_id):
 @app.route('/teacher_view_answer/<question_id>', methods=['GET', 'POST'])
 @login_required
 def teacher_view_answer(question_id):
-    # change the question status to stop_collecting if not, display results 
-    print(question_id)
+    # change the question status to stop_collecting if not, display results
     current_user.current_q_id = question_id
     current_user.fill_question_info()
-    answer_list = [{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This ', 'status': 1},
+    current_user.current_q.q_status = '2'
+    current_user.current_classcode = current_user.current_q.course_id
+    current_user.fill_course_info()
+    print("teacher_view_answer: ", current_user.current_q.q_status)
+    answer_list = [{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This '},
                     # {'answer_userid': '234','answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
-                    {'answer_userid': '01', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
-                    {'answer_userid': '03', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
-                    {'answer_userid': '04', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
-                    {'answer_userid': '04', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 1},
-                    {'answer_userid': '05', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
-                    {'answer_userid': '06', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 1},]
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},]
     per_ans = {'answered': 12, 'not_answered': 35}
     return render_template('teacher_view_answer.html', question_info=current_user.current_q, answer_list=answer_list, per_ans=per_ans)
 
-@app.route('/add_coupon/<userid>', methods=['GET', 'POST'])
+@app.route('/add_coupon/<userid>&<q_id>', methods=['GET', 'POST'])
 @login_required
-def reward_coupon(userid):
+def reward_coupon(userid, q_id):
     # get the username of student who is rewarded coupon
-    print(userid)
-    current_class = 'CSCI3100'
+    print(userid, q_id)
+    current_user.current_q_id = q_id
+    current_user.fill_question_info()
+    current_user.current_classcode = current_user.current_q.course_id
+    current_user.fill_course_info()
+    print("add_coupon: ", current_user.current_course.course_name)
     # coupon_number++
     # update db
     # flash('Congratulations! {} got this coupon!'.format(username))
-    return current_class
+    return True
 
 @app.route('/teacher_within_course/<course_id>', methods=['GET', 'POST'])
 @login_required
@@ -332,6 +348,13 @@ def teacher_add_question(course_id):
 def teacher_view_question(question_id):
     # use question_id to get question_title and question_content and corresponding course info
     form = EditQuestionForm(question_title='title', question_content='content')
+    current_user.current_q_id = question_id
+    current_user.fill_question_info()
+    current_user.current_classcode = current_user.current_q.course_id
+    print('In teacher_view_question, current_classcode:', current_user.current_classcode)
+    current_user.fill_course_info()
+    print('In teacher_view_question, q_status:', current_user.current_q.q_status)
+    print('In teacher_view_question, current_course:', current_user.current_course.course_name)
     if form.validate_on_submit():
         input_title = form.question_title.data
         input_content = form.question_content.data
@@ -340,17 +363,17 @@ def teacher_view_question(question_id):
         # Store the edited question in database and get back its question_id, this time return the updated data 
         form = EditQuestionForm(question_title=input_title, question_content=input_content)
         course_info = {'course_id': '123', 'course_code': 'CSCI3100'}
-        return render_template('teacher_view_question.html', course_info=course_info, form=form)
+        return render_template('teacher_view_question.html', form=form)
     course_info = {'course_id': '123', 'course_code': 'CSCI3100'}
-    return render_template('teacher_view_question.html', course_info=course_info, form=form)
+    return render_template('teacher_view_question.html', form=form)
 
-@app.route('/update_answer', methods=["GET"])
-@login_required
-def update_answer():
-    answer_list = {"1":{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This '},
-                    "2":{'answer_userid': '234','answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
-                    "3":{'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'}}
-    return json.dumps(answer_list)  
+# @app.route('/update_answer', methods=["GET"])
+# @login_required
+# def update_answer():
+#     answer_list = {"1":{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This '},
+#                     "2":{'answer_userid': '234','answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
+#                     "3":{'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'}}
+#     return json.dumps(answer_list)
 
 
 #@app.route('/teacher_within_course/<classcode>', methods=['GET', 'POST'])
@@ -379,4 +402,3 @@ def update_answer():
 
 if __name__ == '__main__':
     app.run(debug=True)
-    # socketio.run(app, debug=True)
