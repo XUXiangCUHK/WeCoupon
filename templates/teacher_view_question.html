@@ -25,10 +25,10 @@
                 </a>
             </div>
             <div class="row">
-                <h2>Question of {{ course_info.course_code }}</h2>
+                <h2>Question of {{ current_user.current_course.course_code }}</h2>
             </div>
             <div class="row col-3">
-                <a href="../teacher_within_course/{{ course_info.course_id }}" type="button" class="button default">Back</a>
+                <a href="../teacher_within_course/{{ current_user.current_course.course_id }}" type="button" class="button default">Back</a>
             </div>
         </div>
       </div>        
