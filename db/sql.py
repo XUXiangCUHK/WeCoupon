@@ -197,7 +197,7 @@ class Sql:
         statement = '''
                     SELECT min(id)
                     FROM WeCoupon.coupon
-                    WHERE student_id='{}'AND course_id='{}'
+                    WHERE student_id='{}'AND course_id='{}' AND is_used=0
                     '''.format(user_id, course_id)
         return self.db.read_from_mysql(statement)
 

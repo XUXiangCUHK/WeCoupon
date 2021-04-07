@@ -238,7 +238,6 @@ def teacher_view_answer(question_id):
     # question_info = mani.fetch_question_info(question_id)
     answer_list = mani.fetch_answer_list(question_id)
     per_ans = mani.fetch_per_ans(current_user.current_course_id, question_id)
-    print(answer_list)
     return render_template('teacher_view_answer.html',
                            question_info=current_user.current_q,
                            answer_list=answer_list,
@@ -281,7 +280,6 @@ def reward_coupon(userid, q_id, a_id):
     current_user.current_q_id = q_id
     current_user.fill_question_info()
     mani.insert_coupon_info(userid, course_id, 0, "reward")
-    print(a_id)
     sql.update_answer_status(a_id, 1)
     return str()
 
