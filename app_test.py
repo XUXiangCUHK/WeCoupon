@@ -198,7 +198,8 @@ def student_main():
 def student_within_course(classcode):
     form = AddAnswer()
     if form.validate_on_submit():
-        print(form.question)
+        answer = form.answer.data
+        print("answer:", answer)
         pass
     else:
         pass       
@@ -370,13 +371,22 @@ def teacher_view_question(question_id):
     course_info = {'course_id': '123', 'course_code': 'CSCI3100'}
     return render_template('teacher_view_question.html', form=form)
 
-# @app.route('/update_answer', methods=["GET"])
-# @login_required
-# def update_answer():
-#     answer_list = {"1":{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This '},
-#                     "2":{'answer_userid': '234','answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
-#                     "3":{'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'}}
-#     return json.dumps(answer_list)
+@app.route('/update_answer/<q_id>', methods=["GET"])
+@login_required
+def update_answer(q_id):
+    print("receive q_id: ")
+    print(q_id)
+    # current_user.current_q.q_id = q_id
+    # current_user.fill_question_info()
+    # current_user.current_classcode = current_user.current_q.course_id
+    # print('In update_answer, current_classcode:', current_user.current_classcode)
+    # current_user.fill_course_info()
+    # print('In update_answer, q_status:', current_user.current_q.q_status)
+    # print('In update_answer, current_course:', current_user.current_course.course_name)
+    answer_list = {"1":{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This '},
+                    "2":{'answer_userid': '234','answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
+                    "3":{'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'}}
+    return json.dumps(answer_list)
 
 
 #@app.route('/teacher_within_course/<classcode>', methods=['GET', 'POST'])

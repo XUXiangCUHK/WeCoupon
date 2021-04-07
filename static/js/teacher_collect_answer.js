@@ -17,25 +17,53 @@ function reward(obj, userid, username, q_id) {
     }
 }
 
-function update_answer() {
-    $.ajax({
-        url:"/update_answer",
-        type:"GET",
-        dataType:"JSON",
-        success:function(answer_list){
-            $('#answerList').empty();
-            $.each(answer_list, function (k, v) {
-                var row = "";
-                row += "<tr><td style='width:15%'>"+v.answer_user+
-                "</td>"+"<td style='width:60%'>"+v.answer_content+ 
-                "</td>"+"<td style='width:25%'>"+
-                `<input type='button' class='btn btn-primary' value='Reward' onclick="reward(this, '${v.answer_userid}' , '${v.answer_user}' )"></input></td>`+
-                +"</tr>";
-                $('#answerList').append(row);
-                // answer_userid, answer_user, answer_content
-            })
-        }
-    })
+function start_update(q_id){
+    alert("start update");
+    setInterval( function(q_id) {
+        alert("update!")
+        $.ajax({
+            url:`/update_answer/${q_id}`,
+            type:"GET",
+            dataType:"JSON",
+            success:function(answer_list){
+                $('#answerList').empty();
+                $.each(answer_list, function (k, v) {
+                    var row = "";
+                    row += "<tr><td style='width:20%'>"+v.answer_user+
+                    "</td>"+"<td style='width:80%'>"+v.answer_content
+                    // + 
+                    // "</td>"+"<td style='width:25%'>"+
+                    // `<input type='button' class='btn btn-primary' value='Reward' onclick="reward(this, '${v.answer_userid}' , '${v.answer_user}' )"></input></td>`+
+                    // +"</tr>"
+                    ;
+                    $('#answerList').append(row);
+                    // answer_userid, answer_user, answer_content
+                })
+            },
+        })
+    }, 3000, q_id);
 }
 
-setInterval(update_answer,3000); 
+// function update_answer(q_id) {
+//     alert("update")
+//     $.ajax({
+//         url:`/update_answer/${q_id}`,
+//         type:"GET",
+//         dataType:"JSON",
+//         success:function(answer_list){
+//             $('#answerList').empty();
+//             $.each(answer_list, function (k, v) {
+//                 var row = "";
+//                 row += "<tr><td style='width:15%'>"+v.answer_user+
+//                 "</td>"+"<td style='width:60%'>"+v.answer_content+ 
+//                 "</td>"+"<td style='width:25%'>"+
+//                 `<input type='button' class='btn btn-primary' value='Reward' onclick="reward(this, '${v.answer_userid}' , '${v.answer_user}' )"></input></td>`+
+//                 +"</tr>";
+//                 $('#answerList').append(row);
+//                 // answer_userid, answer_user, answer_content
+//             })
+//         },
+//     })
+// }
+
+// setInterval(update_answer,3000); 
