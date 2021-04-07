@@ -370,13 +370,15 @@ def teacher_view_question(question_id):
     course_info = {'course_id': '123', 'course_code': 'CSCI3100'}
     return render_template('teacher_view_question.html', form=form)
 
-# @app.route('/update_answer', methods=["GET"])
-# @login_required
-# def update_answer():
-#     answer_list = {"1":{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This '},
-#                     "2":{'answer_userid': '234','answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
-#                     "3":{'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'}}
-#     return json.dumps(answer_list)
+@app.route('/update_answer/<q_id>', methods=["GET"])
+@login_required
+def update_answer(q_id):
+    print("receive q_id: ")
+    print(q_id)
+    answer_list = {"1":{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This '},
+                    "2":{'answer_userid': '234','answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
+                    "3":{'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'}}
+    return json.dumps(answer_list)
 
 
 #@app.route('/teacher_within_course/<classcode>', methods=['GET', 'POST'])

@@ -15,7 +15,7 @@
     <script src="../static/js/teacher_collect_answer.js"></script>
     <title>Teacher collect answers</title>
 </head>
-<body>
+<body onload="start_update('{{current_user.current_q.q_id}}')">
 
     <section id="banner">
       <div class="container">
@@ -51,8 +51,8 @@
                 <table class="table">
                     <thead>
                         <tr>
-                        <th style="width:15%">Student</th>
-                        <th style="width:60%">Answer</th>
+                        <th style="width:20%">Student</th>
+                        <th style="width:80%">Answer</th>
                         </tr>
                     </thead>
                 
@@ -60,8 +60,8 @@
                     <tbody id="answerList">
                     {% for item in answer_list %}
                         <tr>
-                            <td style="width:15%">{{ item["answer_user"] }}</td>
-                            <td style="width:60%">{{ item["answer_content"] }}</td>
+                            <td style="width:20%">{{ item["answer_user"] }}</td>
+                            <td style="width:80%">{{ item["answer_content"] }}</td>
                             <!-- <td><a href="../add_coupon/{{ item.answer_userid }}" class="button btn btn-primary" onclick="{if(confirm('Are you sure to reward coupon to {{ item.answer_user }}?')){return true;}return false;}">Reward</a></td> 
                             <td style="width:25%"><input type="button" class="btn btn-primary" value="Reward" onclick="reward(this, '{{ item['answer_userid'] }}', '{{ item['answer_user'] }}', '{{ current_user.current_q.q_id }}')"></input></td>-->
                         </tr>
