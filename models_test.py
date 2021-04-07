@@ -78,7 +78,7 @@ class Course:
             {'course_id': 5, 'code': 'ESTR4998', 'title': 'Graduation Thesis', 'course_instructor': 'Prof. Michael R. Lyu'}]
 
         for i in enroll_info:
-            if str(i['course_id']) == classcode:
+            if str(i['course_id']) == str(classcode):
                 self.course_id = i['course_id']
                 self.course_code = i['code']
                 self.course_name = i['title']
@@ -97,7 +97,7 @@ class Question:
 
         # q_status: 0: unused; 1: ongoing; 2: used
         for i in question_list:
-            if str(i['question_id']) == q_id:
+            if str(i['question_id']) == str(q_id):
                 self.q_id = i['question_id']
                 self.course_id = i['course_id']
                 self.q_title = i['question_title']
