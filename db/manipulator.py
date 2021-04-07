@@ -256,7 +256,7 @@ if __name__ == "__main__":
     # print('res,', res)
     # res = m.user_is_student('1155107785@link.cuhk.edu.hk')
     # m.insert_question_info(3, 1, 'Question5', 'What are s/w principles?', 'explosive states', 'N')
-    m.insert_answer_info(1, 3, 'hard to do', 0)
+    m.insert_answer_info(1, 3, 'hard to answer', 0)
     # m.insert_answer_info(1, 2, 'explosive states', 0)
     # print(m.fetch_question_info(1))
     # print(m.fetch_answer_list(1))

@@ -57,7 +57,14 @@ class Sql:
                     SET {} = '{}'
                     WHERE q_id = {};
                     '''.format(col, data, q_id)
-        print(statement)
+        self.db.execute_mysql(statement)
+
+    def update_question_status(self, q_id):
+        statement = '''
+                    UPDATE `WeCoupon`.`question`
+                    SET q_status = 'N'
+                    WHERE q_id = {};
+                    '''.format(q_id)
         self.db.execute_mysql(statement)
 
     def insert_answer(self, data):
@@ -109,6 +116,10 @@ class Sql:
                     JOIN Wecoupon.course AS c ON e.course_id = c.course_id
                     WHERE user_id = '{}'
                     '''.format(user_id)
+        return self.db.read_from_mysql(statement)
+
+    def read_max_question_id(self):
+        statement = '''SELECT max(q_id) FROM WeCoupon.question'''
         return self.db.read_from_mysql(statement)
 
     def read_question_info_by_id(self, q_id, column_list):

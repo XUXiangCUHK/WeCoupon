@@ -2,6 +2,10 @@ function display() {
     document.getElementById('contes').style.display = 'block';
 }
 
+function display_edit_profile() {
+    document.getElementById('edit_profile').style.display = 'block';
+}
+
 function teacher_add_class() {
     document.getElementById('contes').style.display = 'none';
     var course_code = document.getElementById('code').value;
