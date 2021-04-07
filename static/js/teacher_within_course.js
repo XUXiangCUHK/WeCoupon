@@ -9,11 +9,11 @@ triggerTabList.forEach(function (triggerEl) {
 })
 
 
-function useCoupon(sid, courseid){
-  console.log(sid, courseid)
-  var flag = confirm(`Are you sure to deduct 1 coupon from ${sid}'s account?`);
+function useCoupon(user_id, courseid){
+  console.log(user_id, courseid)
+  var flag = confirm(`Are you sure to use 1 coupon?`);
   if(flag==true){
-    $.getJSON(`http://127.0.0.1:5000/use_coupon/${sid}&${courseid}`)
+    $.getJSON(`http://127.0.0.1:5000/use_coupon/${user_id}&${courseid}`)
     .always(function(){
         console.log("success");
     })

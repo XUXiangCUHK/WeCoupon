@@ -59,11 +59,11 @@ class Manipulator:
         }
         self.sql.insert_answer(data)
 
-    def insert_coupon_info(self, student_id, course_id, coupon_num, note):
+    def insert_coupon_info(self, student_id, course_id, is_used, note):
         data = {
             'student_id': student_id,
             'course_id': course_id,
-            'coupon_num': coupon_num,
+            'is_used': is_used,
             'insert_time': int(datetime.datetime.now().timestamp()),
             'note': note
         }
@@ -199,19 +199,30 @@ class Manipulator:
             first_name = self.fetch_user_info_by_id(user_id, ['first_name'])
             last_name = self.fetch_user_info_by_id(user_id, ['last_name'])
             attempt = self.fetch_attempt_num(course_id, user_id)
-            coupon_num = self.fetch_coupon_num(user_id)
+            coupon_num = self.fetch_coupon_num(user_id, course_id)
+            used_coupon_num = self.fetch_used_coupon_num(user_id, course_id)
             participation_list.append({
                 'user_id': user_id,
                 'student_id': student_id,
                 'student_name': '{} {}'.format(first_name, last_name),
                 'attempt': attempt,
                 'coupon_rewarded': coupon_num,
-                'coupon_used': coupon_num,
+                'coupon_used': used_coupon_num,
             })
         return participation_list
 
-    def fetch_coupon_num(self, user_id):
-        res = self.sql.read_coupon_info(user_id)
+    def mark_coupon_as_used(self, user_id, course_id):
+        coupon_id = self.sql.read_unused_coupon_id(user_id, course_id)[0][0]
+        self.sql.update_coupon(coupon_id)
+
+    def fetch_coupon_num(self, user_id, course_id):
+        res = self.sql.read_coupon_info(user_id, course_id)
+        if not res:
+            return 0
+        return res[0][0]
+
+    def fetch_used_coupon_num(self, user_id, course_id):
+        res = self.sql.read_used_coupon_info(user_id, course_id)
         if not res:
             return 0
         return res[0][0]

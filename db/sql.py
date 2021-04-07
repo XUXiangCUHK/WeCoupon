@@ -79,11 +79,19 @@ class Sql:
     def insert_coupon(self, data):
         statement = '''
                     INSERT IGNORE INTO `WeCoupon`.`coupon`
-                    (`student_id`, `course_id`, `coupon_num`, `insert_time`, `note`)
+                    (`student_id`, `course_id`, `is_used`, `insert_time`, `note`)
                     VALUES
-                    (%(student_id)s, %(course_id)s, %(coupon_num)s, %(insert_time)s, %(note)s);
+                    (%(student_id)s, %(course_id)s, %(is_used)s, %(insert_time)s, %(note)s);
                     '''
         self.db.single_write_into_mysql(data, statement)
+
+    def update_coupon(self, coupon_id):
+        statement = '''
+                    UPDATE `WeCoupon`.`coupon`
+                    SET is_used = 1
+                    WHERE id = {};
+                    '''.format(coupon_id)
+        self.db.execute_mysql(statement)
 
     def read_account_info_by_email(self, email, column_list):
         col = ', '.join(column_list)
@@ -177,13 +185,28 @@ class Sql:
                     '''.format(course_id, user_id)
         return self.db.read_from_mysql(statement)
 
-    def read_coupon_info(self, user_id):
+    def read_unused_coupon_id(self, user_id, course_id):
         statement = '''
-                    SELECT coupon_num
+                    SELECT min(id)
                     FROM WeCoupon.coupon
-                    WHERE student_id='{}'
-                    ORDER BY insert_time DESC
-                    LIMIT 1;'''.format(user_id)
+                    WHERE student_id='{}'AND course_id='{}'
+                    '''.format(user_id, course_id)
+        return self.db.read_from_mysql(statement)
+
+    def read_coupon_info(self, user_id, course_id):
+        statement = '''
+                    SELECT count(*)
+                    FROM WeCoupon.coupon
+                    WHERE student_id='{}'AND course_id='{}'
+                    '''.format(user_id, course_id)
+        return self.db.read_from_mysql(statement)
+
+    def read_used_coupon_info(self, user_id, course_id):
+        statement = '''
+                    SELECT count(*)
+                    FROM WeCoupon.coupon
+                    WHERE student_id='{}'AND course_id='{}' AND is_used = 1
+                    '''.format(user_id, course_id)
         return self.db.read_from_mysql(statement)
 
     def read_ans_num(self, q_id):

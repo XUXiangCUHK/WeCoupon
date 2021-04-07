@@ -262,7 +262,6 @@ def teacher_collect_answer(question_id):
     current_user.fill_course_info()
     current_user.current_q_id = question_id
     current_user.fill_question_info()
-    print("here is", question_id)
     answer_list = mani.fetch_answer_list(question_id)
     per_ans = mani.fetch_per_ans(current_user.current_course_id, question_id)
     return render_template('teacher_collect_answer.html',
@@ -271,13 +270,29 @@ def teacher_collect_answer(question_id):
                            per_ans=per_ans)
 
 
-@app.route('/add_coupon/<userid>', methods=['GET', 'POST'])
+@app.route('/add_coupon/<userid>&<q_id>', methods=['GET', 'POST'])
 @login_required
-def reward_coupon(userid):
+def reward_coupon(userid, q_id):
     print("Inside add_coupon")
-    coupon_num = mani.fetch_coupon_num(userid)
-    mani.insert_coupon_info(userid, current_user.current_course_id, coupon_num+1, "reward")
-    return True
+    course_id = mani.fetch_question_info_by_id(q_id, ['course_id'])
+    current_user.current_course_id = course_id
+    current_user.fill_course_info()
+    current_user.current_q_id = q_id
+    current_user.fill_question_info()
+    mani.insert_coupon_info(userid, course_id, 0, "reward")
+    return str()
+
+
+@app.route('/use_coupon/<student_id>&<course_id>', methods=['GET', 'POST'])
+@login_required
+def use_coupon(student_id, course_id):
+    print("Inside use_coupon")
+    print(student_id)
+    print(course_id)
+    current_user.current_course_id = course_id
+    current_user.fill_course_info()
+    mani.mark_coupon_as_used(student_id, course_id)
+    return str()
 
 
 @app.route('/teacher_add_question/<course_id>', methods=['GET', 'POST'])
@@ -327,6 +342,7 @@ def teacher_view_question(question_id):
 @app.route('/update_answer/<q_id>', methods=["GET"])
 @login_required
 def update_answer(q_id):
+    print("Inside update_answer")
     course_id = mani.fetch_question_info_by_id(q_id, ['course_id'])
     current_user.current_course_id = course_id
     current_user.fill_course_info()
@@ -380,12 +396,10 @@ def student_within_course(course_id):
     current_user.fill_course_info()
     if form.validate_on_submit():
         input_answer = form.answer.data
-        print(input_answer)
         open_q_id = mani.fetch_open_question(course_id)
         if open_q_id:
             current_user.current_q_id = open_q_id
             current_user.fill_question_info()
-            # flash("You have successfully submitted your answer!")
             mani.insert_answer_info(open_q_id, current_user.user_id, input_answer, 0)
             print("here is question: ", current_user.current_q.q_content)
         else:
