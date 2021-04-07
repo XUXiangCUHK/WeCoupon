@@ -69,7 +69,7 @@ class Course:
             {'course_id': 5, 'code': 'ESTR4998', 'title': 'Graduation Thesis', 'course_instructor': 'Prof. Michael R. Lyu'}]
 
         for i in enroll_info:
-            print("debug: ", i['course_id'],type(i['course_id']), classcode, type(classcode))
+            # print("debug: ", i['course_id'],type(i['course_id']), classcode, type(classcode))
             if str(i['course_id']) == str(classcode):
                 self.course_id = i['course_id']
                 self.course_code = i['code']
