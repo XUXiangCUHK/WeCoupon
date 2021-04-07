@@ -119,7 +119,14 @@
                             <td style="width:10%">{{ item["attempt"] }}</td>
                             <td style="width:10%">{{ item["coupon_rewarded"] }}</td>
                             <td style="width:10%">{{ item["coupon_used"] }}</td>
-                            <td ><button type="button" class="btn btn-success" onclick="useCoupon('{{ item["student_id"] }}', '{{ item["student_name"] }}' )">Use</button></td>
+                            <td ><input type="button" id="{{ item['student_id'] }}" class="btn btn-success" value="Use" onclick="useCoupon('{{ item['student_id'] }}', '{{ classcode }}' )"></input></td>
+                            <script>
+                            if ({{ item['coupon_rewarded'] }} - {{ item["coupon_used"] }} === 0) {
+                                document.getElementById('{{item['student_id']}}').setAttribute("value", "N/A");
+                                document.getElementById('{{item['student_id']}}').setAttribute("onclick", "");
+                                document.getElementById('{{item['student_id']}}').setAttribute("class", "btn btn-warning");
+                            }
+                            </script>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -135,3 +142,5 @@
 <script src="../static/js/teacher_within_course.js"></script>
 
 </html>
+
+

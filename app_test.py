@@ -317,16 +317,19 @@ def teacher_view(course_id):
                     {'question_id': 4, 'question_title': 'question#2', 'question_type': 'Type'},
                     {'question_id': 5, 'question_title': 'question#3', 'question_type': 'Type'}]
     participation_list = [{'student_id': '1155095222', 'student_name': 'Bob', 'attempt': '20', 'coupon_rewarded': '1', 'coupon_used': '0'},
-                    {'student_id': '1155095222', 'student_name': 'Peter', 'attempt': '10', 'coupon_rewarded': '5', 'coupon_used': '2'}]
+                    {'student_id': '1155095222', 'student_name': 'Peter', 'attempt': '10', 'coupon_rewarded': '5', 'coupon_used': '2'},
+                    {'student_id': '1155095233', 'student_name': 'Jason', 'attempt': '10', 'coupon_rewarded': '5', 'coupon_used': '5'}]
     return render_template('teacher_within_course.html', classcode='CSCI3100', course_id=course_id, new_question_list=new_question_list,
                            old_question_list=old_question_list, participation_list=participation_list)
 
-@app.route('/use_coupon/<student_id>', methods=['GET', 'POST'])
+@app.route('/use_coupon/<student_id>&<course_id>', methods=['GET', 'POST'])
 @login_required
-def use_coupon(student_id):
+def use_coupon(student_id, course_id):
     print(student_id)
+    print(course_id)
     # deduct 1 coupon from student
-    return "csci3100"
+    return True
+    # return "csci3100"
     # ? how to return refreshed same webpage? 
 
 @app.route('/teacher_add_question/<course_id>', methods=['GET', 'POST'])

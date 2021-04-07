@@ -8,11 +8,12 @@ triggerTabList.forEach(function (triggerEl) {
   })
 })
 
-function useCoupon(sid, sname){
-  console.log(sid, sname)
-  var flag = confirm(`Are you sure to deduct 1 coupon from ${username}'s account?`);
+
+function useCoupon(sid, courseid){
+  console.log(sid, courseid)
+  var flag = confirm(`Are you sure to deduct 1 coupon from ${sid}'s account?`);
   if(flag==true){
-    $.getJSON(`http://127.0.0.1:5000/use_coupon/${sid}`)
+    $.getJSON(`http://127.0.0.1:5000/use_coupon/${sid}&${courseid}`)
     .always(function(){
         console.log("success");
     })
@@ -60,3 +61,4 @@ function show_question_list() {
 }
 
 //show_question_list();
+
