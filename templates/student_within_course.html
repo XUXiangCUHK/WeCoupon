@@ -75,7 +75,11 @@
                         <td style="width:30%">{{ item["question_content"] }}</td>
                         <td style="width:20%">{{ item["question_answer"] }}</td>
                         <td style="width:20%">{{ item["correct_answer"] }}</td>
-                        <td style="width:10%">{% if item["get_coupon_or_not"] == 1 %} Yes {{else}} No {{% endif %}}</td>
+                        {% if item["get_coupon_or_not"] == 1 %} 
+                          <td style="width:10%">Yes</td>
+                        {% else %}
+                          <td style="width:10%">No</td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>
