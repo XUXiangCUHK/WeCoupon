@@ -45,7 +45,7 @@
 
     <div class="container" style="margin-top:30px">
         <div class="row">
-            <div class="col-sm-6" >
+
                 <h3 class="boxtitle" style="background-color:lavender;">Students' Answers</h3>
 
                 <table class="table">
@@ -53,7 +53,6 @@
                         <tr>
                         <th style="width:15%">Student</th>
                         <th style="width:60%">Answer</th>
-                        <th style="width:25%">Coupon <br> Rewarding</th>
                         </tr>
                     </thead>
                 
@@ -63,14 +62,14 @@
                         <tr>
                             <td style="width:15%">{{ item["answer_user"] }}</td>
                             <td style="width:60%">{{ item["answer_content"] }}</td>
-                            <!-- <td><a href="../add_coupon/{{ item.answer_userid }}" class="button btn btn-primary" onclick="{if(confirm('Are you sure to reward coupon to {{ item.answer_user }}?')){return true;}return false;}">Reward</a></td> -->
-                            <td style="width:25%"><input type="button" class="btn btn-primary" value="Reward" onclick="reward(this, '{{ item['answer_userid'] }}', '{{ item['answer_user'] }}', '{{ current_user.current_q.q_id }}')"></input></td>
+                            <!-- <td><a href="../add_coupon/{{ item.answer_userid }}" class="button btn btn-primary" onclick="{if(confirm('Are you sure to reward coupon to {{ item.answer_user }}?')){return true;}return false;}">Reward</a></td> 
+                            <td style="width:25%"><input type="button" class="btn btn-primary" value="Reward" onclick="reward(this, '{{ item['answer_userid'] }}', '{{ item['answer_user'] }}', '{{ current_user.current_q.q_id }}')"></input></td>-->
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
 
-            </div>
+
             <!--div class="col-sm-6" >
                 <h3 class="boxtitle" style="background-color:lavenderblush;">Statistics</h3>
                 <div id="percentageAnswering" style="width:100%; height:500px;"></div>
