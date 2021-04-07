@@ -384,6 +384,8 @@ def student_within_course(course_id):
         if open_q_id:
             current_user.current_q_id = open_q_id
             current_user.fill_question_info()
+            # flash("You have successfully submitted your answer!")
+            mani.insert_answer_info(open_q_id, current_user.user_id, input_answer, 0)
             print("here is question: ", current_user.current_q.q_content)
         else:
             print("there is no current open question")

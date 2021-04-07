@@ -190,8 +190,8 @@ def student_main():
     # print(user_msg)
     enroll_info = [{'course_id': 1, 'code': 'CSCI3100', 'title': 'Software Engineering', 'info': 'Prof. Michael R. Lyu'},
                    {'course_id': 3, 'code': 'IERG3310', 'title': 'Computer Networking', 'info': 'Prof. Xing Guoliang'}]
-                   student_profile = [{'name': greeting, 'department': university, 'title': title}]
-    return render_template('student_main_page.html', enroll_info=enroll_info)
+    student_profile = [{'name': 'Alen XU', 'department': 'The Chinese University of Hong Kong', 'title': 'student'}]
+    return render_template('student_main_page.html', enroll_info=enroll_info, student_profile=student_profile)
 
 
 @app.route('/student_within_course/<classcode>', methods=['GET', 'POST'])
