@@ -260,20 +260,20 @@ def teacher_view_answer(question_id):
     print(question_id)
     current_user.current_q_id = question_id
     current_user.fill_question_info()
-    answer_list = [{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This '},
+    answer_list = [{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This ', 'status': 1},
                     # {'answer_userid': '234','answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},]
+                    {'answer_userid': '01', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
+                    {'answer_userid': '03', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
+                    {'answer_userid': '04', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
+                    {'answer_userid': '04', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 1},
+                    {'answer_userid': '05', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
+                    {'answer_userid': '06', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 0},
+                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?', 'status': 1},]
     per_ans = {'answered': 12, 'not_answered': 35}
     return render_template('teacher_view_answer.html', question_info=current_user.current_q, answer_list=answer_list, per_ans=per_ans)
 
