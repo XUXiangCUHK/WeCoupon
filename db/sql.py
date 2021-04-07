@@ -76,6 +76,14 @@ class Sql:
                     '''
         self.db.single_write_into_mysql(data, statement)
 
+    def update_answer_status(self, a_id, a_status):
+        statement = '''
+                    UPDATE `WeCoupon`.`answer`
+                    SET a_status = '{}'
+                    WHERE a_id = {};
+                    '''.format(a_status, a_id)
+        self.db.execute_mysql(statement)
+
     def insert_coupon(self, data):
         statement = '''
                     INSERT IGNORE INTO `WeCoupon`.`coupon`
@@ -160,7 +168,7 @@ class Sql:
 
     def read_answer_list(self, q_id):
         statement = '''
-                    SELECT user_id, user_name, a_content
+                    SELECT a_id, user_id, user_name, a_content, a_status
                     FROM WeCoupon.answer an
                     JOIN WeCoupon.account ac ON ac.user_id = an.student_id 
                     WHERE q_id='{}';'''.format(q_id)
@@ -189,7 +197,7 @@ class Sql:
         statement = '''
                     SELECT min(id)
                     FROM WeCoupon.coupon
-                    WHERE student_id='{}'AND course_id='{}'
+                    WHERE student_id='{}'AND course_id='{}' AND is_used=0
                     '''.format(user_id, course_id)
         return self.db.read_from_mysql(statement)
 
