@@ -6,7 +6,7 @@ from flask import Flask, request, render_template
 from flask import flash, url_for, redirect, session
 from flask_mail import Mail, Message
 from flask_bootstrap import Bootstrap
-from forms import LoginForm, RegistrationForm, AddQuestionForm, EditQuestionForm
+from forms import LoginForm, RegistrationForm, AddQuestionForm, EditQuestionForm, AddAnswer
 from flask_login import login_user, logout_user
 from flask_login import login_required, current_user, LoginManager
 
@@ -39,6 +39,14 @@ mani = Manipulator()
 def load_user(user_email):
     print('load user')
     return User.get(user_email)
+
+# @login_manager.user_loader
+# def load_user(user_id):
+#     print("user loaded!: ", user_id)
+#     user_email = mani.fetch_user_info_by_id(user_id, ['email'])
+#     user = User(user_email)
+#     print("user email: ", user_email)
+#     return user
 
 
 ########################################################################################################################
@@ -335,48 +343,51 @@ def update_answer():
 @app.route('/student_main_page', methods=['GET', 'POST'])
 @login_required
 def student_main():
-    print('student main: ', current_user.user_name)
-    # user_id = session['user_id']
-    # user_id = request.args['messages']
+    print("Inside student_main_page")
+    first_name = mani.fetch_user_info_by_id(current_user.user_id, ['first_name'])
+    last_name = mani.fetch_user_info_by_id(current_user.user_id, ['last_name'])
+    pos = mani.fetch_user_info_by_id(current_user.user_id, ['is_student'])
+    greeting = "Welcome, {} {}".format(last_name, first_name)
+    university = "The Chinese University of Hong Kong"
+    if not pos:
+        title = "Professor"
+    else:
+        title = "Student"
+    student_profile = [{'name': greeting, 'department': university, 'title': title}]
     enroll_info = mani.user_enrollment(current_user.user_id)
-    print(enroll_info)
-    return render_template('student_main_page.html', enroll_info=enroll_info)
+    return render_template('student_main_page.html',
+                           enroll_info=enroll_info,
+                           student_profile=student_profile)
 
 
 @app.route('/student_get_class/<course_token>', methods=['GET', 'POST'])
 @login_required
 def student_get_class(course_token):
-    user_id = session['user_id']
+    print("Inside student_get_class")
     class_info = mani.fetch_course_info(course_token)
     course_id = class_info['course_id']
-    mani.insert_enrollment_info(user_id, course_id)
-    print(class_info)
+    mani.insert_enrollment_info(current_user.user_id, course_id)
     return json.dumps(class_info)
 
 
 @app.route('/student_within_course/<course_id>', methods=['GET', 'POST'])
 @login_required
 def student_within_course(course_id):
+    print("Inside student_within_course")
+    form = AddAnswer()
     current_user.current_course_id = course_id
-    print("current course", current_user.current_course_id)
     current_user.fill_course_info()
-    print("here is course: ", current_user.current_course.course_name)
-
-    open_q_id = mani.fetch_open_question(course_id)
-    if open_q_id:
-        current_user.current_q_id = open_q_id
-        current_user.fill_question_info()
-        print("here is question: ", current_user.current_q.q_content)
-    else:
-        print("there is no current open question")
-    return render_template('student_within_course.html')
-
-
-@app.route('/student_submit_answer/<a_content>', methods=['GET', 'POST'])
-@login_required
-def student_submit_answer(a_content):
-    pass
-    # mani.insert_answer_info(q_id, student_id, a_content, a_status)
+    if form.validate_on_submit():
+        input_answer = form.answer.data
+        print(input_answer)
+        open_q_id = mani.fetch_open_question(course_id)
+        if open_q_id:
+            current_user.current_q_id = open_q_id
+            current_user.fill_question_info()
+            print("here is question: ", current_user.current_q.q_content)
+        else:
+            print("there is no current open question")
+    return render_template('student_within_course.html', course_id=course_id, form=form)
 
 
 if __name__ == '__main__':

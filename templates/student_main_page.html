@@ -26,12 +26,15 @@
                 </a>
             </div>
           <div class="col">
-              <div class="row">
-                  <h1>John Doe</h1>
-              </div>
-              <div class="row">
-                  <h3>Computer Science and Engineering Department</h3>
-              </div>
+                <div class="row">
+                    <h1 id="name_display">{{ student_profile[0]["name"] }}</h1>
+                </div>
+                <div class="row">
+                    <h3 id="department_display">{{ student_profile[0]["department"] }}</h3>
+                </div>
+                <div class="row">
+                    <h3 id="title_display">{{ student_profile[0]["title"] }}</h3>
+                </div>
 
               <div>
                 <button type="button" onclick="display()">Reg Class</button>
@@ -58,7 +61,7 @@
               <tr>
                 <th scope="col">Course Code</th>
                 <th scope="col">Course Title</th>
-                <th scope="col">Info</th>
+                <th scope="col">Instructor Name</th>
               </tr>
             </thead>
             <tbody>
