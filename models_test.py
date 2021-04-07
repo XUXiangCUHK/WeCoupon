@@ -36,15 +36,6 @@ class User(UserMixin):
         self.current_q_id = 0
         self.current_q = dict()
 
-    # user_id = mani.fetch_user_info_by_email(input_email, ['user_id'])
-    # first_name = mani.fetch_user_info_by_email(input_email, ['first_name'])
-    # last_name = mani.fetch_user_info_by_email(input_email, ['last_name'])
-    # SID = mani.fetch_user_info_by_email(input_email, ['SID'])
-    # email = mani.fetch_user_info_by_email(input_email, ['email'])
-    # password = mani.fetch_user_info_by_email(input_email, ['password'])
-    # is_student = mani.fetch_user_info_by_email(input_email, ['is_student'])
-    # token = mani.fetch_user_info_by_email(input_email, ['token'])
-    # activated = mani.fetch_user_info_by_email(input_email, ['activated'])
 
     def get_id(self):
         return self.user_id
@@ -78,6 +69,7 @@ class Course:
             {'course_id': 5, 'code': 'ESTR4998', 'title': 'Graduation Thesis', 'course_instructor': 'Prof. Michael R. Lyu'}]
 
         for i in enroll_info:
+            print("debug: ", i['course_id'],type(i['course_id']), classcode, type(classcode))
             if str(i['course_id']) == str(classcode):
                 self.course_id = i['course_id']
                 self.course_code = i['code']
@@ -88,12 +80,12 @@ class Course:
 
 class Question:
     def __init__(self, q_id):
-        question_list = [{'question_id': 1, 'course_id': 1, 'question_title': 'question#4', 'q_content': 'test1', 'question_type': 'MC', 'q_status': '0'},
-                         {'question_id': 2, 'course_id': 1, 'question_title': 'question#5', 'q_content': 'test2', 'question_type': 'Type', 'q_status': '1'},
-                         {'question_id': 3, 'course_id': 3, 'question_title': 'question#1', 'q_content': 'test3', 'question_type': 'MC', 'q_status': '2'},
-                         {'question_id': 4, 'course_id': 3, 'question_title': 'question#2', 'q_content': 'test4', 'question_type': 'Type', 'q_status': '0'},
-                         {'question_id': 5, 'course_id': 7, 'question_title': 'question#3', 'q_content': 'test5', 'question_type': 'Type', 'q_status': '0'},
-                         {'question_id': 6, 'course_id': 7, 'question_title': 'question#6', 'q_content': 'test6', 'question_type': 'Short', 'q_status': '1'}]
+        question_list = [{'question_id': 1, 'course_id': 4, 'question_title': 'question#4', 'q_content': 'test1', 'question_type': 'MC', 'q_status': '0'},
+                         {'question_id': 2, 'course_id': 4, 'question_title': 'question#5', 'q_content': 'test2', 'question_type': 'Type', 'q_status': '0'},
+                         {'question_id': 3, 'course_id': 4, 'question_title': 'question#1', 'q_content': 'test3', 'question_type': 'MC', 'q_status': '2'},
+                         {'question_id': 4, 'course_id': 4, 'question_title': 'question#2', 'q_content': 'test4', 'question_type': 'Type', 'q_status': '2'},
+                         {'question_id': 5, 'course_id': 4, 'question_title': 'question#3', 'q_content': 'test5', 'question_type': 'Type', 'q_status': '2'},
+                         {'question_id': 6, 'course_id': 4, 'question_title': 'question#6', 'q_content': 'test6', 'question_type': 'Short', 'q_status': '2'}]
 
         # q_status: 0: unused; 1: ongoing; 2: used
         for i in question_list:
