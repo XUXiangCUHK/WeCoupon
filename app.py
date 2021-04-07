@@ -35,18 +35,16 @@ sql = Sql()
 mani = Manipulator()
 
 
+# @login_manager.user_loader
+# def load_user(user_email):
+#     print('load user')
+#     return User.get(user_email)
+
 @login_manager.user_loader
 def load_user(user_email):
-    print('load user')
-    return User.get(user_email)
-
-# @login_manager.user_loader
-# def load_user(user_id):
-#     print("user loaded!: ", user_id)
-#     user_email = mani.fetch_user_info_by_id(user_id, ['email'])
-#     user = User(user_email)
-#     print("user email: ", user_email)
-#     return user
+    if user_email:
+        print('load user')
+        return User.get(user_email)
 
 
 ########################################################################################################################
@@ -231,7 +229,7 @@ def teacher_view(course_id):
 @login_required
 def teacher_view_answer(question_id):
     print("Inside teacher_view_answer")
-    sql.update_question_status(question_id)
+    sql.update_question_status(question_id, 'N')
     course_id = mani.fetch_question_info_by_id(question_id, ['course_id'])
     current_user.current_course_id = course_id
     current_user.fill_course_info()
@@ -258,6 +256,7 @@ def teacher_collect_answer(question_id):
         return redirect(url_for('teacher_collect_answer', question_id=question_id))
 
     session['question_id'] = question_id
+    sql.update_question_status(question_id, 'O')
     course_id = mani.fetch_question_info_by_id(question_id, ['course_id'])
     current_user.current_course_id = course_id
     current_user.fill_course_info()
@@ -325,13 +324,15 @@ def teacher_view_question(question_id):
     return render_template('teacher_view_question.html', course_info=current_user.current_course, form=form)
 
 
-@app.route('/update_answer', methods=["GET"])
+@app.route('/update_answer/<q_id>', methods=["GET"])
 @login_required
-def update_answer():
-    print('Inside update_answer')
-    question_id = session['question_id']
-    course_id = mani.fetch_question_info_by_id(question_id, ['course_id'])
-    answer_list = mani.fetch_answer_list(course_id)
+def update_answer(q_id):
+    course_id = mani.fetch_question_info_by_id(q_id, ['course_id'])
+    current_user.current_course_id = course_id
+    current_user.fill_course_info()
+    current_user.current_q_id = q_id
+    current_user.fill_question_info()
+    answer_list = mani.fetch_answer_list(q_id)
     return json.dumps(answer_list)
 
 
@@ -389,7 +390,8 @@ def student_within_course(course_id):
             print("here is question: ", current_user.current_q.q_content)
         else:
             print("there is no current open question")
-    return render_template('student_within_course.html', course_id=course_id, form=form)
+    answer_list = mani.fetch_student_participation(current_user.user_id, course_id)
+    return render_template('student_within_course.html', course_id=course_id, answer_list=answer_list, form=form)
 
 
 if __name__ == '__main__':

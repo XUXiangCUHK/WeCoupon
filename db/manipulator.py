@@ -240,6 +240,19 @@ class Manipulator:
         per_ans['not_answered'] = not_answered
         return per_ans
 
+    def fetch_student_participation(self, user_id, course_id):
+        res = self.sql.read_student_participation(user_id, course_id)
+        answer_list = list()
+        for item in res:
+            answer_list.append({
+                'question_title': item[0],
+                'question_content': item[1],
+                'question_answer': item[2],
+                'correct_answer': item[3],
+                'get_coupon_or_not': item[4],
+            })
+        return answer_list
+
 
 if __name__ == "__main__":
     m = Manipulator()
@@ -256,7 +269,7 @@ if __name__ == "__main__":
     # print('res,', res)
     # res = m.user_is_student('1155107785@link.cuhk.edu.hk')
     # m.insert_question_info(3, 1, 'Question5', 'What are s/w principles?', 'explosive states', 'N')
-    m.insert_answer_info(1, 3, 'hard to answer', 0)
+    m.insert_answer_info(21, 2, 'hard to answer testing', 0)
     # m.insert_answer_info(1, 2, 'explosive states', 0)
     # print(m.fetch_question_info(1))
     # print(m.fetch_answer_list(1))

@@ -59,12 +59,12 @@ class Sql:
                     '''.format(col, data, q_id)
         self.db.execute_mysql(statement)
 
-    def update_question_status(self, q_id):
+    def update_question_status(self, q_id, q_status):
         statement = '''
                     UPDATE `WeCoupon`.`question`
-                    SET q_status = 'N'
+                    SET q_status = '{}'
                     WHERE q_id = {};
-                    '''.format(q_id)
+                    '''.format(q_status, q_id)
         self.db.execute_mysql(statement)
 
     def insert_answer(self, data):
@@ -192,6 +192,15 @@ class Sql:
                     FROM WeCoupon.answer
                     WHERE q_id = '{}'
                     '''.format(q_id)
+        return self.db.read_from_mysql(statement)
+
+    def read_student_participation(self, user_id, course_id):
+        statement = '''
+                    SELECT q.q_title, q.q_content, a.a_content, q.q_answer, a.a_status
+                    FROM WeCoupon.answer AS a
+                    JOIN WeCoupon.question AS q ON q.q_id = a.q_id
+                    WHERE a.student_id = {} AND q.course_id = course_id = {}
+                    '''.format(user_id, course_id)
         return self.db.read_from_mysql(statement)
 
 

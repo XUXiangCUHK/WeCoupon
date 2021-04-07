@@ -18,9 +18,9 @@ function reward(obj, userid, username, q_id) {
 }
 
 function start_update(q_id){
-    alert("start update");
+    // alert("start update");
     setInterval( function(q_id) {
-        alert("update!")
+        // alert("update!")
         $.ajax({
             url:`/update_answer/${q_id}`,
             type:"GET",
