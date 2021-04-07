@@ -1,10 +1,10 @@
-function reward(obj, userid, username) {
+function reward(obj, userid, username, q_id) {
     // var $td = $(obj).parents('tr').children('td');
     // let username = $td.eq(1).text();
     // let userid = $td.eq(0).text();
     var flag = confirm(`Are you sure to reward coupon to ${username}?`);
     if(flag==true){
-        $.getJSON(`http://127.0.0.1:5000/add_coupon/${userid}`)
+        $.getJSON(`../add_coupon/${userid}&${q_id}`)
         .always(function(){
             console.log("success");
             $(obj).attr('disabled', 'true');
