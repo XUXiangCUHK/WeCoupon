@@ -51,7 +51,7 @@
                             <td id="" style="width:15%">{{ item["answer_user"] }}</td>
                             <td style="width:60%">{{ item["answer_content"] }}</td>
                             <!-- <td><a href="../add_coupon/{{ item.answer_userid }}" class="button btn btn-primary" onclick="{if(confirm('Are you sure to reward coupon to {{ item.answer_user }}?')){return true;}return false;}">Reward</a></td> -->
-                            <td style="width:40%"><input type="button" id="{{item['answer_userid']}}" class="btn btn-primary" value="Reward" onclick="reward(this, '{{ item['answer_userid'] }}', '{{ item['answer_user'] }}', '{{ current_user.current_q.q_id }}')"></input></td>
+                            <td style="width:40%"><input type="button" id="{{item['answer_userid']}}" class="btn btn-primary" value="Reward" onclick="reward(this, '{{ item['answer_userid'] }}', '{{ item['answer_user'] }}', '{{ current_user.current_q.q_id }}', '{{ item['answer_id'] }}')"></input></td>
                             <script>
                             if ({{ item['status'] }} === 1) {
                                 document.getElementById('{{item['answer_userid']}}').setAttribute("value", "Rewarded");

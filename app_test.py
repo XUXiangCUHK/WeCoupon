@@ -197,21 +197,24 @@ def student_main():
 @app.route('/student_within_course/<classcode>', methods=['GET', 'POST'])
 @login_required
 def student_within_course(classcode):
+    flag = 1 # 1 means there is question, 0 means no question
+    question_list = {'question_title': 'hard question', 'question_content': 'what is fsm?'}
     form = AddAnswer()
-    if form.validate_on_submit():
-        answer = form.answer.data
-        print("answer:", answer)
-        pass
-    else:
-        pass       
     current_user.current_classcode = classcode
     print("current_user.current_classcode: ", current_user.current_classcode)
     current_user.fill_course_info()
     print("here is course: ", current_user.current_course.course_name)
     answer_list = [{'question_title': "hard question", 'question_content': "what is fsm?", 'question_answer': "fsm is abc.", 'correct_answer': 'fsm is cde.', 'get_coupon_or_not': 1}, 
         {'question_title': "hard question2", 'question_content': "what is fsm?2", 'question_answer': "fsm is abc.2", 'correct_answer': 'fsm is cde.2', 'get_coupon_or_not' : 0}]
-
-    return render_template('student_within_course.html', course_code=classcode,form = form, answer_list=answer_list)
+    if form.validate_on_submit():
+        answer = form.answer.data
+        print("answer:", answer)
+        newform = AddAnswer()
+        # return render_template('student_within_course.html', flag=1, question_list= question_list, course_code=classcode, form = form, answer_list=answer_list)
+        pass
+    else:
+        pass 
+    return render_template('student_within_course.html', flag=flag, question_list= question_list, course_code=classcode, form = form, answer_list=answer_list)
 
 
 @app.route('/student_get_class/<password>', methods=['GET', 'POST'])
@@ -326,10 +329,10 @@ def teacher_view(course_id):
 def use_coupon(student_id, course_id):
     print(student_id)
     print(course_id)
-    # deduct 1 coupon from student
-    return True
-    # return "csci3100"
-    # ? how to return refreshed same webpage? 
+    answer_list = {"1":{'student_id': '02', 'student_name': 'student1', 'attempt': 20, 'coupon_rewarded': 3, 'coupon_used': 5 },
+                    "2":{'student_id': '02', 'student_name': 'student1', 'attempt': 20, 'coupon_rewarded': 3, 'coupon_used': 5 },
+                    "3":{'student_id': '02', 'student_name': 'student1', 'attempt': 20, 'coupon_rewarded': 3, 'coupon_used': 5 }}
+    return json.dumps(answer_list)
 
 @app.route('/teacher_add_question/<course_id>', methods=['GET', 'POST'])
 @login_required

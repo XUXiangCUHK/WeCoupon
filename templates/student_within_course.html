@@ -71,7 +71,14 @@
                   <textarea class="form-control" id="answertextbox" rows="4" placeholder="Give Your Answer"></textarea>
                 </div>
               </form> -->
-              {{ wtf.quick_form(form) }}
+
+              {% if flag == 0 %}
+              <h1>No question posted yet!<br> Please refresh page for new question. </h1> 
+              {% else %}
+              <h2>{{question_list.question_title}}</h2>
+              <h2>{{question_list.question_content}}</h2>
+                {{ wtf.quick_form(form) }}
+              {% endif %}
               <!-- <br>
               <button type="submit" class="btn-primary" onclick="submit_ans(this)">Submit</button> -->
             </div>

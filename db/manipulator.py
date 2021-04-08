@@ -154,15 +154,18 @@ class Manipulator:
         if not res:
             return new_question_list, old_question_list
         for item in res:
+            q_content = item[3]
+            if len(item[3]) > 30:
+                q_content = item[3][:30] + '...'
             q = {
                 'q_id': item[0],
                 'course_code': item[1],
                 'q_title': item[2],
-                'q_content': item[3],
+                'q_content': q_content,
                 'q_answer': item[4],
                 'question_id': item[0],
                 'question_title': item[2],
-                'question_type': item[3]
+                'question_type': q_content
             }
             if item[5] == 'A':
                 new_question_list.append(q)
@@ -184,9 +187,11 @@ class Manipulator:
             return answer_list
         for item in res:
             answer_list.append({
-                'answer_userid': item[0],
-                'answer_user': item[1],
-                'answer_content': item[2],
+                'answer_id': item[0],
+                'answer_userid': item[1],
+                'answer_user': item[2],
+                'answer_content': item[3],
+                'status': item[4]
             })
         return answer_list
 

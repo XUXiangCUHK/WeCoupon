@@ -54,4 +54,4 @@ class EditQuestionForm(FlaskForm):
 class AddAnswer(FlaskForm):
     # question = StringField('Question', validators=[DataRequired()])
     answer = TextAreaField('Answer', validators=[DataRequired()])
-    submit = SubmitField('Submit')
+    submit = SubmitField('Submit', render_kw={'onclick': 'alert("submitted!")'})
