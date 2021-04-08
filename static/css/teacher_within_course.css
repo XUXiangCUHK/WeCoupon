@@ -1,15 +1,7 @@
 @import url(font-awesome.min.css);
 @import "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600";
-
-img {
-    margin-left: auto;
-    margin-right: auto;
-    width: 90%;
-    height: 90%;
-    border-radius: 50%;
-}
-
-#contes { /* 弹框的页面*/
+ 
+ #contes { /* 弹框的页面*/
     width: 500px; /*宽度*/
     height: 200px; /*高度*/
     background: rgb(129, 184, 238); /*背景色*/
@@ -21,7 +13,22 @@ img {
     }
     input{
     margin-bottom: 10px;
+ }
+
+#edit_profile {
+    width: 500px; /*宽度*/
+    height: 200px; /*高度*/
+    background: rgb(129, 184, 238); /*背景色*/
+    display: none; /*隐藏*/
+    z-index: 2; /*覆盖*/
+    position: absolute;
+    top: 100px;
+    left: 400px; /* 定位*/
     }
+    input{
+    margin-bottom: 10px;
+ }	
+
 
 /* banner */
 
@@ -96,6 +103,8 @@ img {
     text-decoration: none;
     text-transform: uppercase;
     white-space: nowrap;
+    margin-left: 2em;
+    margin-right: 2em;
 }
 
 #banner button:hover {
@@ -105,7 +114,8 @@ img {
 /* footer */
 #icon {
     width: 12%;
-    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #footer {
@@ -120,6 +130,7 @@ img {
     color: rgba(255, 255, 255, 0.863);
     margin-bottom: .5em !important;
 }
+
 
 tr:nth-child(even) {background-color: #f2f2f2;}
 
@@ -165,4 +176,9 @@ table tbody tr{
 .nav-link.active,.show > .nav-link {
     color: #198754 !important; 
     background-color:#77AF9C !important;
+}
+.btn-primary {
+    color: #198754 !important; 
+    background-color:#77AF9C !important;
+    border-color: #77AF9C !important;
 }
