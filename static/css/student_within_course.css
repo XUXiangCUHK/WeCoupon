@@ -121,42 +121,6 @@ img {
     margin-bottom: .5em !important;
 }
 
-tr:nth-child(even) {background-color: #f2f2f2;}
-
-table, th, td, tr{
-    width:100%;
-    text-align: center; 
-    word-wrap:break-word;
-    vertical-align: middle;
-}
-
-
-table thead{
-    text-align: center; 
-    width: 100%;
-    table-layout: fixed;
-    display: table;
-}
-
-table tbody{
-    text-align: center; 
-    display: block;
-    table-layout: fixed;
-    width: 100%;
-    max-height: 400px;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-table tbody tr{
-    display:table;
-}
-
-.btn-primary {
-    color: #198754; 
-    background-color:#77AF9C;
-    border-color: #77AF9C;
-}
 .nav-pills .nav-link.active, .nav-pills,.nav-link {
     color: #198754;
     background-color: #fff;

@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS only -->
+
+    <link rel="stylesheet" href="../static/css/student_within_course.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
@@ -13,6 +15,34 @@
     <title>Student Within Course</title>
 </head>
 <body>
+  <section id="banner">
+    <div class="container">
+      <div class="row inner">
+          <!-- <div class="col-2 text-start">
+              <img src="../static/images/student_pic.png" alt="student profile picture">
+          </div> -->
+            <div>
+                <a href="{{ url_for('logout') }}" class="btn btn-outline-light btn-lg" style="float: right;">
+                  <span class="glyphicon glyphicon-log-out"></span> Log out
+                </a>
+            </div>
+          <div class="col">
+  
+              <div id="contes" style="">
+                <div style="width:500px;height:40px;">
+                Reg New Course
+                <hr>
+                <form style=" margin-left: 100px;">
+                course token：<input type="text" id="token" name=""><br>
+                </form>
+                </div>
+               </div>
+                              
+          </div>
+      </div>
+    </div>
+    </section>
+
     <div class="container">
       <div class="row">
         <div class="col text-start">
@@ -89,7 +119,14 @@
             <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">3</div>
           </div>
     </div>
-
+    <footer id="footer">
+      <div class="inner">
+          <div class="row">
+              <img src="../static/images/logo-no-background.png" id="icon" alt="WECOUPON LOGO"/>
+          </div>
+          <h3>Should you have any question? Please contact us</h3>
+      </div>
+  </footer>
 </body>
 
 <script src="../static/js/within_course.js"></script>

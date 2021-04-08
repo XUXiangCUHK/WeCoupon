@@ -1,4 +1,7 @@
 var text;
+function display() {
+    document.getElementById('contes').style.display = 'block';
+}
 function show() {
     // text = document.getElementById("fullText").innerHTML;
     // document.getElementById("fullText").innerHTML = "";
