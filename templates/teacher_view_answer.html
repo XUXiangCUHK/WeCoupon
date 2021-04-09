@@ -32,17 +32,13 @@
                         <h1 id="name_display">Answers to {{ current_user.current_q.q_title }}</h1>
                     </div>
                     <div class="row">
-                        <h3 id="department_display">Course - {{ current_user.current_course.course_code }} {{
+                        <h3 id="department_display">{{ current_user.current_course.course_code }} {{
                             current_user.current_course.course_name }}</h3>
-                    </div>
-                    <div class="row">
-                        <h3 id="title_display">{{ teach_profile[0]["title"] }}</h3>
                     </div>
                 </div>
                 <div>
                     <a href="../teacher_within_course/{{ question_info['course_id'] }}" type="button"
-                        class="btn btn-outline-light btn-lg" style="float: center;">Back
-                        to question list</a>
+                        class="button default">Back</a>
                 </div>
             </div>
         </div>

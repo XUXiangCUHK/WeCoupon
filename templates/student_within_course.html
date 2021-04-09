@@ -35,16 +35,10 @@
 
         <div class="col">
           <div class="row">
-            <h1 id="name_display">{{ student_profile[0]["name"] }}</h1>
+              <h1 id="name_display">{{ current_user.last_name }} {{ current_user.first_name }}</h1>
           </div>
           <div class="row">
-            <h3 id="department_display">{{ student_profile[0]["department"] }}</h3>
-          </div>
-          <div class="row">
-            <h3 id="title_display">{{ student_profile[0]["title"] }}</h3>
-          </div>
-          <div class="row">
-            <h3 id="department_display">Course - {{ current_user.current_course.course_code }} {{
+            <h3 id="department_display">{{ current_user.current_course.course_code }} {{
               current_user.current_course.course_name }}</h3>
           </div>
         </div>
@@ -52,14 +46,8 @@
       </div>
     </div>
   </section>
-
+  <br>
   <div class="container">
-    <div class="row">
-      <div class="col text-start">
-        Course {{ course_code }}
-      </div>
-    </div>
-
     <div class="container">
       <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -88,8 +76,8 @@
           {% if flag == 0 %}
           <h1>No question posted yet!<br> Please refresh page for new question. </h1>
           {% else %}
-          <h2>{{question_list.question_title}}</h2>
-          <h2>{{question_list.question_content}}</h2>
+          <h2>Question Name: {{current_user.current_q.q_title}}</h2>
+          <h4>Question Content: {{current_user.current_q.q_content}}</h4>
           {{ wtf.quick_form(form) }}
           {% endif %}
           <!-- <br>
