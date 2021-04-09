@@ -1,108 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- CSS only -->
-    <link rel="stylesheet" href="../static/css/student_main_page.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="../static/js/student_main_page.js"></script>
-    <title>Student Main Page</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- CSS only -->
+  <link rel="stylesheet" href="../static/css/student_main_page.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+    crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="../static/js/student_main_page.js"></script>
+  <title>Student Main Page</title>
 </head>
+
 <body>
-    <section id="banner">
+  <section id="banner">
     <div class="container">
       <div class="row inner">
-          <!-- <div class="col-2 text-start">
+        <!-- <div class="col-2 text-start">
               <img src="../static/images/student_pic.png" alt="student profile picture">
           </div> -->
-            <div>
-                <a href="{{ url_for('logout') }}" class="btn btn-outline-light btn-lg" style="float: right;">
-                  <span class="glyphicon glyphicon-log-out"></span> Log out
-                </a>
-            </div>
-          <div class="col">
-                <div class="row">
-                    <h1 id="name_display">{{ student_profile[0]["name"] }}</h1>
-                </div>
-                <div class="row">
-                    <h3 id="department_display">{{ student_profile[0]["department"] }}</h3>
-                </div>
-                <div class="row">
-                    <h3 id="title_display">{{ student_profile[0]["title"] }}</h3>
-                </div>
+        <div>
+          <a href="{{ url_for('logout') }}" class="btn btn-outline-light btn-lg" style="float: right;">
+            <span class="glyphicon glyphicon-log-out"></span> Log out
+          </a>
+        </div>
+        <div class="col">
+          <div class="row">
+            <h1 id="name_display">{{ student_profile[0]["name"] }}</h1>
+          </div>
+          <div class="row">
+            <h3 id="department_display">{{ student_profile[0]["department"] }}</h3>
+          </div>
+          <div class="row">
+            <h3 id="title_display">{{ student_profile[0]["title"] }}</h3>
+          </div>
 
-              <div>
-                <button type="button" onclick="display()">Reg Class</button>
-              </div>
-              <div id="contes" style="">
-                <div style="width:500px;height:40px;">
-                Reg New Course
-                <hr>
-                <form style=" margin-left: 100px;">
+          <div>
+            <button type="button" onclick="display()">Reg Class</button>
+          </div>
+          <div id="contes" style="">
+            <div style="width:500px;height:40px;">
+              Reg New Course
+              <hr>
+              <form style=" margin-left: 100px;">
                 course token：<input type="text" id="token" name=""><br>
                 <input type="button" value="submit" onclick="reg_class()">
-                </form>
-                </div>
-               </div>
-                              
+              </form>
+            </div>
           </div>
+
+        </div>
       </div>
     </div>
-    </section>
+  </section>
 
-    <div class="container">
-        <table class="table-wrapper">
-            <thead>
-              <tr>
-                <th scope="col">Course Code</th>
-                <th scope="col">Course Title</th>
-                <th scope="col">Instructor Name</th>
-              </tr>
-            </thead>
-            <tbody>
-{#              <tr>#}
-{#                <!-- Hyperlink needed to add here later -->#}
-{#                <!--Needs to be modified-->#}
-{#                <td scope="row"><a href="http://127.0.0.1:5000/student_within_course/CSCI3100">CSCI3100</a></td>#}
-{#                <td>Mark</td>#}
-{#                <td>Otto</td>#}
-{#              </tr>#}
-{#              <tr>#}
-{#                <td scope="row"><a href="http://127.0.0.1:5000/student_within_course/CSCI3160">CSCI3160</a></td>#}
-{#                <td>Jacob</td>#}
-{#                <td>Thornton</td>#}
-{#              </tr>#}
-{#              <tr>#}
-{#                <td scope="row"><a href="http://127.0.0.1:5000/student_within_course/CSCI3160">CSCI3170</a></td>#}
-{#                <td colspan="2">Larry the Bird</td>#}
-{#              </tr>#}
-                {% for item in enroll_info %}
-                    <tr>
-{#                        <td>{{ item['code'] }}</td>#}
-                        <td scope="row"><a href="http://127.0.0.1:5000/student_within_course/{{ item.course_id }}">{{ item.code }}</a></td>
-                        <td>{{ item.title }}</td>
-                        <td>{{ item.info }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-          </table>
+  <div class="container">
+    <table class="table-wrapper">
+      <thead>
+        <tr>
+          <th scope="col">Course Code</th>
+          <th scope="col">Course Title</th>
+          <th scope="col">Instructor Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        {# <tr>#}
+          {#
+          <!-- Hyperlink needed to add here later -->#}
+          {#
+          <!--Needs to be modified-->#}
+          {# <td scope="row"><a href="http://127.0.0.1:5000/student_within_course/CSCI3100">CSCI3100</a></td>#}
+          {# <td>Mark</td>#}
+          {# <td>Otto</td>#}
+          {#
+        </tr>#}
+        {# <tr>#}
+          {# <td scope="row"><a href="http://127.0.0.1:5000/student_within_course/CSCI3160">CSCI3160</a></td>#}
+          {# <td>Jacob</td>#}
+          {# <td>Thornton</td>#}
+          {# </tr>#}
+        {# <tr>#}
+          {# <td scope="row"><a href="http://127.0.0.1:5000/student_within_course/CSCI3160">CSCI3170</a></td>#}
+          {# <td colspan="2">Larry the Bird</td>#}
+          {# </tr>#}
+        {% for item in enroll_info %}
+        <tr>
+          {# <td>{{ item['code'] }}</td>#}
+          <td scope="row"><a href="http://127.0.0.1:5000/student_within_course/{{ item.course_id }}">{{ item.code }}</a>
+          </td>
+          <td>{{ item.title }}</td>
+          <td>{{ item.info }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <footer id="footer">
+    <div class="inner">
+      <div class="row">
+        <img src="../static/images/logo-no-background.png" id="icon" alt="WECOUPON LOGO" />
+      </div>
+      <h3>Should you have any question? Please contact us</h3>
     </div>
-
-    <footer id="footer">
-        <div class="inner">
-            <div class="row">
-                <img src="../static/images/logo-no-background.png" id="icon" alt="WECOUPON LOGO"/>
-            </div>
-            <h3>Should you have any question? Please contact us</h3>
-        </div>
-    </footer>
+  </footer>
 
 
 </body>
 <script src="../static/js/student_main_page.js"></script>
+
 </html>

@@ -21,43 +21,40 @@
   <section id="banner">
     <div class="container">
       <div class="row inner">
-        <!-- <div class="col-2 text-start">
-              <img src="../static/images/student_pic.png" alt="student profile picture">
-          </div> -->
         <div>
           <a href="{{ url_for('logout') }}" class="btn btn-outline-light btn-lg" style="float: right;">
             <span class="glyphicon glyphicon-log-out"></span> Log out
           </a>
         </div>
         <div class="col">
+          <div class="row">
+            <h1 id="name_display">{{ teach_profile[0]["name"] }}</h1>
+          </div>
+          <div class="row">
+            <h3 id="department_display">{{ teach_profile[0]["department"] }}</h3>
+          </div>
+          <div class="row">
+            <h3 id="title_display">{{ teach_profile[0]["title"] }}</h3>
+          </div>
+          <div class="row">
+            <h3 id="title_display"> {{ classcode }} </h3>
+          </div>
+          <div class="row">
+            <h3 id="title_display">{{ current_user.current_course.course_name }}</h3>
+          </div>
+          <br>
 
-          <div id="contes" style="">
-            <div style="width:500px;height:40px;">
-              Reg New Course
-              <hr>
-              <form style=" margin-left: 100px;">
-                course token：<input type="text" id="token" name=""><br>
-              </form>
+          <div class="row ">
+            <div class="col-4"></div>
+            <div class="col-4">
+              <a href="../teacher_main_page" type="button" class="button default" text-align: center>Back</a>
             </div>
           </div>
-
         </div>
       </div>
     </div>
   </section>
-
-
   <br>
-
-  <div class="container">
-    <div class="row">
-      <div class="col text-start">
-        Course {{ classcode }}
-        <a href="../teacher_main_page" class="button btn btn-primary" style="width:20%">Back</a>
-      </div>
-    </div>
-  </div>
-<br>
   <div class="container">
     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
       <li class="nav-item" role="presentation">
