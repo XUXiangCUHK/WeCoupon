@@ -390,21 +390,29 @@ def student_get_class(course_token):
 @login_required
 def student_within_course(course_id):
     print("Inside student_within_course")
+    flag = 0
+    question_list = list()
     form = AddAnswer()
     current_user.current_course_id = course_id
     current_user.fill_course_info()
-    if form.validate_on_submit():
-        input_answer = form.answer.data
-        open_q_id = mani.fetch_open_question(course_id)
-        if open_q_id:
-            current_user.current_q_id = open_q_id
-            current_user.fill_question_info()
+    open_q_id = mani.fetch_open_question(course_id)
+    if open_q_id:
+        flag = 1
+        current_user.current_q_id = open_q_id
+        current_user.fill_question_info()
+        if form.validate_on_submit():
+            input_answer = form.answer.data
             mani.insert_answer_info(open_q_id, current_user.user_id, input_answer, 0)
             print("here is question: ", current_user.current_q.q_content)
         else:
             print("there is no current open question")
     answer_list = mani.fetch_student_participation(current_user.user_id, course_id)
-    return render_template('student_within_course.html', course_id=course_id, answer_list=answer_list, form=form)
+    return render_template('student_within_course.html',
+                           course_id=course_id,
+                           answer_list=answer_list,
+                           form=form,
+                           flag=flag,
+                           question_list=question_list)
 
 
 if __name__ == '__main__':
