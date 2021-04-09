@@ -3,13 +3,13 @@
  
  #contes { /* 弹框的页面*/
     width: 500px; /*宽度*/
-    height: 200px; /*高度*/
-    background: rgb(129, 184, 238); /*背景色*/
+    height: 320px; /*高度*/
+    background: #198754; /*背景色*/
     display: none; /*隐藏*/
     z-index: 2; /*覆盖*/
     position: absolute;
-    top: 100px;
-    left: 400px; /* 定位*/
+    /* top: 100px; */
+    left: 100px; /* 定位*/
     }
     input{
     margin-bottom: 10px;
@@ -17,13 +17,13 @@
 
 #edit_profile {
     width: 500px; /*宽度*/
-    height: 200px; /*高度*/
-    background: rgb(129, 184, 238); /*背景色*/
+    height: 320px; /*高度*/
+    background: #198754; /*背景色*/
     display: none; /*隐藏*/
     z-index: 2; /*覆盖*/
     position: absolute;
-    top: 100px;
-    left: 400px; /* 定位*/
+    /* top: 100px; */
+    left: 100px; /* 定位*/
     }
     input{
     margin-bottom: 10px;
