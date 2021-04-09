@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, abort, flash, url_for, redirect, session
 from flask_bootstrap import Bootstrap
-from forms import LoginForm, RegistrationForm, CreateClassForm, AddQuestionForm, EditQuestionForm,AddAnswer
+from forms import LoginForm, RegistrationForm, CreateClassForm, AddQuestionForm, EditQuestionForm,AddAnswer, RegClass
 from flask_login import login_required, current_user, LoginManager, login_user, logout_user
 import json
 import random
@@ -175,10 +175,14 @@ def create_course(instructor):
 def teacher_main():
     print('teacher_main')
     print(current_user.username)
+    form = CreateClassForm()
+    if form.validate_on_submit():
+        answer = form.token.data
+        print("token:", answer)
     teach_info = [{'course_id': 4, 'code': 'ESTR4999', 'title': 'Graduation Thesis', 'info': 'Prof. Michael R. Lyu'},
                   {'course_id': 5, 'code': 'ESTR4998', 'title': 'Graduation Thesis', 'info': 'Prof. Michael R. Lyu'}]
     teach_profile = [{'name': 'Michael R. Lyu', 'department': 'Computer Science and Engineering department', 'title': 'Professor'}]
-    return render_template('teacher_main_page.html', teach_info=teach_info, teach_profile=teach_profile)
+    return render_template('teacher_main_page.html', teach_info=teach_info, teach_profile=teach_profile, form=form)
 
 
 @app.route('/student_main_page', methods=['GET', 'POST'])
@@ -187,11 +191,15 @@ def student_main():
     # user_msg = request.args['messages']
     print('student_main')
     print(current_user.username)
+    form = RegClass()
+    if form.validate_on_submit():
+        answer = form.token.data
+        print("token:", answer)
     # print(user_msg)
     enroll_info = [{'course_id': 1, 'code': 'CSCI3100', 'title': 'Software Engineering', 'info': 'Prof. Michael R. Lyu'},
                    {'course_id': 3, 'code': 'IERG3310', 'title': 'Computer Networking', 'info': 'Prof. Xing Guoliang'}]
     student_profile = [{'name': 'Alen XU', 'department': 'The Chinese University of Hong Kong', 'title': 'student'}]
-    return render_template('student_main_page.html', enroll_info=enroll_info, student_profile=student_profile)
+    return render_template('student_main_page.html', enroll_info=enroll_info, student_profile=student_profile, form=form)
 
 
 @app.route('/student_within_course/<classcode>', methods=['GET', 'POST'])

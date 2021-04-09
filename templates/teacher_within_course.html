@@ -66,13 +66,14 @@
 
           <div class="row">
             <div class="col-sm-6">
-              <h3 class="boxtitle" style="background-color:lavender;">Question Bank</h3>
+              <h3 id="head3">Question Bank</h3>
+              <hr/>
 
-              <div>
-                <a href="../teacher_collect_answer/default" class="button btn btn-primary" style="width:45%">Start a
+              <div style="text-align: center">
+                <a href="../teacher_collect_answer/default" class="button btn btn-primary" style="width:45%; ">Start
                   default question</a>
                 <a href="../teacher_add_question/{{ current_user.current_course_id }}" class="button btn btn-primary"
-                  style="width:45%">Add a question</a>
+                  style="width:45%; ">Add question</a>
               </div>
 
               <table class="table" id="qlist">
@@ -102,7 +103,10 @@
 
             </div>
             <div class="col-sm-6">
-              <h3 class="boxtitle" style="background-color:lavenderblush;">Posted Questions</h3>
+              <h3 id="head3">Posted Questions</h3>
+
+              <hr/>
+
               <table class="table" id="qlist2">
                 <thead>
                   <tr>

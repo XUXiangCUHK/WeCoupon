@@ -55,3 +55,8 @@ class AddAnswer(FlaskForm):
     # question = StringField('Question', validators=[DataRequired()])
     answer = TextAreaField('Answer', validators=[DataRequired()])
     submit = SubmitField('Submit', render_kw={'onclick': 'alert("submitted!")'})
+
+
+class RegClass(FlaskForm):
+    token = StringField('Token', validators=[DataRequired()])
+    submit = SubmitField('Register')

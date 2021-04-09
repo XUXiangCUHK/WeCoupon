@@ -1,6 +1,21 @@
 @import url(font-awesome.min.css);
 @import "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600";
 
+/* Box Model */
+
+.box {
+    border: solid 1px #dbdbdb;
+    margin: 0 auto 2em auto;
+    padding: 1.5em;
+    width:80%;
+}
+
+#head3 {
+    padding:10px; 
+    text-align: center;
+}
+
+
 /* banner */
 
 #banner {

@@ -23,6 +23,20 @@ img {
     margin-bottom: 10px;
     }
 
+/* Box Model */
+
+.box {
+    border: solid 1px #dbdbdb;
+    margin: 0 auto 2em auto;
+    padding: 1.5em;
+    width:80%;
+}
+
+#head3 {
+    padding:10px; 
+    text-align: center;
+}
+
 /* banner */
 
 #banner {

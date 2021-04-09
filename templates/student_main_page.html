@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+  {% import "bootstrap/wtf.html" as wtf %}
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -45,14 +45,20 @@
             <button type="button" onclick="display()">Reg Class</button>
           </div>
           <div id="contes" style="">
-            <div style="width:500px;height:40px;">
-              Reg New Course
+
+            <div style="width:500px;height:40px;"> 
+              <br>
+              Register New Course
               <hr>
+
+              {{wtf.quick_form(form)}}
+<!-- 
               <form style="">course token：
                 <br>
                 <input type="text" id="token" name=""><br>
                 <input type="button" value="submit" onclick="reg_class()">
-              </form>
+              </form> -->
+
             </div>
           </div>
 

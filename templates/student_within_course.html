@@ -74,10 +74,11 @@
               </form> -->
 
           {% if flag == 0 %}
-          <h1>No question posted yet!<br> Please refresh page for new question. </h1>
+          <h2 style="text-align: center;">No question posted yet!<br> Please refresh page for new question. </h2>
           {% else %}
-          <h2>Question Name: {{current_user.current_q.q_title}}</h2>
-          <h4>Question Content: {{current_user.current_q.q_content}}</h4>
+          <br>
+          <h3 id="head3">{{current_user.current_q.q_title}}</h3>
+          <div class="box" > <p> {{current_user.current_q.q_content}}</p></div>
           {{ wtf.quick_form(form) }}
           {% endif %}
           <!-- <br>
