@@ -2,9 +2,8 @@ function display() {
     document.getElementById('contes').style.display = 'block';
 }
 
-function cancel() {
-    document.getElementById('contes').style.display = 'none !important';
-    document.getElementById('contes').style.visibility = 'hidden';
+function closepage() {
+    document.getElementById('contes').style.display = 'none';
 }
 
 /*

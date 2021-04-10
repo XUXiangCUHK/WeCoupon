@@ -2,6 +2,11 @@ function display() {
     document.getElementById('contes').style.display = 'block';
 }
 
+function closepage() {
+    document.getElementById('contes').style.display = 'none';
+}
+
+
 function reg_class() {
     document.getElementById('contes').style.display = 'none';
     var course_token = document.getElementById('token').value;
