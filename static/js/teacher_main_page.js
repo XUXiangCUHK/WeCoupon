@@ -2,10 +2,11 @@ function display() {
     document.getElementById('contes').style.display = 'block';
 }
 
+/*
 function display_edit_profile() {
     document.getElementById('edit_profile').style.display = 'block';
 }
-
+*/
 function teacher_add_class() {
     document.getElementById('contes').style.display = 'none';
     var course_code = document.getElementById('code').value;
@@ -21,7 +22,7 @@ function teacher_add_class() {
     })
 
 }
-
+/*
 function edit_profile() {
     document.getElementById('edit_profile').style.display = 'none';
     var course_token = document.getElementById('token').value;
@@ -33,3 +34,4 @@ function edit_profile() {
         tbody.innerHTML = tbody.innerHTML + addClass
     })
 }
+*/
