@@ -2,6 +2,11 @@ function display() {
     document.getElementById('contes').style.display = 'block';
 }
 
+function cancel() {
+    document.getElementById('contes').style.display = 'none !important';
+    document.getElementById('contes').style.visibility = 'hidden';
+}
+
 /*
 function display_edit_profile() {
     document.getElementById('edit_profile').style.display = 'block';
