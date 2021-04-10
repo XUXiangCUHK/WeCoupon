@@ -49,43 +49,24 @@
   <br>
   <div class="container">
     <div class="container">
-      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="pills-answer-tab" data-bs-toggle="pill" data-bs-target="#pills-answer"
-            type="button" role="tab" aria-controls="pills-answer" aria-selected="true">Answer</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="pills-participation-tab" data-bs-toggle="pill"
+          <button class="nav-link active" id="pills-participation-tab" data-bs-toggle="pill"
             data-bs-target="#pills-participation" type="button" role="tab" aria-controls="pills-participation"
             aria-selected="false">Participation</button>
         </li>
+        <li>
+          <svg xmlns="http://www.w3.org/2000/svg" width="50" height="40" fill="currentColor" class="bi bi-slash" viewBox="0 0 16 16">
+            <path d="M11.354 4.646a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708l6-6a.5.5 0 0 1 .708 0z"/>
+          </svg>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-answer-tab" data-bs-toggle="pill" data-bs-target="#pills-answer"
+            type="button" role="tab" aria-controls="pills-answer" aria-selected="true">Answer</button>
+        </li>
       </ul>
       <div class="tab-content" id="pills-tabContent">
-        <div class="tab-pane fade show active" id="pills-answer" role="tabpanel" aria-labelledby="pills-answer-tab">
-          <!-- <form>
-                <div class="form-group">
-                  <label for="exampleFormControlInput1">Question</label>
-                  <p class="form-control" id="questiontextbox">waiting...</p>
-                </div>
-                <div class="form-group">
-                  <label for="exampleFormControlTextarea1">Example textarea</label>
-                  <textarea class="form-control" id="answertextbox" rows="4" placeholder="Give Your Answer"></textarea>
-                </div>
-              </form> -->
-
-          {% if flag == 0 %}
-          <h2 style="text-align: center;">No question posted yet!<br> Please refresh page for new question. </h2>
-          {% else %}
-          <br>
-          <h3 id="head3">{{current_user.current_q.q_title}}</h3>
-          <div class="box" > <p> {{current_user.current_q.q_content}}</p></div>
-          {{ wtf.quick_form(form) }}
-          {% endif %}
-          <!-- <br>
-              <button type="submit" class="btn-primary" onclick="submit_ans(this)">Submit</button> -->
-        </div>
-
-        <div class="tab-pane fade" id="pills-participation" role="tabpanel" aria-labelledby="pills-participation-tab">
+        <div class="tab-pane fade show active" id="pills-participation" role="tabpanel" aria-labelledby="pills-participation-tab">
           <!-- <ul class="list-group">
                 <li class="list-group-item">
                   <p class="fullText">Q1 HTML stands for Hyper Text Markup Language. HTML is the standard markup language for creating Web pages. HTML describes the structure of a Web page. HTML consists of a series of elements. HTML elements tell the browser how to display the content.</p>
@@ -125,6 +106,31 @@
           </table>
 
         </div>
+        <div class="tab-pane fade" id="pills-answer" role="tabpanel" aria-labelledby="pills-answer-tab">
+          <!-- <form>
+                <div class="form-group">
+                  <label for="exampleFormControlInput1">Question</label>
+                  <p class="form-control" id="questiontextbox">waiting...</p>
+                </div>
+                <div class="form-group">
+                  <label for="exampleFormControlTextarea1">Example textarea</label>
+                  <textarea class="form-control" id="answertextbox" rows="4" placeholder="Give Your Answer"></textarea>
+                </div>
+              </form> -->
+
+          {% if flag == 0 %}
+          <h2 style="text-align: center;">No question posted yet!<br> Please refresh page for new question. </h2>
+          {% else %}
+          <br>
+          <h3 id="head3">{{current_user.current_q.q_title}}</h3>
+          <div class="box" > <p> {{current_user.current_q.q_content}}</p></div>
+          {{ wtf.quick_form(form) }}
+          {% endif %}
+          <!-- <br>
+              <button type="submit" class="btn-primary" onclick="submit_ans(this)">Submit</button> -->
+        </div>
+
+
         <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">3</div>
       </div>
     </div>
