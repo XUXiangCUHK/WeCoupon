@@ -6,7 +6,9 @@ from flask import Flask, request, render_template
 from flask import flash, url_for, redirect, session
 from flask_mail import Mail, Message
 from flask_bootstrap import Bootstrap
-from forms import LoginForm, RegistrationForm, AddQuestionForm, EditQuestionForm, AddAnswer
+from forms import LoginForm, RegistrationForm
+from forms import AddQuestionForm, EditQuestionForm, AddAnswer
+from forms import CreateClassForm, RegClass
 from flask_login import login_user, logout_user
 from flask_login import login_required, current_user, LoginManager
 
@@ -182,6 +184,7 @@ def sign_up():
 @login_required
 def teacher_main():
     print("Inside teacher_main_page")
+    form = CreateClassForm()
     enroll_info = mani.user_enrollment(current_user.user_id)
     first_name = mani.fetch_user_info_by_id(current_user.user_id, ['first_name'])
     last_name = mani.fetch_user_info_by_id(current_user.user_id, ['last_name'])
@@ -193,9 +196,20 @@ def teacher_main():
     else:
         title = "Student"
     teach_profile = [{'name': greeting, 'department': university, 'title': title}]
+    if form.validate_on_submit():
+        course_code = form.course_code.data
+        course_title = form.course_title.data
+        course_instructor = form.course_instructor.data
+        course_token = form.course_token.data
+        print("token:", course_token)
+        mani.insert_course_info(course_code, course_title, course_instructor, course_token)
+        class_info = mani.fetch_course_info(course_token)
+        mani.insert_enrollment_info(current_user.user_id, class_info['course_id'])
+        return redirect(url_for('teacher_main'))
     return render_template('teacher_main_page.html',
                            teach_info=enroll_info,
-                           teach_profile=teach_profile)
+                           teach_profile=teach_profile,
+                           form=form)
 
 
 @app.route('/teacher_create_class/<course_code>&<course_name>&<course_instructor>&<course_token>',
@@ -369,6 +383,7 @@ def update_answer(q_id):
 @login_required
 def student_main():
     print("Inside student_main_page")
+    form = RegClass()
     first_name = mani.fetch_user_info_by_id(current_user.user_id, ['first_name'])
     last_name = mani.fetch_user_info_by_id(current_user.user_id, ['last_name'])
     pos = mani.fetch_user_info_by_id(current_user.user_id, ['is_student'])
@@ -380,9 +395,16 @@ def student_main():
         title = "Student"
     student_profile = [{'name': greeting, 'department': university, 'title': title}]
     enroll_info = mani.user_enrollment(current_user.user_id)
+    if form.validate_on_submit():
+        course_token = form.token.data
+        class_info = mani.fetch_course_info(course_token)
+        course_id = class_info['course_id']
+        mani.insert_enrollment_info(current_user.user_id, course_id)
+        return redirect(url_for('student_main'))
     return render_template('student_main_page.html',
                            enroll_info=enroll_info,
-                           student_profile=student_profile)
+                           student_profile=student_profile,
+                           form=form)
 
 
 @app.route('/student_get_class/<course_token>', methods=['GET', 'POST'])

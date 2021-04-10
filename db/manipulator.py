@@ -88,6 +88,13 @@ class Manipulator:
                 return True
         return False
 
+    def fetch_registerd_email(self):
+        email_list = list()
+        res = self.sql.read_registered_email()
+        for item in res:
+            email_list.append(item[0])
+        return email_list
+
     def fetch_user_info_by_email(self, email, cols):
         res = self.sql.read_account_info_by_email(email, cols)
         if res:
@@ -108,6 +115,13 @@ class Manipulator:
             return res[0][0]
         else:
             return str()
+
+    def fetch_all_course_token(self):
+        token_list = list()
+        res = self.sql.read_all_course_token()
+        for item in res:
+            token_list.append(item[0])
+        return token_list
 
     def fetch_course_info_by_id(self, course_id, cols):
         res = self.sql.read_course_info_by_id(course_id, cols)
@@ -278,14 +292,14 @@ if __name__ == "__main__":
     # m.insert_course_info('FTEC3001', 'Financial Innovation & Structured Products', 'Prof. Chen Nan', 'FinTech0')
     # m.insert_enrollment_info('StevenXU', 'CSCI3100')
     # m.insert_enrollment_info('StevenXU', 'IERG3310')
-    # m.insert_enrollment_info('3', '1')
+    m.insert_enrollment_info('3', '1')
 
     # m.user_enrollment('StevenXU')
     # res = m.user_verification('1155107785@link.cuhk.edu.hk', 'wecoupon')
     # print('res,', res)
     # res = m.user_is_student('1155107785@link.cuhk.edu.hk')
     # m.insert_question_info(3, 1, 'Question5', 'What are s/w principles?', 'explosive states', 'N')
-    m.insert_answer_info(21, 2, 'hard to answer testing', 0)
+    # m.insert_answer_info(21, 2, 'hard to answer testing', 0)
     # m.insert_answer_info(1, 2, 'explosive states', 0)
     # print(m.fetch_question_info(1))
     # print(m.fetch_answer_list(1))

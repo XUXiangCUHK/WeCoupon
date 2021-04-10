@@ -101,6 +101,13 @@ class Sql:
                     '''.format(coupon_id)
         self.db.execute_mysql(statement)
 
+    def read_registered_email(self):
+        statement = '''
+                    SELECT distinct email
+                    FROM `WeCoupon`.`account`;
+                    '''
+        return self.db.read_from_mysql(statement)
+
     def read_account_info_by_email(self, email, column_list):
         col = ', '.join(column_list)
         statement = '''SELECT {} FROM WeCoupon.account WHERE email='{}';'''.format(col, email)
@@ -119,6 +126,13 @@ class Sql:
     def read_course_info_by_id(self, course_id, column_list):
         col = ', '.join(column_list)
         statement = '''SELECT {} FROM WeCoupon.course WHERE course_id='{}';'''.format(col, course_id)
+        return self.db.read_from_mysql(statement)
+
+    def read_all_course_token(self):
+        statement = '''
+                    SELECT distinct course_token
+                    FROM WeCoupon.course;
+                    '''
         return self.db.read_from_mysql(statement)
 
     def read_course_info(self, token):
@@ -197,7 +211,7 @@ class Sql:
         statement = '''
                     SELECT min(id)
                     FROM WeCoupon.coupon
-                    WHERE student_id='{}'AND course_id='{}' AND is_used=0
+                    WHERE student_id='{}'AND course_id='{}' AND is_used=0;
                     '''.format(user_id, course_id)
         return self.db.read_from_mysql(statement)
 
@@ -205,7 +219,7 @@ class Sql:
         statement = '''
                     SELECT count(*)
                     FROM WeCoupon.coupon
-                    WHERE student_id='{}'AND course_id='{}'
+                    WHERE student_id='{}'AND course_id='{}';
                     '''.format(user_id, course_id)
         return self.db.read_from_mysql(statement)
 
@@ -213,7 +227,7 @@ class Sql:
         statement = '''
                     SELECT count(*)
                     FROM WeCoupon.coupon
-                    WHERE student_id='{}'AND course_id='{}' AND is_used = 1
+                    WHERE student_id='{}'AND course_id='{}' AND is_used = 1;
                     '''.format(user_id, course_id)
         return self.db.read_from_mysql(statement)
 
@@ -221,7 +235,7 @@ class Sql:
         statement = '''
                     SELECT count(*)
                     FROM WeCoupon.answer
-                    WHERE q_id = '{}'
+                    WHERE q_id = '{}';
                     '''.format(q_id)
         return self.db.read_from_mysql(statement)
 
@@ -230,7 +244,7 @@ class Sql:
                     SELECT q.q_title, q.q_content, a.a_content, q.q_answer, a.a_status
                     FROM WeCoupon.answer AS a
                     JOIN WeCoupon.question AS q ON q.q_id = a.q_id
-                    WHERE a.student_id = {} AND q.course_id = course_id = {}
+                    WHERE a.student_id = {} AND q.course_id = course_id = {} AND q.q_status = 'N';
                     '''.format(user_id, course_id)
         return self.db.read_from_mysql(statement)
 
