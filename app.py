@@ -249,7 +249,6 @@ def teacher_view_answer(question_id):
     current_user.fill_course_info()
     current_user.current_q_id = question_id
     current_user.fill_question_info()
-    # question_info = mani.fetch_question_info(question_id)
     answer_list = mani.fetch_answer_list(question_id)
     per_ans = mani.fetch_per_ans(current_user.current_course_id, question_id)
     return render_template('teacher_view_answer.html',

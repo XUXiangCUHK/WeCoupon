@@ -233,7 +233,7 @@ class Sql:
 
     def read_ans_num(self, q_id):
         statement = '''
-                    SELECT count(*)
+                    SELECT count(distinct student_id)
                     FROM WeCoupon.answer
                     WHERE q_id = '{}';
                     '''.format(q_id)
