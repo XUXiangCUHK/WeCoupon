@@ -123,6 +123,13 @@ class Sql:
         statement = '''SELECT {} FROM WeCoupon.account WHERE user_id='{}';'''.format(col, user_id)
         return self.db.read_from_mysql(statement)
 
+    def read_to_check_enrollment(self, user_id, course_id):
+        statement = '''
+                    SELECT id FROM WeCoupon.enrollment
+                    WHERE user_id = '{}' AND course_id = '{}';
+                    '''.format(user_id, course_id)
+        return self.db.read_from_mysql(statement)
+
     def read_course_info_by_id(self, course_id, column_list):
         col = ', '.join(column_list)
         statement = '''SELECT {} FROM WeCoupon.course WHERE course_id='{}';'''.format(col, course_id)
@@ -185,7 +192,9 @@ class Sql:
                     SELECT a_id, user_id, user_name, a_content, a_status
                     FROM WeCoupon.answer an
                     JOIN WeCoupon.account ac ON ac.user_id = an.student_id 
-                    WHERE q_id='{}';'''.format(q_id)
+                    WHERE q_id='{}'
+                    ORDER BY an.a_time ASC;
+                    '''.format(q_id)
         return self.db.read_from_mysql(statement)
 
     def read_course_enrolled_users(self, course_id):

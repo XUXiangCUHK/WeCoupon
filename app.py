@@ -390,7 +390,9 @@ def student_main():
         course_token = form.token.data
         class_info = mani.fetch_course_info(course_token)
         course_id = class_info['course_id']
-        mani.insert_enrollment_info(current_user.user_id, course_id)
+        print(mani.check_enrollment(current_user.user_id, course_id))
+        if not mani.check_enrollment(current_user.user_id, course_id):
+            mani.insert_enrollment_info(current_user.user_id, course_id)
         return redirect(url_for('student_main'))
     return render_template('student_main_page.html',
                            enroll_info=enroll_info,

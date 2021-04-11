@@ -116,6 +116,13 @@ class Manipulator:
         else:
             return str()
 
+    def check_enrollment(self, user_id, course_id):
+        res = self.sql.read_to_check_enrollment(user_id, course_id)
+        if res:
+            return True
+        else:
+            return False
+
     def fetch_all_course_token(self):
         token_list = list()
         res = self.sql.read_all_course_token()
