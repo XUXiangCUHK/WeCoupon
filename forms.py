@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo, NoneOf
+from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo, NoneOf, AnyOf
 from flask_pagedown.fields import PageDownField
 
 from db.manipulator import Manipulator
@@ -64,5 +64,7 @@ class AddAnswer(FlaskForm):
 
 
 class RegClass(FlaskForm):
-    token = StringField('Token', validators=[DataRequired()])
+    token = StringField('Token', validators=[DataRequired(),
+                                             AnyOf(mani.fetch_all_course_token(),
+                                                   'The token is not available!')])
     submit = SubmitField('Register')
