@@ -163,15 +163,15 @@
               <td style="width:10%">{{ item["coupon_rewarded"] }}</td>
               <td style="width:10%">{{ item["coupon_used"] }}</td>
 
-              <td><input type="button" id="{{ item['student_id'] }}" class="btn btn-success" value="Use"
+              <td><input type="button" id="{{ item['user_id'] }}" class="btn btn-success" value="Use"
                   onclick="useCoupon('{{ item['user_id'] }}', '{{ current_user.current_course_id }}' )"></input>
               </td>
 
               <script>
                 if ({{ item['coupon_rewarded'] }} - {{ item["coupon_used"] }} === 0) {
-                  document.getElementById('{{item['student_id']}}').setAttribute("value", "N/A");
-                  document.getElementById('{{item['student_id']}}').setAttribute("onclick", "");
-                  document.getElementById('{{item['student_id']}}').setAttribute("class", "btn btn-warning");
+                  document.getElementById('{{item['user_id']}}').setAttribute("value", "N/A");
+                  document.getElementById('{{item['user_id']}}').setAttribute("onclick", "");
+                  document.getElementById('{{item['user_id']}}').setAttribute("class", "btn btn-warning");
                 }
               </script>
             </tr>
