@@ -232,7 +232,8 @@ class Manipulator:
 
     def mark_coupon_as_used(self, user_id, course_id):
         coupon_id = self.sql.read_unused_coupon_id(user_id, course_id)[0][0]
-        self.sql.update_coupon(coupon_id)
+        if coupon_id:
+            self.sql.update_coupon(coupon_id)
 
     def fetch_coupon_num(self, user_id, course_id):
         res = self.sql.read_coupon_info(user_id, course_id)

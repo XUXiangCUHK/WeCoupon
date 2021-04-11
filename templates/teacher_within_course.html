@@ -116,7 +116,7 @@
                 <thead>
                   <tr>
                     <th scope="col" style="width:40%">Question Name</th>
-                    <th scope="col" style="width:30%">Question Type</th>
+                    <th scope="col" style="width:30%">Question Content</th>
                     <th scope="col" style="width:30%">View</th>
                   </tr>
                 </thead>
@@ -164,7 +164,7 @@
               <td style="width:10%">{{ item["coupon_used"] }}</td>
 
               <td><input type="button" id="{{ item['student_id'] }}" class="btn btn-success" value="Use"
-                  onclick="useCoupon('{{ current_user.user_id }}', '{{ current_user.current_course_id }}' )"></input>
+                  onclick="useCoupon('{{ item['user_id'] }}', '{{ current_user.current_course_id }}' )"></input>
               </td>
 
               <script>

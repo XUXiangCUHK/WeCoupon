@@ -304,17 +304,9 @@ def use_coupon(student_id, course_id):
     print("Inside use_coupon")
     current_user.current_course_id = course_id
     current_user.fill_course_info()
+    print(student_id, course_id)
     mani.mark_coupon_as_used(student_id, course_id)
     return str()
-    # new_question_list, old_question_list = mani.fetch_question_info_by_account(current_user.user_id, course_id)
-    # current_user.current_course_id = course_id
-    # current_user.fill_course_info()
-    # participation_list = mani.fetch_participation(course_id)
-    # return render_template('teacher_within_course.html',
-    #                        course_code=current_user.current_course.course_code,
-    #                        new_question_list=new_question_list,
-    #                        old_question_list=old_question_list,
-    #                        participation_list=participation_list)
 
 
 @app.route('/teacher_add_question/<course_id>', methods=['GET', 'POST'])
