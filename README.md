@@ -26,9 +26,9 @@ In order to log out, you can click the Log out button.
 ### Functions provided
 #### Teacher Version 
 1. Add Class
-Click the ADD CLASS button and fill in the class info form, and then a new class can be created in the database. When running app.py with our MySQL database, you can see the new one added into the class list. When running app_test.py, you can only submit the form without bugs, but there is nothing changed in the class list because of the dummy data.
+   Click the ADD CLASS button and fill in the class info form, and then a new class can be created in the database. When running app.py with our MySQL database, you can see the new one added into the class list. When running app_test.py, you can only submit the form without bugs, but there is nothing changed in the class list because of the dummy data.
 2. Enter into a specific class (by clicking course code)
-When running app_test.py, the course ESTR4999 is used to show the following functions so you are advised to click this code.
+   When running app_test.py, the course ESTR4999 is used to show the following functions so you are advised to click this code.
 3. View historical question
 In the Question page, there is a list of posted questions. You can view their their detailed information and historical answers by clicking the View button.
 4. Add question
