@@ -12,8 +12,8 @@ class User(UserMixin):
         if input_email == 'teacher@gmail.com':
             self.username = 'Michael'
             self.user_id = '1'
-            self.first_name = 'One'
-            self.last_name = 'T'
+            self.first_name = 'Michael'
+            self.last_name = 'Prof'
             self.email = 'teacher@gmail.com'
             self.password = '1'
             self.is_student = '0'
@@ -22,8 +22,8 @@ class User(UserMixin):
         else:
             self.username = 'Amy'
             self.user_id = '2'
-            self.first_name = 'One'
-            self.last_name = 'S'
+            self.first_name = 'Alen'
+            self.last_name = 'XU'
             self.SID = '1234567890'
             self.email = input_email
             self.password = '1'
@@ -31,7 +31,7 @@ class User(UserMixin):
             self.token = ''
             self.activated = '1'
 
-        self.current_classcode = str()
+        self.current_course_id = str()
         self.current_course = dict()
         self.current_q_id = 0
         self.current_q = dict()
@@ -53,7 +53,7 @@ class User(UserMixin):
             return False
 
     def fill_course_info(self):
-        self.current_course = Course(self.current_classcode)
+        self.current_course = Course(self.current_course_id)
 
     def fill_question_info(self):
         self.current_q = Question(self.current_q_id)
@@ -80,12 +80,14 @@ class Course:
 
 class Question:
     def __init__(self, q_id):
-        question_list = [{'question_id': 1, 'course_id': 4, 'question_title': 'question#4', 'q_content': 'test1', 'question_type': 'MC', 'q_status': '0'},
+        question_list = [{'question_id': 'default', 'course_id': 4, 'question_title': 'default question', 'q_content': 'def', 'question_type': 'Type', 'q_status': '0'},
+                        {'question_id': 1, 'course_id': 4, 'question_title': 'question#4', 'q_content': 'test1', 'question_type': 'MC', 'q_status': '0'},
                          {'question_id': 2, 'course_id': 4, 'question_title': 'question#5', 'q_content': 'test2', 'question_type': 'Type', 'q_status': '0'},
                          {'question_id': 3, 'course_id': 4, 'question_title': 'question#1', 'q_content': 'test3', 'question_type': 'MC', 'q_status': '2'},
                          {'question_id': 4, 'course_id': 4, 'question_title': 'question#2', 'q_content': 'test4', 'question_type': 'Type', 'q_status': '2'},
                          {'question_id': 5, 'course_id': 4, 'question_title': 'question#3', 'q_content': 'test5', 'question_type': 'Type', 'q_status': '2'},
-                         {'question_id': 6, 'course_id': 4, 'question_title': 'question#6', 'q_content': 'test6', 'question_type': 'Short', 'q_status': '2'}]
+                         {'question_id': 123, 'course_id': 4, 'question_title': 'question#6', 'q_content': 'test6', 'question_type': 'Short', 'q_status': '2'},
+                         {'question_id': 999, 'course_id': 4, 'question_title': 'test answer', 'q_content': 'you can input answer below', 'question_type': 'type', 'q_status': '1'}]
 
         # q_status: 0: unused; 1: ongoing; 2: used
         for i in question_list:
