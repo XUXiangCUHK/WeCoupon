@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, abort, flash, url_for, redirect, session
 from flask_bootstrap import Bootstrap
-from forms import LoginForm, RegistrationForm, CreateClassForm, AddQuestionForm, EditQuestionForm,AddAnswer, RegClass
+from forms_test import LoginForm, RegistrationForm, CreateClassForm, AddQuestionForm, EditQuestionForm,AddAnswer, RegClass
 from flask_login import login_required, current_user, LoginManager, login_user, logout_user
 import json
 import random
@@ -159,6 +159,30 @@ def confirm(token):
     return redirect(url_for('login'))
 
 
+########################################################################################################################
+# This part is for teacher administration, including main page, question page and answer page.
+########################################################################################################################
+
+
+@app.route('/teacher_main_page', methods=['GET', 'POST'])
+@login_required
+def teacher_main():
+    print('teacher_main')
+    print(current_user.username)
+    form = CreateClassForm()
+    if form.validate_on_submit():
+        course_code = form.course_code.data
+        course_title = form.course_title.data
+        course_instructor = form.course_instructor.data
+        course_token = form.course_token.data
+        return redirect(url_for('teacher_main'))
+    teach_info = [{'course_id': 4, 'code': 'ESTR4999', 'title': 'Graduation Thesis', 'info': 'Prof. Michael R. Lyu'},
+                  {'course_id': 5, 'code': 'ESTR4998', 'title': 'Graduation Thesis', 'info': 'Prof. Michael R. Lyu'},
+                  ]
+    teach_profile = [{'name': 'Michael R. Lyu', 'department': 'Computer Science and Engineering department', 'title': 'Professor'}]
+    return render_template('teacher_main_page.html', teach_info=teach_info, teach_profile=teach_profile, form=form)
+
+
 @app.route('/teacher_create_course/<instructor>', methods=['GET', 'POST'])
 @login_required
 def create_course(instructor):
@@ -170,68 +194,6 @@ def create_course(instructor):
     return render_template('teacher_create_course.html', form=form)
 
 
-@app.route('/teacher_main_page', methods=['GET', 'POST'])
-@login_required
-def teacher_main():
-    print('teacher_main')
-    print(current_user.username)
-    form = CreateClassForm()
-    if form.validate_on_submit():
-        answer = form.token.data
-        print("token:", answer)
-    teach_info = [{'course_id': 4, 'code': 'ESTR4999', 'title': 'Graduation Thesis', 'info': 'Prof. Michael R. Lyu'},
-                  {'course_id': 5, 'code': 'ESTR4998', 'title': 'Graduation Thesis', 'info': 'Prof. Michael R. Lyu'}]
-    teach_profile = [{'name': 'Michael R. Lyu', 'department': 'Computer Science and Engineering department', 'title': 'Professor'}]
-    return render_template('teacher_main_page.html', teach_info=teach_info, teach_profile=teach_profile, form=form)
-
-
-@app.route('/student_main_page', methods=['GET', 'POST'])
-@login_required
-def student_main():
-    # user_msg = request.args['messages']
-    print('student_main')
-    print(current_user.username)
-    form = RegClass()
-    if form.validate_on_submit():
-        answer = form.token.data
-        print("token:", answer)
-    # print(user_msg)
-    enroll_info = [{'course_id': 1, 'code': 'CSCI3100', 'title': 'Software Engineering', 'info': 'Prof. Michael R. Lyu'},
-                   {'course_id': 3, 'code': 'IERG3310', 'title': 'Computer Networking', 'info': 'Prof. Xing Guoliang'}]
-    student_profile = [{'name': 'Alen XU', 'department': 'The Chinese University of Hong Kong', 'title': 'student'}]
-    return render_template('student_main_page.html', enroll_info=enroll_info, student_profile=student_profile, form=form)
-
-
-@app.route('/student_within_course/<classcode>', methods=['GET', 'POST'])
-@login_required
-def student_within_course(classcode):
-    flag = 1 # 1 means there is question, 0 means no question
-    question_list = {'question_title': 'hard question', 'question_content': 'what is fsm?'}
-    form = AddAnswer()
-    current_user.current_classcode = classcode
-    print("current_user.current_classcode: ", current_user.current_classcode)
-    current_user.fill_course_info()
-    print("here is course: ", current_user.current_course.course_name)
-    answer_list = [{'question_title': "hard question", 'question_content': "what is fsm?", 'question_answer': "fsm is abc.", 'correct_answer': 'fsm is cde.', 'get_coupon_or_not': 1}, 
-        {'question_title': "hard question2", 'question_content': "what is fsm?2", 'question_answer': "fsm is abc.2", 'correct_answer': 'fsm is cde.2', 'get_coupon_or_not' : 0}]
-    if form.validate_on_submit():
-        answer = form.answer.data
-        print("answer:", answer)
-        newform = AddAnswer()
-        # return render_template('student_within_course.html', flag=1, question_list= question_list, course_code=classcode, form = form, answer_list=answer_list)
-        pass
-    else:
-        pass 
-    return render_template('student_within_course.html', flag=flag, question_list= question_list, course_code=classcode, form = form, answer_list=answer_list)
-
-
-@app.route('/student_get_class/<password>', methods=['GET', 'POST'])
-@login_required
-def student_get_class(password):
-    print('student_get_class')
-    class_info = {'course_id': 7, 'course_code': 'CSCI2001', 'course_name': 'Data Structure', 'course_instructor': 'Prof. Michael R. Lyu'}
-    course_id = class_info['course_id']
-    return json.dumps(class_info)
 
 @app.route('/teacher_create_class/<course_name>&<course_token>', methods=['GET', 'POST'])
 @login_required
@@ -252,7 +214,7 @@ def teacher_collect_answer(question_id):
     current_user.current_q_id = question_id
     current_user.fill_question_info()
     current_user.current_q.q_status = '1'
-    current_user.current_classcode = current_user.current_q.course_id
+    current_user.current_course_id = current_user.current_q.course_id
     current_user.fill_course_info()
     print("teacher_collect_answer: ", current_user.current_q.q_status)
     answer_list = [{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This '},
@@ -279,46 +241,48 @@ def teacher_view_answer(question_id):
     current_user.current_q_id = question_id
     current_user.fill_question_info()
     current_user.current_q.q_status = '2'
-    current_user.current_classcode = current_user.current_q.course_id
+    current_user.current_course_id = current_user.current_q.course_id
     current_user.fill_course_info()
     print("teacher_view_answer: ", current_user.current_q.q_status)
-    answer_list = [{'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This '},
+    answer_list = [{'answer_id': '1', 'answer_userid': '02', 'answer_user': 'student1', 'answer_content': 'This '},
                     # {'answer_userid': '234','answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
-                    {'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},]
+                    {'answer_id': '2', 'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_id': '3', 'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_id': '4', 'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_id': '5', 'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_id': '6', 'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_id': '7', 'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_id': '8', 'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_id': '9', 'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_id': '10', 'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_id': '11', 'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_id': '12', 'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},
+                    {'answer_id': '1.', 'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'},]
     per_ans = {'answered': 12, 'not_answered': 35}
     return render_template('teacher_view_answer.html', question_info=current_user.current_q, answer_list=answer_list, per_ans=per_ans)
 
-@app.route('/add_coupon/<userid>&<q_id>', methods=['GET', 'POST'])
+
+@app.route('/add_coupon/<userid>&<q_id>&<a_id>', methods=['GET', 'POST'])
 @login_required
-def reward_coupon(userid, q_id):
+def reward_coupon(userid, q_id, a_id):
     # get the username of student who is rewarded coupon
     print(userid, q_id)
     current_user.current_q_id = q_id
     current_user.fill_question_info()
-    current_user.current_classcode = current_user.current_q.course_id
+    current_user.current_course_id = current_user.current_q.course_id
     current_user.fill_course_info()
     print("add_coupon: ", current_user.current_course.course_name)
     # coupon_number++
     # update db
     # flash('Congratulations! {} got this coupon!'.format(username))
-    return True
+    return str()
+
 
 @app.route('/teacher_within_course/<course_id>', methods=['GET', 'POST'])
 @login_required
 def teacher_view(course_id):
-    current_user.current_classcode = course_id
-    print("current_user.current_classcode: ", current_user.current_classcode)
+    current_user.current_course_id = course_id
+    print("current_user.current_course_id: ", current_user.current_course_id)
     current_user.fill_course_info()
     print("here is course: ", current_user.current_course.course_name)
     new_question_list = [{'question_id': 1, 'question_title': 'question#4', 'question_type': 'MC'},
@@ -332,6 +296,7 @@ def teacher_view(course_id):
     return render_template('teacher_within_course.html', classcode='CSCI3100', course_id=course_id, new_question_list=new_question_list,
                            old_question_list=old_question_list, participation_list=participation_list)
 
+
 @app.route('/use_coupon/<student_id>&<course_id>', methods=['GET', 'POST'])
 @login_required
 def use_coupon(student_id, course_id):
@@ -341,6 +306,7 @@ def use_coupon(student_id, course_id):
                     "2":{'student_id': '02', 'student_name': 'student1', 'attempt': 20, 'coupon_rewarded': 3, 'coupon_used': 5 },
                     "3":{'student_id': '02', 'student_name': 'student1', 'attempt': 20, 'coupon_rewarded': 3, 'coupon_used': 5 }}
     return json.dumps(answer_list)
+
 
 @app.route('/teacher_add_question/<course_id>', methods=['GET', 'POST'])
 @login_required
@@ -356,6 +322,7 @@ def teacher_add_question(course_id):
         return redirect(url_for('teacher_view_question', question_id=question_id))
     return render_template('teacher_add_question.html', course_id=course_id, form=form)
 
+
 @app.route('/teacher_view_question/<question_id>', methods=['GET', 'POST'])
 @login_required
 def teacher_view_question(question_id):
@@ -363,8 +330,8 @@ def teacher_view_question(question_id):
     form = EditQuestionForm(question_title='title', question_content='content')
     current_user.current_q_id = question_id
     current_user.fill_question_info()
-    current_user.current_classcode = current_user.current_q.course_id
-    print('In teacher_view_question, current_classcode:', current_user.current_classcode)
+    current_user.current_course_id = current_user.current_q.course_id
+    print('In teacher_view_question, current_course_id:', current_user.current_course_id)
     current_user.fill_course_info()
     print('In teacher_view_question, q_status:', current_user.current_q.q_status)
     print('In teacher_view_question, current_course:', current_user.current_course.course_name)
@@ -373,20 +340,21 @@ def teacher_view_question(question_id):
         input_content = form.question_content.data
         print(input_title)
         print(input_content)
-        # Store the edited question in database and get back its question_id, this time return the updated data 
+        # Store the edited question in database and get back its question_id, this time return the updated data
         form = EditQuestionForm(question_title=input_title, question_content=input_content)
         course_info = {'course_id': '123', 'course_code': 'CSCI3100'}
         return render_template('teacher_view_question.html', form=form)
     course_info = {'course_id': '123', 'course_code': 'CSCI3100'}
     return render_template('teacher_view_question.html', form=form)
 
+
 @app.route('/update_answer/<q_id>', methods=["GET"])
 @login_required
 def update_answer(q_id):
     current_user.current_q_id = q_id
     current_user.fill_question_info()
-    current_user.current_classcode = current_user.current_q.course_id
-    print('In update_answer, current_classcode:', current_user.current_classcode)
+    current_user.current_course_id = current_user.current_q.course_id
+    print('In update_answer, current_course_id:', current_user.current_course_id)
     current_user.fill_course_info()
     print('In update_answer, q_status:', current_user.current_q.q_status)
     print('In update_answer, current_course:', current_user.current_course.course_name)
@@ -394,6 +362,61 @@ def update_answer(q_id):
                     "2":{'answer_userid': '234','answer_user': 'student2', 'answer_content': 'This is sample answer1 This is sample answer0 This is sample answer0 This is sample answer0 This is sample answer0'},
                     "3":{'answer_userid': '312', 'answer_user': 'student3', 'answer_content': 'This?'}}
     return json.dumps(answer_list)
+
+
+########################################################################################################################
+# This part is for student administration, including main page, competing page and participation page.
+########################################################################################################################
+
+
+@app.route('/student_main_page', methods=['GET', 'POST'])
+@login_required
+def student_main():
+    print('student_main: ',current_user.username)
+    form = RegClass()
+    if form.validate_on_submit():
+        answer = form.token.data
+        print("token:", answer)
+    # print(user_msg)
+    enroll_info = [{'course_id': 1, 'code': 'CSCI3100', 'title': 'Software Engineering', 'info': 'Prof. Michael R. Lyu'},
+                   {'course_id': 3, 'code': 'IERG3310', 'title': 'Computer Networking', 'info': 'Prof. Xing Guoliang'}]
+    student_profile = [{'name': 'Alen XU', 'department': 'The Chinese University of Hong Kong', 'title': 'student'}]
+    return render_template('student_main_page.html', enroll_info=enroll_info, student_profile=student_profile, form=form)
+
+
+@app.route('/student_within_course/<classcode>', methods=['GET', 'POST'])
+@login_required
+def student_within_course(classcode):
+    flag = 1 # 1 means there is question, 0 means no question
+    question_list = {'question_title': 'hard question', 'question_content': 'what is fsm?'}
+    form = AddAnswer()
+    current_user.current_course_id = classcode
+    current_user.current_q_id = 999
+    current_user.fill_question_info()
+    print("current_user.current_course_id: ", current_user.current_course_id)
+    current_user.fill_course_info()
+    print("here is course: ", current_user.current_course.course_name)
+    answer_list = [{'question_title': "hard question", 'question_content': "what is fsm?", 'question_answer': "fsm is abc.", 'correct_answer': 'fsm is cde.', 'get_coupon_or_not': 1}, 
+        {'question_title': "hard question2", 'question_content': "what is fsm?2", 'question_answer': "fsm is abc.2", 'correct_answer': 'fsm is cde.2', 'get_coupon_or_not' : 0}]
+    if form.validate_on_submit():
+        answer = form.answer.data
+        print("answer:", answer)
+        newform = AddAnswer()
+        # return render_template('student_within_course.html', flag=1, question_list= question_list, course_code=classcode, form = form, answer_list=answer_list)
+        pass
+    else:
+        pass 
+    return render_template('student_within_course.html', flag=flag, question_list= question_list, course_code=classcode, form = form, answer_list=answer_list)
+
+
+@app.route('/student_get_class/<password>', methods=['GET', 'POST'])
+@login_required
+def student_get_class(password):
+    print('password in student_get_class:', password)
+    class_info = {'course_id': 7, 'course_code': 'CSCI2001', 'course_name': 'Data Structure', 'course_instructor': 'Prof. Michael R. Lyu'}
+    course_id = class_info['course_id']
+    return json.dumps(class_info)
+
 
 
 #@app.route('/teacher_within_course/<classcode>', methods=['GET', 'POST'])
