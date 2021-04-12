@@ -388,6 +388,7 @@ def student_main():
 @login_required
 def student_within_course(classcode):
     flag = 1 # 1 means there is question, 0 means no question
+    session['submit_status'] = False
     question_list = {'question_title': 'hard question', 'question_content': 'what is fsm?'}
     form = AddAnswer()
     current_user.current_course_id = classcode
@@ -399,14 +400,15 @@ def student_within_course(classcode):
     answer_list = [{'question_title': "hard question", 'question_content': "what is fsm?", 'question_answer': "fsm is abc.", 'correct_answer': 'fsm is cde.', 'get_coupon_or_not': 1}, 
         {'question_title': "hard question2", 'question_content': "what is fsm?2", 'question_answer': "fsm is abc.2", 'correct_answer': 'fsm is cde.2', 'get_coupon_or_not' : 0}]
     if form.validate_on_submit():
+        session['submit_status'] = True
         answer = form.answer.data
         print("answer:", answer)
         newform = AddAnswer()
+        return redirect(url_for('student_within_course', classcode=classcode))
         # return render_template('student_within_course.html', flag=1, question_list= question_list, course_code=classcode, form = form, answer_list=answer_list)
-        pass
-    else:
-        pass 
-    return render_template('student_within_course.html', flag=flag, question_list= question_list, course_code=classcode, form = form, answer_list=answer_list)
+    return render_template('student_within_course.html', flag=flag, question_list= question_list,
+                           course_code=classcode, form = form,
+                           answer_list=answer_list, submit_status=session.get('submit_status', False))
 
 
 @app.route('/student_get_class/<password>', methods=['GET', 'POST'])
