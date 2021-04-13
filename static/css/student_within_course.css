@@ -1,40 +1,17 @@
 @import url(font-awesome.min.css);
 @import "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600";
 
-img {
-    margin-left: auto;
-    margin-right: auto;
-    width: 90%;
-    height: 90%;
-    border-radius: 50%;
-}
-
-#contes { /* 弹框的页面*/
-    width: 500px; /*宽度*/
-    height: 200px; /*高度*/
-    background: #198754 ; /*背景色*/
-    display: none; /*隐藏*/
-    z-index: 2; /*覆盖*/
-    position: absolute;
-    top: 100px;
-    left: 400px; /* 定位*/
-    }
-    input{
-    margin-bottom: 10px;
-    }
-
-/* Box Model */
-
-.box {
-    border: solid 1px #dbdbdb;
-    margin: 0 auto 2em auto;
-    padding: 1.5em;
-    width:80%;
-}
-
 #head3 {
     padding:10px; 
     text-align: center;
+}
+
+/* hr */
+
+hr {
+    border: 0;
+    border-bottom: solid 1px #dbdbdb;
+    margin: 2em 0;
 }
 
 /* banner */
@@ -76,6 +53,15 @@ img {
     padding: 0;
 }
 
+#banner h2 {
+    font-size: 2em;
+    font-weight: 400;
+    color: #fff;
+    line-height: 1em;
+    margin-bottom: .5em;
+    padding: 0;
+}
+
 #banner h3 {
     font-weight: 400;
     color: rgba(255, 255, 255, 0.849);
@@ -110,16 +96,53 @@ img {
     text-decoration: none;
     text-transform: uppercase;
     white-space: nowrap;
+    margin-left: 2em;
+    margin-right: 2em;
 }
 
 #banner button:hover {
     background-color: rgba(108, 192, 145, 0.15);
 }
 
+#banner a.button{
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    -moz-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    -webkit-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    -ms-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    background-color: transparent;
+    box-shadow: inset 0 0 0 3px #6cc091;
+    color: #6cc091 !important;
+    border-radius: 30px;
+    border: 0;
+    cursor: pointer;
+    display: inline-block;
+    font-size: .75em;
+    font-weight: 400;
+    height: 3.75em;
+    line-height: 3.85em;
+    letter-spacing: 2px;
+    padding: 0 4em;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+    margin-left: 2em;
+    margin-right: 2em;
+}
+
+#banner a.button:hover {
+    background-color: rgba(108, 192, 145, 0.15);
+}
+
 /* footer */
 #icon {
     width: 12%;
-    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #footer {
@@ -134,6 +157,8 @@ img {
     color: rgba(255, 255, 255, 0.863);
     margin-bottom: .5em !important;
 }
+tr:nth-child(even) {background-color: #f2f2f2;}
+
 
 .nav-pills .nav-link.active, .nav-pills,.nav-link {
     color: #198754;

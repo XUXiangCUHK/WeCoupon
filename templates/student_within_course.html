@@ -35,7 +35,7 @@
 
         <div class="col">
           <div class="row">
-              <h1 id="name_display">{{ current_user.last_name }} {{ current_user.first_name }}</h1>
+            <h1 id="name_display">{{ current_user.last_name }} {{ current_user.first_name }}</h1>
           </div>
           <div class="row">
             <h3 id="department_display">{{ current_user.current_course.course_code }} {{
@@ -56,8 +56,9 @@
             aria-selected="false">Participation</button>
         </li>
         <li>
-          <svg xmlns="http://www.w3.org/2000/svg" width="50" height="40" fill="currentColor" class="bi bi-slash" viewBox="0 0 16 16">
-            <path d="M11.354 4.646a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708l6-6a.5.5 0 0 1 .708 0z"/>
+          <svg xmlns="http://www.w3.org/2000/svg" width="50" height="40" fill="currentColor" class="bi bi-slash"
+            viewBox="0 0 16 16">
+            <path d="M11.354 4.646a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708l6-6a.5.5 0 0 1 .708 0z" />
           </svg>
         </li>
         <li class="nav-item" role="presentation">
@@ -66,7 +67,8 @@
         </li>
       </ul>
       <div class="tab-content" id="pills-tabContent">
-        <div class="tab-pane fade show active" id="pills-participation" role="tabpanel" aria-labelledby="pills-participation-tab">
+        <div class="tab-pane fade show active" id="pills-participation" role="tabpanel"
+          aria-labelledby="pills-participation-tab">
           <!-- <ul class="list-group">
                 <li class="list-group-item">
                   <p class="fullText">Q1 HTML stands for Hyper Text Markup Language. HTML is the standard markup language for creating Web pages. HTML describes the structure of a Web page. HTML consists of a series of elements. HTML elements tell the browser how to display the content.</p>
@@ -123,7 +125,9 @@
           {% else %}
           <br>
           <h3 id="head3">{{current_user.current_q.q_title}}</h3>
-          <div class="box" > <p> {{current_user.current_q.q_content}}</p></div>
+          <div class="box">
+            <p> {{current_user.current_q.q_content}}</p>
+          </div>
           {{ wtf.quick_form(form) }}
           {% endif %}
           <!-- <br>
@@ -134,14 +138,16 @@
         <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">3</div>
       </div>
     </div>
-    <footer id="footer">
-      <div class="inner">
-        <div class="row">
-          <img src="../static/images/logo-no-background.png" id="icon" alt="WECOUPON LOGO" />
-        </div>
-        <h3>Should you have any question? Please contact us</h3>
+  </div>
+
+  <footer id="footer">
+    <div class="inner">
+      <div class="row">
+        <img src="../static/images/logo-no-background.png" id="icon" alt="WECOUPON LOGO" />
       </div>
-    </footer>
+      <h3>Should you have any question? Please contact us</h3>
+    </div>
+  </footer>
 </body>
 
 <script src="../static/js/within_course.js"></script>

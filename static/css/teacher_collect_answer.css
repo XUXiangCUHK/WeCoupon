@@ -1,25 +1,24 @@
 @import url(font-awesome.min.css);
 @import "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600";
 
-/* Box Model */
-
-.box {
-    border: solid 1px #dbdbdb;
-    margin: 0 auto 2em auto;
-    padding: 1.5em;
-    width:80%;
-}
-
 #head3 {
     padding:10px; 
     text-align: center;
+}
+
+/* hr */
+
+hr {
+    border: 0;
+    border-bottom: solid 1px #dbdbdb;
+    margin: 2em 0;
 }
 
 /* banner */
 
 #banner {
     padding: 5em 0 5em 0;
-    background-image: url(../images/cuhk-ConvertImage.jpg));
+    background-image: url(../images/cuhk-ConvertImage.jpg);
     background-size: cover;
     background-position: bottom;
     background-attachment: fixed;
@@ -137,6 +136,38 @@
 
 #banner a.button:hover {
     background-color: rgba(108, 192, 145, 0.15);
+}
+
+/* footer */
+#icon {
+    width: 12%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#footer {
+    padding: .5em 0;
+    background: #77AF9C;
+    color: #fff;
+    text-align: center;
+}
+
+#footer h3 {
+    font-size: .5em;
+    color: rgba(255, 255, 255, 0.863);
+    margin-bottom: .5em !important;
+}
+tr:nth-child(even) {background-color: #f2f2f2;}
+
+
+.nav-pills .nav-link.active, .nav-pills,.nav-link {
+    color: #198754;
+    background-color: #fff;
+}
+
+.nav-link.active,.show > .nav-link {
+    color: #198754 !important; 
+    background-color:#77AF9C !important;
 }
 
 .boxtitle {
