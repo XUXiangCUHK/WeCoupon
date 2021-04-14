@@ -63,22 +63,3 @@ class Question:
         self.q_content = mani.fetch_question_info_by_id(q_id, ['q_content'])
         self.q_answer = mani.fetch_question_info_by_id(q_id, ['q_answer'])
         self.q_status = mani.fetch_question_info_by_id(q_id, ['q_status'])
-
-
-class Answer:
-    def __init__(self):
-        self.a_id = 0
-        self.q_id = 0
-        self.student_id = 0
-        self.a_content = str()
-        self.a_status = 0
-        self.a_time = 0
-
-
-class Coupon:
-    def __init__(self):
-        self.id = 0
-        self.student_id = 0
-        self.coupon_num = 0
-        self.insert_time = 0
-        self.note = str()

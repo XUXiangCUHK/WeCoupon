@@ -4,6 +4,10 @@
 ### Status: completed
 
 ## Phase Two: Initial Code of Project
+### Status: completed
+
+## Phase Three: Completed Code of Project
+
 ### Running on local machine
 We provide app_test.py file for execution on local machine.
 You can simply run `python app_test.py` and then open the website.
@@ -53,8 +57,12 @@ In the Answer page, if there is no question to answer now, you will see a warm r
 After entering into a specific class, you can see your participation in this class in the Participation page. There is a question list containing the historical questions of this class, your historical answers, the suggested answers and the coupon acquisition status. 
 
 ### Models Designed
-Totally there are five models: user(account), course, question,
-answer, coupon, as defined in `models.py`
+Totally there are three models: user(account), course, question, as defined in `models.py`
 
 ### Database Used
 We use Mysql as database to store all information.
+
+### Reference
+css template: https://templated.co/industrious; https://bootsnipp.com/snippets/dldxB
+
+

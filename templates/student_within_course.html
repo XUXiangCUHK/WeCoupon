@@ -127,15 +127,16 @@
                 </div>
               </form> -->
 
-          {% if flag == 0 %}
-          <h2 style="text-align: center;">No question posted yet!<br> Please refresh page for new question. </h2>
-          {% else %}
+          {% if flag == 1 %}
           <br>
           <h3 id="head3">{{current_user.current_q.q_title}}</h3>
           <div class="box">
             <p> {{current_user.current_q.q_content}}</p>
           </div>
           {{ wtf.quick_form(form) }}
+          {% else %}
+          <h2 style="text-align: center;">No question posted yet!<br> Please refresh page for new question. </h2>
+          <br><br><br>
           {% endif %}
           <!-- <br>
               <button type="submit" class="btn-primary" onclick="submit_ans(this)">Submit</button> -->

@@ -305,7 +305,7 @@ def use_coupon(student_id, course_id):
     current_user.fill_course_info()
     print(student_id, course_id)
     mani.mark_coupon_as_used(student_id, course_id)
-    return str()
+    return redirect(url_for('teacher_view', course_id=course_id))
 
 
 @app.route('/teacher_add_question/<course_id>', methods=['GET', 'POST'])

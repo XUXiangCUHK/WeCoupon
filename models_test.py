@@ -58,6 +58,7 @@ class User(UserMixin):
     def fill_question_info(self):
         self.current_q = Question(self.current_q_id)
 
+
 class Course:
     def __init__(self, classcode):
 
@@ -75,7 +76,6 @@ class Course:
                 self.course_code = i['code']
                 self.course_name = i['title']
                 self.course_instructor = i['course_instructor']
-
 
 
 class Question:
@@ -97,21 +97,3 @@ class Question:
                 self.q_title = i['question_title']
                 self.q_content = i['q_content']
                 self.q_status = i['q_status']
-
-
-class Answer:
-    def __init__(self):
-        self.a_id = 0
-        self.q_id = 0
-        self.student_id = 0
-        self.a_content = str()
-        self.a_status = 0
-        self.a_time = 0
-
-class Coupon:
-    def __init__(self):
-        self.id = 0
-        self.student_id = 0
-        self.coupon_num = 0
-        self.insert_time = 0
-        self.note = str()
