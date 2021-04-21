@@ -1,3 +1,12 @@
+"""
+PROGRAM MAIN APPLICATION - Program to test WeCoupon Website
+PROGRAMMER - XU Xiang (1155107785);
+CALLING SEQUENCE - Run pytest for automatic testing
+VERSION - written on 2021/04/20
+REVISION - 2021/04/21 for documentation
+PURPOSE - To test the basic routing flow and some exceptions with designed test case sets
+"""
+
 import pytest
 
 from app import app as flask_app

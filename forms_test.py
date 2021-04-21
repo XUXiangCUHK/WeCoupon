@@ -1,3 +1,16 @@
+"""
+PROGRAM MAIN APPLICATION - Program to define all forms used in the website (test version)
+PROGRAMMER - XU Xiang (1155107785);
+             LAI Wei (1155095200);
+             ZENG Meiqi (1155107891);
+             ZHANG Yusong(1155107841);
+             ZHOU Yifan (1155124411)
+CALLING SEQUENCE - The forms will be automatically loaded during execution of app_test.py
+VERSION - written on 2021/04/13
+REVISION - 2021/04/21 for form validation reformation
+PURPOSE - To define all forms used in the website (test_version)
+"""
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo, NoneOf, AnyOf

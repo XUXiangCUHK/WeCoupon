@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
 
+"""
+PROGRAM MAIN APPLICATION - Program for all sql statements definition
+PROGRAMMER - XU Xiang (1155107785);
+CALLING SEQUENCE - Called by functions in manipulator.py
+VERSION - written on 2021/04/13
+PURPOSE - To define all required sql statements for further usage
+"""
+
 from db.database import Database
 
 

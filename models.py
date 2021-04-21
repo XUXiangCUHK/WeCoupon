@@ -1,3 +1,15 @@
+"""
+PROGRAM MAIN APPLICATION - Program to define modules used in main application
+PROGRAMMER - XU Xiang (1155107785);
+             LAI Wei (1155095200);
+             ZENG Meiqi (1155107891);
+             ZHANG Yusong(1155107841);
+             ZHOU Yifan (1155124411)
+CALLING SEQUENCE - The modules will be accessed and used by app.py
+VERSION - written on 2021/04/13
+PURPOSE - To define three potential modules for clear coding, namely user, course and question
+"""
+
 from flask_login import UserMixin
 from db.manipulator import Manipulator
 

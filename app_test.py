@@ -1,17 +1,27 @@
+"""
+PROGRAM MAIN APPLICATION - Program to test the basic working flow of the website
+PROGRAMMER - XU Xiang (1155107785);
+             LAI Wei (1155095200);
+             ZENG Meiqi (1155107891);
+             ZHANG Yusong(1155107841);
+             ZHOU Yifan (1155124411)
+CALLING SEQUENCE - Simply run 'python app_test.py' in the terminal
+VERSION - written on 2021/04/13
+REVISION - 2021/04/21 for testing and new function improvement
+PURPOSE - To test and guarantee the basic working flow of the website without access the database
+"""
+
 from flask import Flask, request, render_template, abort, flash, url_for, redirect, session
 from flask_bootstrap import Bootstrap
 from forms_test import LoginForm, RegistrationForm, CreateClassForm, AddQuestionForm, EditQuestionForm,AddAnswer, RegClass
 from flask_login import login_required, current_user, LoginManager, login_user, logout_user
 import json
 import random
-from models_test import User, Question, Coupon, Course, Answer
+from models_test import User, Question, Course
 # from flask_socketio import SocketIO, emit
 # from threading import Lock
 
 # async_mode = None
-
-
-
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)

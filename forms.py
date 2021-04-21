@@ -1,3 +1,16 @@
+"""
+PROGRAM MAIN APPLICATION - Program to define all forms used in the website
+PROGRAMMER - XU Xiang (1155107785);
+             LAI Wei (1155095200);
+             ZENG Meiqi (1155107891);
+             ZHANG Yusong(1155107841);
+             ZHOU Yifan (1155124411)
+CALLING SEQUENCE - The forms will be automatically loaded during execution of app.py
+VERSION - written on 2021/04/13
+REVISION - 2021/04/21 for form validation reformation
+PURPOSE - To define all forms used in the website
+"""
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo, NoneOf, AnyOf
@@ -21,9 +34,10 @@ class RegistrationForm(FlaskForm):
     SID = StringField('SID', validators=[Length(10),
                                          Regexp('^[0-9]*$', 0, 'SID requires 10 numbers')])
     email = StringField('Email', validators=[DataRequired(), Length(1, 64),
-                                             Email(),
-                                             NoneOf(mani.fetch_registerd_email(),
-                                                    'The email has already been registered.')])
+                                             Email()]
+                                             # NoneOf(mani.fetch_registerd_email(),
+                                             #        'The email has already been registered.')]
+                        )
     username = StringField('Username', validators=[DataRequired(), Length(1, 64),
                                                    Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
                                                    'Usernames must have only letters, numbers, dots or underscores')])
@@ -64,7 +78,8 @@ class AddAnswer(FlaskForm):
 
 
 class RegClass(FlaskForm):
-    token = StringField('Token', validators=[DataRequired(),
-                                             AnyOf(mani.fetch_all_course_token(),
-                                                   'The token is not available!')])
+    token = StringField('Token', validators=[DataRequired()
+                                             # AnyOf(mani.fetch_all_course_token(),
+                                             #       'The token is not available!')
+                                             ])
     submit = SubmitField('Register')

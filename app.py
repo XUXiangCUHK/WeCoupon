@@ -1,3 +1,16 @@
+"""
+PROGRAM MAIN APPLICATION - Program to run WeCoupon Website
+PROGRAMMER - XU Xiang (1155107785);
+             LAI Wei (1155095200);
+             ZENG Meiqi (1155107891);
+             ZHANG Yusong(1155107841);
+             ZHOU Yifan (1155124411)
+CALLING SEQUENCE - Simply run 'python app.py' in the terminal
+VERSION - written on 2021/04/13
+REVISION - 2021/04/21 for testing and new function improvement
+PURPOSE - To build a website for more interactive class participation and more fair coupon competition.
+"""
+
 import json
 from threading import Thread
 from hashlib import md5
@@ -19,6 +32,7 @@ from db.manipulator import Manipulator
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'hard to guess string'
+
 # mail configuration
 app.config['MAIL_SERVER'] = 'smtp.163.com'
 app.config['MAIL_PORT'] = 465
@@ -29,18 +43,14 @@ app.config['FLASKY_MAIL_SUBJECT_PREFIX'] = 'WeCoupon'
 
 mail = Mail(app)
 
+# login management
 login_manager = LoginManager(app)
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
 # db configuration
 sql = Sql()
 mani = Manipulator()
-
-
-# @login_manager.user_loader
-# def load_user(user_email):
-#     print('load user')
-#     return User.get(user_email)
 
 @login_manager.user_loader
 def load_user(user_email):
@@ -53,12 +63,13 @@ def load_user(user_email):
 # This part is for email configuration, including send_email function, confirm and unconfirmed status.
 ########################################################################################################################
 
-
+# For email configuration
 def send_async_email(app, msg):
     with app.app_context():
         mail.send(msg)
 
 
+# The function is designed for sending email
 def send_email(to, subject, template, **kwargs):
     msg = Message(app.config['FLASKY_MAIL_SUBJECT_PREFIX'] + ': ' + subject,
                   sender=app.config['MAIL_USERNAME'], recipients=[to])
@@ -69,11 +80,14 @@ def send_email(to, subject, template, **kwargs):
     return thr
 
 
+# To create a route for email checking notification
 @app.route('/email_check')
 def email_check():
     return render_template('email_check.html')
 
 
+# To create a route for token confirmation
+# The function interacts with Account System
 @app.route('/confirm/<token>')
 @login_required
 def confirm(token):
@@ -96,6 +110,8 @@ def confirm(token):
     return redirect(url_for('login'))
 
 
+# To create a route for unconfirmed page
+# The function interacts with Account System
 @app.route('/unconfirmed')
 @login_required
 def unconfirmed():
@@ -113,6 +129,8 @@ def unconfirmed():
 ########################################################################################################################
 
 
+# To create a route for login
+# The function interacts with Account System
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     print('login')
@@ -136,6 +154,8 @@ def login():
     return render_template('login.html', form=form)
 
 
+# To create a route for logout
+# The function interacts with Account System
 @app.route('/logout')
 @login_required
 def logout():
@@ -143,6 +163,8 @@ def logout():
     return redirect(url_for('login'))
 
 
+# To create a route for signup
+# The function interacts with Account System
 @app.route('/signup', methods=['GET', 'POST'])
 def sign_up():
     form = RegistrationForm()
@@ -180,6 +202,8 @@ def sign_up():
 ########################################################################################################################
 
 
+# To create a route for teacher main page
+# The function interacts with Account System, Course System
 @app.route('/teacher_main_page', methods=['GET', 'POST'])
 @login_required
 def teacher_main():
@@ -212,6 +236,8 @@ def teacher_main():
                            form=form)
 
 
+# To create a route for teacher to create a class
+# The function interacts with Course System
 @app.route('/teacher_create_class/<course_code>&<course_name>&<course_instructor>&<course_token>',
            methods=['GET', 'POST'])
 @login_required
@@ -224,6 +250,8 @@ def teacher_create_class(course_code, course_name, course_instructor, course_tok
     return json.dumps(class_info)
 
 
+# To create a route for teacher to go into one specific course
+# The function interacts with Course System
 @app.route('/teacher_within_course/<course_id>', methods=['GET', 'POST'])
 @login_required
 def teacher_view(course_id):
@@ -239,6 +267,8 @@ def teacher_view(course_id):
                            participation_list=participation_list)
 
 
+# To create a route for teacher to view answer
+# The function interacts with Question System, Answer System
 @app.route('/teacher_view_answer/<question_id>', methods=['GET', 'POST'])
 @login_required
 def teacher_view_answer(question_id):
@@ -257,6 +287,8 @@ def teacher_view_answer(question_id):
                            per_ans=per_ans)
 
 
+# To create a route for teacher to collect answers
+# The function interacts with Question System, Answer System
 @app.route('/teacher_collect_answer/<question_id>', methods=['GET', 'POST'])
 @login_required
 def teacher_collect_answer(question_id):
@@ -283,6 +315,8 @@ def teacher_collect_answer(question_id):
                            per_ans=per_ans)
 
 
+# To create a route for teacher to add coupon
+# The function interacts with Coupon System
 @app.route('/add_coupon/<userid>&<q_id>&<a_id>', methods=['GET', 'POST'])
 @login_required
 def reward_coupon(userid, q_id, a_id):
@@ -297,6 +331,8 @@ def reward_coupon(userid, q_id, a_id):
     return str()
 
 
+# To create a route for teacher to use coupon
+# The function interacts with Coupon System
 @app.route('/use_coupon/<student_id>&<course_id>', methods=['GET', 'POST'])
 @login_required
 def use_coupon(student_id, course_id):
@@ -308,6 +344,8 @@ def use_coupon(student_id, course_id):
     return redirect(url_for('teacher_view', course_id=course_id))
 
 
+# To create a route for teacher to add question
+# The function interacts with Question System
 @app.route('/teacher_add_question/<course_id>', methods=['GET', 'POST'])
 @login_required
 def teacher_add_question(course_id):
@@ -326,6 +364,8 @@ def teacher_add_question(course_id):
     return render_template('teacher_add_question.html', course_id=course_id, form=form)
 
 
+# To create a route for teacher to view question
+# The function interacts with Question System
 @app.route('/teacher_view_question/<question_id>', methods=['GET', 'POST'])
 @login_required
 def teacher_view_question(question_id):
@@ -352,6 +392,8 @@ def teacher_view_question(question_id):
     return render_template('teacher_view_question.html', course_info=current_user.current_course, form=form)
 
 
+# To create a route for teacher to update answer
+# The function interacts with Answer System
 @app.route('/update_answer/<q_id>', methods=["GET"])
 @login_required
 def update_answer(q_id):
@@ -370,6 +412,8 @@ def update_answer(q_id):
 ########################################################################################################################
 
 
+# To create a route for student main page
+# The function interacts with Account System, Course System
 @app.route('/student_main_page', methods=['GET', 'POST'])
 @login_required
 def student_main():
@@ -400,6 +444,8 @@ def student_main():
                            form=form)
 
 
+# To create a route for student to register class
+# The function interacts with Account System, Course System
 @app.route('/student_get_class/<course_token>', methods=['GET', 'POST'])
 @login_required
 def student_get_class(course_token):
@@ -410,6 +456,8 @@ def student_get_class(course_token):
     return json.dumps(class_info)
 
 
+# To create a route for student to go into specific course
+# The function interacts with Answer System
 @app.route('/student_within_course/<course_id>', methods=['GET', 'POST'])
 @login_required
 def student_within_course(course_id):

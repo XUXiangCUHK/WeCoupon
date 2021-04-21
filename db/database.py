@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
 
+"""
+PROGRAM MAIN APPLICATION - Program for fundamental database operations
+PROGRAMMER - XU Xiang (1155107785);
+CALLING SEQUENCE - Called by functions in sql.py
+VERSION - written on 2021/04/13
+PURPOSE - To define all reusable database operations such as read, write, execute
+"""
+
 import json
 import pymysql
 from contextlib import closing
