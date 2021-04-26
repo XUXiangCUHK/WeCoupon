@@ -3,8 +3,6 @@ function display() {
     document.getElementById('contes').style.display = 'block';
 }
 function show() {
-    // text = document.getElementById("fullText").innerHTML;
-    // document.getElementById("fullText").innerHTML = "";
     var allfullTextByClass = document.getElementsByClassName('fullText');
     var allsubTextByClass = document.getElementsByClassName('subText');
     var allbtnByClass = document.getElementsByClassName('btn');
@@ -18,7 +16,6 @@ function show() {
             allbtnByClass[i].innerHTML = "...open";
         } else {
             allsubTextByClass[i].innerHTML = text;
-            // document.getElementById("btn").innerHTML = "";
             allbtnByClass[i].innerHTML = "...open";
         }
     } 
@@ -26,7 +23,6 @@ function show() {
 
 function change(el) {
     var bro = el.parentNode.children
-    // var i = 0
     var t = bro[2]
     var tt = bro[1];
     // 从后端拿

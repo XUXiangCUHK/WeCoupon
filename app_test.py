@@ -20,17 +20,9 @@ import random
 from models_test import User, Question, Course
 from threading import Thread
 from flask_mail import Mail, Message
-# from flask_socketio import SocketIO, emit
-# from threading import Lock
-
-# async_mode = None
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
-# socketio = SocketIO(app)
-
-# thread = None
-# thread_lock = Lock()
 
 app.config['SECRET_KEY'] = 'hard to guess string'
 
@@ -140,7 +132,6 @@ def login():
 
         if user is not None and input_pw == user.password:
             login_user(user)
-            # session['user_id'] = user.user_id
             print('user_id in login', user.user_id, user.username)
             print('current_user in login: ', current_user.username, current_user.email, current_user.token)
             if user.activated == '0':
@@ -170,8 +161,6 @@ def sign_up():
     if form.validate_on_submit():
         user_email = form.email.data
         user = User(user_email)
-        # is_student = 1
-        # activated = 0
         if form.isInstructor.data:
             user.is_student = '0'
         # insert into db
@@ -209,27 +198,6 @@ def teacher_main():
                   ]
     teach_profile = [{'name': 'Michael R. Lyu', 'department': 'Computer Science and Engineering department', 'title': 'Professor'}]
     return render_template('teacher_main_page.html', teach_info=teach_info, teach_profile=teach_profile, form=form)
-
-
-# @app.route('/teacher_create_course/<instructor>', methods=['GET', 'POST'])
-# @login_required
-# def create_course(instructor):
-#     form = CreateClassForm()
-#     if form.validate_on_submit():
-#         input_token = form.course_token.data
-#         print(input_token)
-#         # return redirect(url_for('teacher_main_page'))
-#     return render_template('teacher_create_course.html', form=form)
-#
-#
-#
-# @app.route('/teacher_create_class/<course_name>&<course_token>', methods=['GET', 'POST'])
-# @login_required
-# def teacher_create_class(course_name, course_token):
-#     print('teacher_create_class')
-#     class_info = {'course_id': 7, 'course_code': 'CSCI2001', 'course_name': 'Data Structure', 'course_instructor': 'Prof. Michael R. Lyu'}
-#     course_id = class_info['course_id']
-#     return json.dumps(class_info)
 
 
 # To create a route for teacher to go into one specific course
@@ -455,32 +423,6 @@ def student_within_course(classcode):
     return render_template('student_within_course.html', flag=flag, question_list= question_list,
                            course_code=classcode, form=form,
                            answer_list=answer_list, submit_status=session.get('submit_status', False))
-
-
-# @app.route('/teacher_within_course/<classcode>', methods=['GET', 'POST'])
-# def teacher_view_participation(classcode):
-#    participation_list = [{'student_id': '1155095222', 'student_name': 'Bob', 'attempt': '20', 'coupon': '1'},
-#                    {'student_id': '1155095222', 'student_name': 'Peter', 'attempt': '10', 'coupon': '5'}]
-#    return render_template('teacher_within_course.html', participation_list=participation_list)
-
-
-# update value from backend without refreshing page
-# @socketio.on('connect', namespace='/teacher_collect_answer')
-# def test_connect():
-#     global thread
-#     with thread_lock:
-#         if thread is None:
-#             thread = socketio.start_background_task(target=background_thread)
-
-# def background_thread():
-#     while True: 
-#         print("in text_connet")
-#         socketio.sleep(5)
-#         t = random.randint(1,100)
-#         a = random.randint(100,1000)
-#         print(t)
-#         socketio.emit('server_response', {'data1': t, 'data2': a}, namespace='/teacher_collect_answer')
-
 
 if __name__ == '__main__':
     app.run(debug=True)

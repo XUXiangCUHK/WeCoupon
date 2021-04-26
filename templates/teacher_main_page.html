@@ -24,9 +24,6 @@
     <section id="banner">
         <div class="container">
             <div class="row inner">
-                <!-- <div class="col-2 text-start">
-                <img src="../static/images/lyu.jpg" class="rounded-circle" alt="100x100">
-            </div>                                        -->\
                 <div>
                     <a href="{{ url_for('logout') }}" class="btn btn-outline-light btn-lg" style="float: right;">
                         <span class="glyphicon glyphicon-log-out"></span> Log out
@@ -44,28 +41,8 @@
                     </div>
                 </div>
                 <div>
-                    <!--<button type="button" onclick="display_edit_profile()">Edit Profile</button>-->
                     <button type="button" class="btn btn-primary" onclick="display()">Add Class</button>
                 </div>
-                <!--
-                <div id="edit_profile" style="">
-                    <div style="width:500px;height:70px;">
-                        Edit Profile
-                        <hr>
-                        <form style="">
-                      
-                <script>
-                    var teacher_name = [teach_profile[0]["name"]];
-                </script>
-                
-                            Name:<br><input type="text" value="{{teach_profile[0].name}}" name=""><br>
-                            Department:<br><input type="text" value="{{teach_profile[0].department}}" name=""><br>
-                            Title:<br><input type="text" value="{{teach_profile[0].title}}" name=""><br>
-                            <br><input type="button" value="Save" onclick="edit_profile()">
-                        </form>
-                    </div>
-                </div>
-                -->
                 <div id="contes">
                     <div style="width:500px;height:70px;">
                         <br>
@@ -75,15 +52,6 @@
                         <br>
                         <hr>
                         {{wtf.quick_form(form)}}
-                        <!-- <form style="">
-                            &nbsp;course&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;code:&nbsp;<br><input type="text" id="code" value="" name=""><br>
-                            &nbsp;course&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name:&nbsp;<br><input type="text" id="name" name=""><br>
-                            &nbsp;course&nbsp;instructor:&nbsp;<br><input type="text" id="instructor" name=""><br>
-                            &nbsp;course&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token:&nbsp;<br><input type="text" id="token" name=""><br>
-                            <input type="button" value="submit" onclick="teacher_add_class()">
-                        </form> -->
-
-
                     </div>
                 </div>
             </div>

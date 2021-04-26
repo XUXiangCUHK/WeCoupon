@@ -302,25 +302,3 @@ class Manipulator:
 
 if __name__ == "__main__":
     pass
-    # m = Manipulator()
-    # m.insert_account_info('StevenXU', 'xu', 'xiang', '1155107785@link.cuhk.edu.hk', '1155107785', 'wecoupon', '1')
-    # m.insert_course_info('CSCI3100', 'Software Engineering', 'Prof. Michael R. Lyu', 'software')
-    # m.insert_course_info('IERG3310', 'Computer Networking', 'Prof. Xing Guoliang', 'networks')
-    # m.insert_course_info('FTEC3001', 'Financial Innovation & Structured Products', 'Prof. Chen Nan', 'FinTech0')
-    # m.insert_enrollment_info('StevenXU', 'CSCI3100')
-    # m.insert_enrollment_info('StevenXU', 'IERG3310')
-    # m.insert_enrollment_info('3', '1')
-
-    # m.user_enrollment('StevenXU')
-    # res = m.user_verification('1155107785@link.cuhk.edu.hk', 'wecoupon')
-    # print('res,', res)
-    # res = m.user_is_student('1155107785@link.cuhk.edu.hk')
-    # m.insert_question_info(3, 1, 'Question5', 'What are s/w principles?', 'explosive states', 'N')
-    # m.insert_answer_info(21, 2, 'hard to answer testing', 0)
-    # m.insert_answer_info(1, 2, 'explosive states', 0)
-    # print(m.fetch_question_info(1))
-    # print(m.fetch_answer_list(1))
-    # m.fetch_participation(1, 0, 'initial')
-    # print(m.fetch_participation(1))
-    # print(m.fetch_coupon_num(1))
-    # print(m.fetch_participation(1))
